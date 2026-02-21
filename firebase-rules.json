@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "syncs": {
+      "$syncCode": {
+        ".read": "auth == null",
+        ".write": "auth == null",
+        ".validate": "$syncCode.length >= 5 && $syncCode.length <= 50"
+      }
+    }
+  }
+}

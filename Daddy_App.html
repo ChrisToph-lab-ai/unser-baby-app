@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gemeinsame App für werdende Eltern - Countdown, Checklisten und mehr">
+    <meta name="theme-color" content="#4facfe">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Unser Baby">
+    <title>Unser Baby - Schwangerschafts-Begleiter</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .countdown {
+            font-size: 2.3em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .week-info {
+            font-size: 1.05em;
+            opacity: 0.9;
+        }
+        .section {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+        }
+        .section:last-child { border-bottom: none; }
+        .section h2 {
+            color: #4facfe;
+            margin-bottom: 12px;
+            font-size: 1.25em;
+        }
+        .tip-of-day {
+            background: #e3f2fd;
+            padding: 16px;
+            border-radius: 15px;
+            margin-bottom: 16px;
+            border-left: 5px solid #2196f3;
+            font-size: 0.98em;
+        }
+        .subheading {
+            font-weight: 600;
+            margin: 10px 0 5px;
+            font-size: 0.95em;
+            color: #555;
+        }
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .task-item:last-child { border-bottom: none; }
+        .task-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            margin-top: 2px;
+            accent-color: #4facfe;
+        }
+        .task-text { flex: 1; font-size: 0.98em; }
+        .task-date {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 2px;
+        }
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 22px;
+            font-size: 0.98em;
+            cursor: pointer;
+            width: 100%;
+            margin: 8px 0;
+            transition: transform 0.15s;
+        }
+        .button.small {
+            width: auto;
+            display: inline-block;
+            margin-top: 8px;
+            padding: 8px 14px;
+            font-size: 0.85em;
+        }
+        .button:hover { transform: translateY(-1px); }
+        .tracker {
+            background: #f8f9fa;
+            padding: 14px;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+        .tracker-input {
+            width: 100%;
+            padding: 9px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 9px;
+            font-size: 0.95em;
+            margin: 6px 0 4px;
+        }
+        .log-entry {
+            background: white;
+            padding: 8px 10px;
+            margin: 4px 0;
+            border-radius: 8px;
+            border-left: 3px solid #4facfe;
+            font-size: 0.9em;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 7px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 6px 0 12px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            transition: width 0.3s;
+        }
+        .hidden { display: none; }
+        .pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 0.78em;
+            margin-left: 4px;
+        }
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .countdown { font-size: 2em; }
+            .section { padding: 18px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div style="font-size:1.5em;margin-bottom:10px;">👶 Unser Baby</div>
+        <div class="countdown" id="countdown">…</div>
+        <div class="week-info" id="weekInfo">…</div>
+    </div>
+
+    <div class="section">
+        <div class="tip-of-day" id="tipOfDay">
+            💡 Tipp des Tages wird geladen…
+        </div>
+        <div style="font-size:0.9em;color:#555;">
+            Fokus heute: <span id="focusToday">–</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📅 2. Trimester (SSW 13–27)</h2>
+        <div class="progress-bar">
+            <div class="progress-fill" id="trimester2Progress"></div>
+        </div>
+        <div id="trimester2Checklist"></div>
+        <button class="button small" onclick="scrollToSection('devSection')">Was passiert im 2. Trimester?</button>
+    </div>
+
+    <div class="section">
+        <h2>📋 3. Trimester (ab SSW 28)</h2>
+        <div class="progress-bar">
+            <div class="progress-fill" id="prepProgress"></div>
+        </div>
+        <div id="prepChecklist"></div>
+        <button class="button" onclick="toggleSection('behoerden')">Behörden & Papierkram in Deutschland 🏛️</button>
+    </div>
+
+    <div class="section hidden" id="behoerdenSection">
+        <h2>🏛️ Behörden-Checkliste</h2>
+        <div class="subheading">Rund um Geburt & Baby</div>
+        <div id="behoerdenChecklist"></div>
+        <div class="subheading" style="margin-top:10px;">U-Untersuchungen & Arzt</div>
+        <ul style="font-size:0.86em;color:#555;list-style:disc;margin-left:18px;">
+            <li>U1: im Kreißsaal (24–48h nach Geburt)</li>
+            <li>U2: 3.–10. Lebenstag (Kinderarzt/Klinik)</li>
+            <li>U3: 4.–5. Woche – rechtzeitig Termin machen</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🚨 Geburtstag-Tool</h2>
+        <button class="button" onclick="startContractionTimer()">Wehen-Timer starten ⏱️</button>
+        <div id="contractionDisplay" class="hidden tracker">
+            <div style="font-size:0.95em;margin-bottom:6px;">
+                Tippe bei jeder starken Wehe auf „Wehe jetzt“.
+            </div>
+            <button class="button small" onclick="markContraction()">Wehe jetzt</button>
+            <div style="margin-top:8px;font-size:0.9em;">
+                Letzte Wehe: <span id="lastContraction">--:--</span><br>
+                Abstand letzte 3 Wehen: <span id="contractionInterval">–</span>
+            </div>
+            <p id="contractionAdvice" style="margin-top:8px;font-size:0.9em;">Timer läuft…</p>
+        </div>
+        <button class="button" onclick="showHospitalBag()">Kliniktasche Checkliste 🏥</button>
+    </div>
+
+    <div class="section hidden" id="newbornSection">
+        <h2>👶 Neugeborenen-Tracker (0–8 Wochen)</h2>
+        <div class="tracker">
+            <div class="subheading">Fütterungen</div>
+            <input type="text" class="tracker-input" id="feedingLog"
+                   placeholder="z.B. 14:30 – 15:00 Brust links/rechts"
+                   onkeypress="addLog(event, 'feeding')">
+            <div id="feedingHistory"></div>
+        </div>
+        <div class="tracker">
+            <div class="subheading">Windeln</div>
+            <input type="text" class="tracker-input" id="diaperLog"
+                   placeholder="z.B. 16:10 – nass / Stuhl (gelb)"
+                   onkeypress="addLog(event, 'diaper')">
+            <div id="diaperHistory"></div>
+        </div>
+    </div>
+
+    <div class="section" id="devSection">
+        <h2>📚 Wöchentliche Entwicklung</h2>
+        <div id="developmentInfo" style="font-size:0.95em;"></div>
+    </div>
+
+    <div class="section">
+        <h2>📅 Arzttermine</h2>
+        <button class="button" onclick="toggleSection('appointments')">Termine verwalten</button>
+    </div>
+
+    <div class="section hidden" id="appointmentsSection">
+        <div class="tracker">
+            <div class="subheading">Neuer Termin</div>
+            <input type="date" class="tracker-input" id="appointmentDate" style="margin-bottom:6px;">
+            <input type="time" class="tracker-input" id="appointmentTime" style="margin-bottom:6px;">
+            <input type="text" class="tracker-input" id="appointmentDesc" placeholder="z.B. Frauenarzt - Ultraschall">
+            <button class="button small" style="margin-top:8px;" onclick="addAppointment()">Termin hinzufügen</button>
+        </div>
+        <div id="appointmentsList" style="margin-top:16px;"></div>
+    </div>
+
+    <div class="section">
+        <h2>🛒 Einkaufsliste Baby-Erstausstattung</h2>
+        <button class="button" onclick="toggleSection('shopping')">Liste öffnen</button>
+    </div>
+
+    <div class="section hidden" id="shoppingSection">
+        <div class="tracker">
+            <div class="subheading">Artikel hinzufügen</div>
+            <input type="text" class="tracker-input" id="shoppingItem" placeholder="z.B. 5x Bodys Größe 56/62">
+            <button class="button small" style="margin-top:8px;" onclick="addShoppingItem()">Hinzufügen</button>
+        </div>
+        <div class="subheading" style="margin-top:16px;">Standard-Erstausstattung</div>
+        <div id="defaultShoppingList"></div>
+        <div class="subheading" style="margin-top:16px;">Meine Einkaufsliste</div>
+        <div id="customShoppingList"></div>
+    </div>
+
+    <div class="section">
+        <h2>👕 Baby-Größenrechner</h2>
+        <button class="button" onclick="toggleSection('sizes')">Größen berechnen</button>
+    </div>
+
+    <div class="section hidden" id="sizesSection">
+        <div class="tracker">
+            <div class="subheading">Geburtstermin eingeben</div>
+            <p style="font-size:0.9em;margin-bottom:8px;">Der Rechner zeigt dir, welche Größen du wann brauchst.</p>
+            <div id="sizeCalculation" style="margin-top:12px;"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🎵 Baby-Namen Generator</h2>
+        <button class="button" onclick="generateBoyName()">Deutschen Jungennamen vorschlagen</button>
+        <div id="nameResult" style="margin-top:12px;font-size:1.1em;text-align:center;font-weight:bold;color:#4facfe;"></div>
+        <div id="nameHistory" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="section">
+        <h2>⚙️ Einstellungen & Sync</h2>
+        <button class="button" onclick="toggleSection('settings')">Einstellungen öffnen</button>
+    </div>
+
+    <div class="section hidden" id="settingsSection">
+        <div class="tracker">
+            <div class="subheading">Geburtstermin (ET)</div>
+            <input type="date" class="tracker-input" id="dueDateInput" onchange="updateDueDate()">
+            <button class="button small" style="margin-top:8px;" onclick="saveDueDate()">Termin speichern</button>
+        </div>
+
+        <div class="tracker" style="margin-top:16px;">
+            <div class="subheading">🔄 Cloud-Sync (beide Geräte verbinden)</div>
+            <p style="font-size:0.9em;margin-bottom:8px;">Gebt denselben Sync-Code auf beiden Handys ein, um die Daten automatisch zu synchronisieren.</p>
+            <input type="text" class="tracker-input" id="syncCodeInput" placeholder="z.B. unser-baby-2026" maxlength="50">
+            <button class="button small" style="margin-top:8px;" onclick="enableSync()">Sync aktivieren</button>
+            <div id="syncStatus" style="margin-top:8px;font-size:0.9em;color:#555;"></div>
+        </div>
+
+        <div class="tracker" style="margin-top:16px;">
+            <div class="subheading">💾 Daten sichern/laden</div>
+            <button class="button small" onclick="exportData()">Daten exportieren (Download)</button>
+            <button class="button small" onclick="document.getElementById('importFile').click()">Daten importieren</button>
+            <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+        </div>
+
+        <div class="tracker" style="margin-top:16px;">
+            <div class="subheading">📱 App installieren</div>
+            <p style="font-size:0.9em;margin-bottom:8px;">Diese App kann als eigenständige App auf deinem Handy installiert werden.</p>
+            <button class="button small" id="installButton" onclick="installApp()" style="display:none;">Auf Handy installieren</button>
+            <p id="installStatus" style="font-size:0.85em;color:#555;margin-top:4px;">Bereits installiert oder Browser unterstützt keine Installation.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Konfiguration
+    let DUE_DATE = new Date('2026-07-16');
+    const MUTTERSCHUTZ_WEEKS = 6; // 6 Wochen vor ET
+    const FIREBASE_CONFIG = {
+        apiKey: "AIzaSyDummy", // Wird durch echten Key ersetzt
+        databaseURL: "https://papa-baby-app-default-rtdb.firebaseio.com/"
+    };
+    let syncEnabled = false;
+    let syncCode = null;
+    let deferredPrompt = null;
+
+    // 2. Trimester (SSW 13–27) – deutsche To-dos [web:54][web:59][web:62]
+    const TRIMESTER2_TASKS = [
+        { text: 'Regelmäßige Vorsorge beim Frauenarzt (monatlich)', date: 'SSW 13–27', done: false },
+        { text: '2. Ultraschall / ggf. Organscreening planen', date: 'ca. SSW 19–22', done: false },
+        { text: 'Über Geburtsort informieren (Klinik, Geburtshaus, Hausgeburt)', date: 'SSW 16–22', done: false },
+        { text: 'Hebamme fest zusagen lassen (Nachsorge & ggf. Hausbesuche)', date: 'so früh wie möglich', done: false },
+        { text: 'Geburtsvorbereitungskurs für euch beide buchen', date: 'Kurs meist ab SSW 25–32', done: false },
+        { text: 'Erste Baby-Erstausstattung planen (Bett, Kleidung, Wickelplatz)', date: 'SSW 20–26', done: false },
+        { text: 'Zuckertest (Glukosetest) in der Praxis einplanen', date: 'ca. SSW 24–28', done: false },
+        { text: 'Mit Arbeitgeber über Elternzeit & Mutterschutz sprechen', date: 'ab SSW 20', done: false },
+        { text: 'Reisen im 2. Trimester nur nach Rücksprache mit Ärztin/Arzt', date: 'bei Bedarf', done: false }
+    ];
+
+    // 3. Trimester / Vorbereitung
+    const PREP_TASKS = [
+        { text: 'Hebammenvertrag und Kontaktdaten parat halten', date: 'ab SSW 28', done: false },
+        { text: 'Geburtsplan mit Partnerin besprechen & ausdrucken', date: 'SSW 30–34', done: false },
+        { text: 'Klinikgeburt anmelden (falls erforderlich)', date: 'SSW 30–34', done: false },
+        { text: 'Kliniktasche packen (für beide + Baby)', date: 'spätestens SSW 36', done: false },
+        { text: 'Autositz (Babyschale) kaufen & richtig einbauen', date: 'SSW 34–36', done: false },
+        { text: 'Babyschlafplatz vorbereiten (Beistellbett/Babybett)', date: 'SSW 34–37', done: false },
+        { text: 'Notfallnummern & Klinikroute im Handy speichern', date: 'SSW 36–38', done: false },
+        { text: 'Lebensmittel & Grundvorrat für die erste Woche nach Geburt', date: 'SSW 37–40', done: false }
+    ];
+
+    // Behörden in DE
+    const BEHOERDEN_TASKS = [
+        { text: 'Unterlagen für Geburtsurkunde prüfen (Personalausweise, ggf. Heiratsurkunde)', date: 'vor Geburt', done: false },
+        { text: 'Geburt im Standesamt melden (meist über Klinik)', date: 'innerhalb erster Woche', done: false },
+        { text: 'Geburtsurkunden abholen (mehrere Kopien mitnehmen)', date: 'nach Standesamt', done: false },
+        { text: 'Baby bei Krankenkasse anmelden', date: 'direkt nach Geburt', done: false },
+        { text: 'Kindergeld online beantragen (Familienkasse)', date: 'innerhalb 3 Monate', done: false },
+        { text: 'Elterngeldantrag vorbereiten (Formulare Bundesland, Arbeitgeberbescheinigung)', date: 'spätestens nach Geburt einreichen', done: false },
+        { text: 'Arbeitgeber über Geburtsdatum & Elternzeit informieren', date: 'rechtzeitig vor Elternzeit', done: false }
+    ];
+
+    const HOSPITAL_BAG = [
+        'Mutterpass, Personalausweise, Versichertenkarte',
+        'Geburtsplan (2–3 Kopien)',
+        'Handy, Ladegerät, evtl. Powerbank',
+        'Bequeme Kleidung für deine Partnerin & dich',
+        'Hausschuhe / warme Socken',
+        'Snacks (riechen nicht stark) & Getränke',
+        'Waschsachen & Lippenpflegestift',
+        'Brille/Kontaktlinsen, falls nötig',
+        '1–2 Bodies, Strampler, Mütze, Decke für das Baby',
+        'Autositz (Babyschale) ist im Auto bereit'
+    ];
+
+    // Sehr kompakte Entwicklungsinfos (vereinfacht aus typischen Quellen) [web:55][web:56][web:58][web:63][web:26][web:20]
+    const DEVELOPMENT = {
+        // Schwangerschaft (ungefähre Orientierung)
+        14: '2. Trimester startet: Übelkeit wird oft weniger, Baby wächst kräftig.',
+        18: 'Du kannst bald die ersten Bewegungen spüren, Ohren & Nerven entwickeln sich weiter.',
+        22: 'Baby hat klarere Gesichtszüge, beginnt Geräusche zu hören und reagiert auf Stimmen.',
+        26: 'Lunge reift weiter, Schlaf-/Wachrhythmus wird erkennbarer.',
+        30: 'Baby nimmt zu, speichert Fett, Bewegungen sind kräftig und deutlich spürbar.',
+        36: 'Fast „fertig“, legt noch Polster zu und rutscht evtl. ins Becken.',
+        39: 'Geburtsreif – jetzt geht es nur noch um Feinschliff und Gewicht.',
+        // Neugeborenes – Wochen nach Geburt
+        nb1: 'Woche 1: Viel Schlaf (bis 16–18h/Tag), kurze Wachphasen, Fokus auf Bonding & Stillen/Flasche.',
+        nb2: 'Woche 2: Baby lernt eure Geräusche & Gerüche, Gewicht steigt nach anfänglichem Verlust.',
+        nb4: 'Woche 4: Mehr wache Phasen, erste bewusste Blicke, manchmal das erste echte Lächeln.',
+        nb6: 'Woche 6: Geräusche & Stimmen werden spannender, Strampeln & Bewegungen werden kräftiger.',
+        nb8: 'Woche 8: Längere Wachphasen, mehr Interaktion, Blickkontakt & Geräusche.'
+    };
+
+    const DAILY_FOCUS = [
+        'Heute: gemeinsam in den Mutterpass schauen und offene Fragen notieren.',
+        'Heute: 10 Minuten Babybauch-Bonding – mit der Hand auf dem Bauch sprechen.',
+        'Heute: Einen Punkt aus der Behörden-Checkliste klären.',
+        'Heute: 15 Minuten über eure Vorstellungen von Geburt & Wochenbett sprechen.',
+        'Heute: Einen ruhigen Spaziergang zusammen machen und über den Namen reden.'
+    ];
+
+    const DEFAULT_SHOPPING = [
+        { text: '6-8 Bodys (Größe 56/62)', category: 'Kleidung', done: false },
+        { text: '6-8 Strampler/Schlafanzüge', category: 'Kleidung', done: false },
+        { text: '2-3 Jäckchen/Pullover', category: 'Kleidung', done: false },
+        { text: '2-3 Mützchen', category: 'Kleidung', done: false },
+        { text: '6-8 Paar Söckchen', category: 'Kleidung', done: false },
+        { text: 'Wickelkommode oder Wickelauflage', category: 'Möbel', done: false },
+        { text: 'Babybett oder Beistellbett', category: 'Möbel', done: false },
+        { text: 'Babymatratze', category: 'Möbel', done: false },
+        { text: 'Windeln Größe 1 (2-5kg)', category: 'Pflege', done: false },
+        { text: 'Feuchttücher & Wasser-Watte', category: 'Pflege', done: false },
+        { text: 'Wundschutzcreme', category: 'Pflege', done: false },
+        { text: 'Babynagelschere', category: 'Pflege', done: false },
+        { text: 'Badethermometer', category: 'Pflege', done: false },
+        { text: 'Baby-Badewanne oder Eimer', category: 'Pflege', done: false },
+        { text: 'Babyschale (Autositz Gruppe 0+)', category: 'Unterwegs', done: false },
+        { text: 'Kinderwagen oder Tragetuch', category: 'Unterwegs', done: false },
+        { text: 'Wickeltasche', category: 'Unterwegs', done: false },
+        { text: 'Schnuller (2-3 Stück)', category: 'Füttern', done: false },
+        { text: 'Spucktücher (5-10 Stück)', category: 'Füttern', done: false },
+        { text: 'Fläschchen & Sauger (falls nicht voll gestillt)', category: 'Füttern', done: false }
+    ];
+
+    const GERMAN_BOY_NAMES = [
+        { name: 'Leon', meaning: 'Der Löwe', popularity: 'sehr beliebt' },
+        { name: 'Noah', meaning: 'Der Ruhebringende', popularity: 'sehr beliebt' },
+        { name: 'Elias', meaning: 'Mein Gott ist Jahwe', popularity: 'sehr beliebt' },
+        { name: 'Paul', meaning: 'Der Kleine', popularity: 'sehr beliebt' },
+        { name: 'Ben', meaning: 'Der Sohn', popularity: 'sehr beliebt' },
+        { name: 'Felix', meaning: 'Der Glückliche', popularity: 'beliebt' },
+        { name: 'Finn', meaning: 'Der Blonde', popularity: 'beliebt' },
+        { name: 'Luca', meaning: 'Der Leuchtende', popularity: 'beliebt' },
+        { name: 'Emil', meaning: 'Der Eifrige', popularity: 'beliebt' },
+        { name: 'Jonas', meaning: 'Die Taube', popularity: 'beliebt' },
+        { name: 'Moritz', meaning: 'Der Dunkelhäutige', popularity: 'beliebt' },
+        { name: 'Anton', meaning: 'Der Wertvolle', popularity: 'beliebt' },
+        { name: 'Max', meaning: 'Der Größte', popularity: 'sehr beliebt' },
+        { name: 'Jakob', meaning: 'Gott möge schützen', popularity: 'beliebt' },
+        { name: 'Henry', meaning: 'Der Herrscher', popularity: 'beliebt' },
+        { name: 'Oscar', meaning: 'Der Gottesfreund', popularity: 'moderat' },
+        { name: 'Theo', meaning: 'Gottesgeschenk', popularity: 'beliebt' },
+        { name: 'Matteo', meaning: 'Geschenk Gottes', popularity: 'beliebt' },
+        { name: 'Luis', meaning: 'Der berühmte Kämpfer', popularity: 'sehr beliebt' },
+        { name: 'Samuel', meaning: 'Von Gott erhört', popularity: 'beliebt' },
+        { name: 'David', meaning: 'Der Geliebte', popularity: 'sehr beliebt' },
+        { name: 'Johann', meaning: 'Gott ist gnädig', popularity: 'klassisch' },
+        { name: 'Maximilian', meaning: 'Der Größte', popularity: 'sehr beliebt' },
+        { name: 'Alexander', meaning: 'Der Beschützer', popularity: 'sehr beliebt' },
+        { name: 'Sebastian', meaning: 'Der Ehrwürdige', popularity: 'sehr beliebt' },
+        { name: 'Leonard', meaning: 'Stark wie ein Löwe', popularity: 'beliebt' },
+        { name: 'Oskar', meaning: 'Der Gottesfreund', popularity: 'moderat' },
+        { name: 'Karl', meaning: 'Der Freie', popularity: 'klassisch' },
+        { name: 'Friedrich', meaning: 'Der Friedensreiche', popularity: 'klassisch' },
+        { name: 'Wilhelm', meaning: 'Der entschlossene Beschützer', popularity: 'klassisch' }
+    ];
+
+    let contractionTimes = [];
+    let contractionTimerVisible = false;
+    let appointments = [];
+    let customShoppingItems = [];
+    let generatedNames = [];
+
+    function init() {
+        loadData();
+        loadSettings();
+        updateCountdown();
+        renderChecklists();
+        showRandomTip();
+        updateDevelopment();
+        setFocusToday();
+        renderDefaultShopping();
+        renderCustomShopping();
+        renderAppointments();
+        calculateBabySizes();
+        setInterval(updateCountdown, 60000);
+        setInterval(checkAppointmentReminders, 60000); // Check every minute
+        setupPWA();
+        if (syncEnabled && syncCode) {
+            startSync();
+        }
+    }
+
+    function getPregnancyWeek() {
+        const now = new Date();
+        const diffMs = DUE_DATE - now;
+        const diffDays = diffMs / (1000 * 60 * 60 * 24);
+        const weeksToDue = diffDays / 7;
+        const week = Math.round(40 - weeksToDue);
+        return Math.min(Math.max(week, 1), 42);
+    }
+
+    function updateCountdown() {
+        const now = new Date();
+        const diffMs = DUE_DATE - now;
+        const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+        const weeksLeft = Math.max(Math.floor(diffDays / 7), 0);
+        const week = getPregnancyWeek();
+
+        const mutterschutzStartDate = new Date(DUE_DATE);
+        mutterschutzStartDate.setDate(mutterschutzStartDate.getDate() - MUTTERSCHUTZ_WEEKS * 7);
+        const mutterschutzDiffDays = Math.ceil((mutterschutzStartDate - now) / (1000 * 60 * 60 * 24));
+        let mutterschutzInfo;
+        if (mutterschutzDiffDays > 0) {
+            const w = Math.floor(mutterschutzDiffDays / 7);
+            mutterschutzInfo = `Mutterschutz beginnt in ca. ${w} Woche(n)`;
+        } else {
+            mutterschutzInfo = 'Mutterschutz läuft oder steht kurz bevor';
+        }
+
+        document.getElementById('countdown').textContent =
+            weeksLeft > 0 ? `${weeksLeft} Woche(n) bis ET` : 'ET erreicht oder überschritten';
+        document.getElementById('weekInfo').textContent =
+            `Schwangerschaftswoche ${week} · ${mutterschutzInfo}`;
+    }
+
+    function renderChecklists() {
+        renderChecklist('trimester2Checklist', TRIMESTER2_TASKS);
+        renderChecklist('prepChecklist', PREP_TASKS);
+        renderChecklist('behoerdenChecklist', BEHOERDEN_TASKS);
+        updateProgressBars();
+    }
+
+    function renderChecklist(containerId, tasks) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        tasks.forEach((task, index) => {
+            const div = document.createElement('div');
+            div.className = 'task-item';
+            div.innerHTML = `
+                <input type="checkbox" class="task-checkbox"
+                       ${task.done ? 'checked' : ''}
+                       onchange="toggleTask('${containerId}', ${index})">
+                <div>
+                    <div class="task-text">${task.text}</div>
+                    <div class="task-date">${task.date}</div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function toggleTask(listId, index) {
+        if (listId === 'trimester2Checklist') {
+            TRIMESTER2_TASKS[index].done = !TRIMESTER2_TASKS[index].done;
+        } else if (listId === 'prepChecklist') {
+            PREP_TASKS[index].done = !PREP_TASKS[index].done;
+        } else if (listId === 'behoerdenChecklist') {
+            BEHOERDEN_TASKS[index].done = !BEHOERDEN_TASKS[index].done;
+        }
+        saveData();
+        updateProgressBars();
+        renderChecklists();
+    }
+
+    function updateProgressBars() {
+        const t2Done = TRIMESTER2_TASKS.filter(t => t.done).length;
+        const t2Progress = TRIMESTER2_TASKS.length ? (t2Done / TRIMESTER2_TASKS.length) * 100 : 0;
+        document.getElementById('trimester2Progress').style.width = t2Progress + '%';
+
+        const prepDone = PREP_TASKS.filter(t => t.done).length;
+        const prepProgress = PREP_TASKS.length ? (prepDone / PREP_TASKS.length) * 100 : 0;
+        document.getElementById('prepProgress').style.width = prepProgress + '%';
+    }
+
+    function showRandomTip() {
+        const tips = [
+            '💡 Hebamme früh sichern: in vielen Regionen schnell ausgebucht.',
+            '💡 Schau dir gemeinsam mit deiner Partnerin mögliche Kliniken oder Geburtshäuser an.',
+            '💡 Nimm dir bewusst kleine Aufgaben im Haushalt ab – das spart ihr Energie.',
+            '💡 Stell offene Fragen für den nächsten Arzttermin zusammen (Mutterpass durchgehen).',
+            '💡 Leg dir eine Notfallliste ins Handy: Kliniknummer, Hebamme, Taxi, Nachbarn.'
+        ];
+        const idx = Math.floor(Math.random() * tips.length);
+        document.getElementById('tipOfDay').textContent = tips[idx];
+    }
+
+    function setFocusToday() {
+        const idx = Math.floor(Math.random() * DAILY_FOCUS.length);
+        document.getElementById('focusToday').textContent = DAILY_FOCUS[idx];
+    }
+
+    function startContractionTimer() {
+        contractionTimerVisible = !contractionTimerVisible;
+        document.getElementById('contractionDisplay').classList.toggle('hidden', !contractionTimerVisible);
+        if (!contractionTimerVisible) {
+            contractionTimes = [];
+            document.getElementById('lastContraction').textContent = '--:--';
+            document.getElementById('contractionInterval').textContent = '–';
+            document.getElementById('contractionAdvice').textContent = 'Timer zurückgesetzt.';
+        }
+    }
+
+    function markContraction() {
+        const now = new Date();
+        contractionTimes.push(now);
+
+        document.getElementById('lastContraction').textContent = now.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+        if (contractionTimes.length > 3) {
+            contractionTimes = contractionTimes.slice(-3);
+        }
+
+        if (contractionTimes.length >= 2) {
+            const minutes = [];
+            for (let i = 1; i < contractionTimes.length; i++) {
+                const diffMs = contractionTimes[i] - contractionTimes[i - 1];
+                minutes.push(Math.round(diffMs / 60000));
+            }
+            const avg = minutes.reduce((a,b)=>a+b,0) / minutes.length;
+            document.getElementById('contractionInterval').textContent =
+                `${avg.toFixed(1)} Min. (Ø der letzten ${minutes.length} Abstände)`;
+
+            const adviceEl = document.getElementById('contractionAdvice');
+            if (avg <= 5 && contractionTimes.length >= 3) {
+                adviceEl.innerHTML = '🚨 5‑1‑1 erreicht oder kurz davor: Bei starken, regelmäßigen Wehen Klinik oder Hebamme anrufen.';
+                adviceEl.style.color = 'red';
+                adviceEl.style.fontWeight = 'bold';
+            } else {
+                adviceEl.textContent = 'Wehen beobachten. Bei Unsicherheit immer Klinik/Hebamme anrufen.';
+                adviceEl.style.color = '#333';
+                adviceEl.style.fontWeight = 'normal';
+            }
+        }
+    }
+
+    function showHospitalBag() {
+        alert('🏥 KLINIKTASCHE – Kurzcheck:\n\n' +
+            HOSPITAL_BAG.map(i => '• ' + i).join('\n') +
+            '\n\nTipp: Tasche spätestens in SSW 36 fertig packen und im Flur bereithalten.');
+    }
+
+    function updateDevelopment() {
+        const week = getPregnancyWeek();
+        let text;
+        if (week <= 40) {
+            if (week <= 14) text = DEVELOPMENT[14];
+            else if (week <= 18) text = DEVELOPMENT[18];
+            else if (week <= 22) text = DEVELOPMENT[22];
+            else if (week <= 26) text = DEVELOPMENT[26];
+            else if (week <= 30) text = DEVELOPMENT[30];
+            else if (week <= 36) text = DEVELOPMENT[36];
+            else text = DEVELOPMENT[39];
+            document.getElementById('developmentInfo').innerHTML =
+                `<p><strong>Diese Schwangerschaftswoche (${week}):</strong> ${text}</p>`;
+        } else {
+            // nach Geburt – sehr grob nach Wochen
+            const now = new Date();
+            const diffDays = Math.floor((now - DUE_DATE) / (1000 * 60 * 60 * 24));
+            const babyWeeks = Math.max(Math.floor(diffDays / 7), 0);
+            let key = 'nb1';
+            if (babyWeeks <= 1) key = 'nb1';
+            else if (babyWeeks <= 2) key = 'nb2';
+            else if (babyWeeks <= 4) key = 'nb4';
+            else if (babyWeeks <= 6) key = 'nb6';
+            else key = 'nb8';
+            document.getElementById('developmentInfo').innerHTML =
+                `<p><strong>Babywoche ca. ${babyWeeks}:</strong> ${DEVELOPMENT[key]}</p>`;
+            document.getElementById('newbornSection').classList.remove('hidden');
+        }
+    }
+
+    function addLog(e, type) {
+        if (e.key === 'Enter') {
+            const inputId = type === 'feeding' ? 'feedingLog' : 'diaperLog';
+            const historyId = type + 'History';
+            const input = document.getElementById(inputId);
+            if (!input.value.trim()) return;
+            const history = document.getElementById(historyId);
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+            entry.textContent = `${time}: ${input.value}`;
+            history.prepend(entry);
+            input.value = '';
+            document.getElementById('newbornSection').classList.remove('hidden');
+        }
+    }
+
+    function toggleSection(baseId) {
+        const section = document.getElementById(baseId + 'Section');
+        section.classList.toggle('hidden');
+    }
+
+    function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+    }
+
+    function loadData() {
+        try {
+            const t2 = JSON.parse(localStorage.getItem('papa_trimester2') || 'null');
+            const prep = JSON.parse(localStorage.getItem('papa_prep') || 'null');
+            const beh = JSON.parse(localStorage.getItem('papa_behoerden') || 'null');
+            const apts = JSON.parse(localStorage.getItem('papa_appointments') || 'null');
+            const shopCustom = JSON.parse(localStorage.getItem('papa_shopping_custom') || 'null');
+            const shopDefault = JSON.parse(localStorage.getItem('papa_shopping_default') || 'null');
+
+            if (t2) TRIMESTER2_TASKS.forEach((t, i) => { if (t2[i]) t.done = t2[i].done; });
+            if (prep) PREP_TASKS.forEach((t, i) => { if (prep[i]) t.done = prep[i].done; });
+            if (beh) BEHOERDEN_TASKS.forEach((t, i) => { if (beh[i]) t.done = beh[i].done; });
+            if (apts) appointments = apts;
+            if (shopCustom) customShoppingItems = shopCustom;
+            if (shopDefault) DEFAULT_SHOPPING.forEach((t, i) => { if (shopDefault[i]) t.done = shopDefault[i].done; });
+        } catch(e) {
+            console.warn('Konnte lokale Daten nicht laden, starte frisch.', e);
+        }
+    }
+
+    function loadSettings() {
+        const savedDate = localStorage.getItem('papa_duedate');
+        if (savedDate) {
+            DUE_DATE = new Date(savedDate);
+        }
+        document.getElementById('dueDateInput').value = DUE_DATE.toISOString().split('T')[0];
+
+        syncCode = localStorage.getItem('papa_synccode');
+        syncEnabled = localStorage.getItem('papa_syncenabled') === 'true';
+        if (syncCode) {
+            document.getElementById('syncCodeInput').value = syncCode;
+            document.getElementById('syncStatus').innerHTML = '✅ Sync aktiv mit Code: <strong>' + syncCode + '</strong>';
+        }
+    }
+
+    function saveDueDate() {
+        const input = document.getElementById('dueDateInput').value;
+        if (!input) {
+            alert('Bitte wähle einen Geburtstermin aus.');
+            return;
+        }
+        DUE_DATE = new Date(input);
+        localStorage.setItem('papa_duedate', DUE_DATE.toISOString());
+        updateCountdown();
+        updateDevelopment();
+        alert('✅ Geburtstermin gespeichert!');
+    }
+
+    function updateDueDate() {
+        // Live-Update während der Eingabe
+        const input = document.getElementById('dueDateInput').value;
+        if (input) {
+            DUE_DATE = new Date(input);
+            updateCountdown();
+        }
+    }
+
+    // PWA Installation
+    function setupPWA() {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installButton').style.display = 'inline-block';
+            document.getElementById('installStatus').textContent = 'App kann installiert werden!';
+        });
+
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('installButton').style.display = 'none';
+            document.getElementById('installStatus').textContent = '✅ App erfolgreich installiert!';
+            deferredPrompt = null;
+        });
+
+        // Service Worker registrieren
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then(() => {
+                console.log('Service Worker registriert');
+            }).catch((err) => {
+                console.warn('Service Worker Registrierung fehlgeschlagen:', err);
+            });
+        }
+    }
+
+    function installApp() {
+        if (!deferredPrompt) {
+            alert('App kann nicht installiert werden. Öffne diese Seite in Chrome, Safari oder Edge auf deinem Handy.');
+            return;
+        }
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('App-Installation akzeptiert');
+            }
+            deferredPrompt = null;
+        });
+    }
+
+    // Data Export/Import
+    function exportData() {
+        const data = {
+            dueDate: DUE_DATE.toISOString(),
+            trimester2: TRIMESTER2_TASKS,
+            prep: PREP_TASKS,
+            behoerden: BEHOERDEN_TASKS,
+            appointments: appointments,
+            shoppingCustom: customShoppingItems,
+            shoppingDefault: DEFAULT_SHOPPING,
+            exportDate: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `unser-baby-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        alert('✅ Daten wurden heruntergeladen!');
+    }
+
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.dueDate) {
+                    DUE_DATE = new Date(data.dueDate);
+                    localStorage.setItem('papa_duedate', DUE_DATE.toISOString());
+                    document.getElementById('dueDateInput').value = DUE_DATE.toISOString().split('T')[0];
+                }
+                if (data.trimester2) {
+                    TRIMESTER2_TASKS.forEach((t, i) => {
+                        if (data.trimester2[i]) t.done = data.trimester2[i].done;
+                    });
+                }
+                if (data.prep) {
+                    PREP_TASKS.forEach((t, i) => {
+                        if (data.prep[i]) t.done = data.prep[i].done;
+                    });
+                }
+                if (data.behoerden) {
+                    BEHOERDEN_TASKS.forEach((t, i) => {
+                        if (data.behoerden[i]) t.done = data.behoerden[i].done;
+                    });
+                }
+                if (data.appointments) appointments = data.appointments;
+                if (data.shoppingCustom) customShoppingItems = data.shoppingCustom;
+                if (data.shoppingDefault) {
+                    DEFAULT_SHOPPING.forEach((t, i) => {
+                        if (data.shoppingDefault[i]) t.done = data.shoppingDefault[i].done;
+                    });
+                }
+                saveData();
+                renderChecklists();
+                renderAppointments();
+                renderDefaultShopping();
+                renderCustomShopping();
+                updateCountdown();
+                updateDevelopment();
+                calculateBabySizes();
+                alert('✅ Daten erfolgreich importiert!');
+            } catch (err) {
+                alert('❌ Fehler beim Importieren: ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // Cloud Sync mit Firebase
+    function enableSync() {
+        const code = document.getElementById('syncCodeInput').value.trim();
+        if (!code || code.length < 5) {
+            alert('Bitte gib einen Sync-Code mit mindestens 5 Zeichen ein.');
+            return;
+        }
+        syncCode = code;
+        syncEnabled = true;
+        localStorage.setItem('papa_synccode', syncCode);
+        localStorage.setItem('papa_syncenabled', 'true');
+        document.getElementById('syncStatus').innerHTML = '🔄 Verbinde mit Cloud...';
+
+        // Firebase einbinden
+        if (!window.firebase) {
+            loadFirebase();
+        } else {
+            startSync();
+        }
+    }
+
+    function loadFirebase() {
+        const script1 = document.createElement('script');
+        script1.src = 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js';
+        script1.onload = () => {
+            const script2 = document.createElement('script');
+            script2.src = 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js';
+            script2.onload = () => {
+                startSync();
+            };
+            document.head.appendChild(script2);
+        };
+        document.head.appendChild(script1);
+    }
+
+    function startSync() {
+        if (!window.firebase) {
+            setTimeout(startSync, 500);
+            return;
+        }
+
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp({
+                    apiKey: "AIzaSyBw8Q5xzKzZVQj6x6ZEqXN5Qz_7fqvE8xI",
+                    databaseURL: "https://papa-baby-sync-default-rtdb.europe-west1.firebasedatabase.app"
+                });
+            }
+
+            const db = firebase.database();
+            const syncRef = db.ref('syncs/' + syncCode);
+
+            // Listen für Änderungen
+            syncRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // Daten vom Server laden
+                    if (data.dueDate) {
+                        DUE_DATE = new Date(data.dueDate);
+                        localStorage.setItem('papa_duedate', DUE_DATE.toISOString());
+                    }
+                    if (data.trimester2) {
+                        TRIMESTER2_TASKS.forEach((t, i) => {
+                            if (data.trimester2[i]) t.done = data.trimester2[i].done;
+                        });
+                    }
+                    if (data.prep) {
+                        PREP_TASKS.forEach((t, i) => {
+                            if (data.prep[i]) t.done = data.prep[i].done;
+                        });
+                    }
+                    if (data.behoerden) {
+                        BEHOERDEN_TASKS.forEach((t, i) => {
+                            if (data.behoerden[i]) t.done = data.behoerden[i].done;
+                        });
+                    }
+                    if (data.appointments) appointments = data.appointments;
+                    if (data.shoppingCustom) customShoppingItems = data.shoppingCustom;
+                    if (data.shoppingDefault) {
+                        DEFAULT_SHOPPING.forEach((t, i) => {
+                            if (data.shoppingDefault[i]) t.done = data.shoppingDefault[i].done;
+                        });
+                    }
+                    renderChecklists();
+                    renderAppointments();
+                    renderDefaultShopping();
+                    renderCustomShopping();
+                    updateCountdown();
+                    updateDevelopment();
+                    calculateBabySizes();
+                }
+                document.getElementById('syncStatus').innerHTML = '✅ Sync aktiv mit Code: <strong>' + syncCode + '</strong> (beide Geräte verbunden)';
+            });
+
+            // Initiale Daten hochladen
+            syncToCloud(syncRef);
+
+        } catch (err) {
+            document.getElementById('syncStatus').innerHTML = '❌ Sync-Fehler: ' + err.message;
+            console.error('Sync error:', err);
+        }
+    }
+
+    function syncToCloud(syncRef) {
+        if (!syncRef) {
+            const db = firebase.database();
+            syncRef = db.ref('syncs/' + syncCode);
+        }
+        const data = {
+            dueDate: DUE_DATE.toISOString(),
+            trimester2: TRIMESTER2_TASKS,
+            prep: PREP_TASKS,
+            behoerden: BEHOERDEN_TASKS,
+            appointments: appointments,
+            shoppingCustom: customShoppingItems,
+            shoppingDefault: DEFAULT_SHOPPING,
+            lastUpdate: new Date().toISOString()
+        };
+        syncRef.set(data);
+    }
+
+    // ============= NEUE FEATURES =============
+
+    // Arzttermine
+    function addAppointment() {
+        const date = document.getElementById('appointmentDate').value;
+        const time = document.getElementById('appointmentTime').value;
+        const desc = document.getElementById('appointmentDesc').value.trim();
+
+        if (!date || !desc) {
+            alert('Bitte Datum und Beschreibung eingeben.');
+            return;
+        }
+
+        const appointment = {
+            id: Date.now(),
+            date: date,
+            time: time || '09:00',
+            description: desc,
+            reminded: false
+        };
+
+        appointments.push(appointment);
+        appointments.sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time));
+
+        document.getElementById('appointmentDate').value = '';
+        document.getElementById('appointmentTime').value = '';
+        document.getElementById('appointmentDesc').value = '';
+
+        saveData();
+        renderAppointments();
+        alert('✅ Termin hinzugefügt!');
+    }
+
+    function renderAppointments() {
+        const container = document.getElementById('appointmentsList');
+        if (!appointments.length) {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine Termine eingetragen.</p>';
+            return;
+        }
+
+        const now = new Date();
+        container.innerHTML = '';
+
+        appointments.forEach((apt, index) => {
+            const aptDate = new Date(apt.date + ' ' + apt.time);
+            const isPast = aptDate < now;
+            const isToday = apt.date === now.toISOString().split('T')[0];
+
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.style.opacity = isPast ? '0.5' : '1';
+            div.style.borderLeftColor = isToday ? '#ff5722' : '#4facfe';
+
+            const dateStr = new Date(apt.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const badge = isToday ? '<span class="pill" style="background:#ff5722;color:white;">HEUTE</span>' : '';
+
+            div.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <strong>${apt.description}</strong> ${badge}<br>
+                        <span style="font-size:0.85em;color:#777;">📅 ${dateStr} um ${apt.time} Uhr</span>
+                    </div>
+                    <button class="button small" style="padding:4px 8px;margin:0;" onclick="deleteAppointment(${index})">🗑️</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function deleteAppointment(index) {
+        if (confirm('Termin wirklich löschen?')) {
+            appointments.splice(index, 1);
+            saveData();
+            renderAppointments();
+        }
+    }
+
+    function checkAppointmentReminders() {
+        const now = new Date();
+        appointments.forEach(apt => {
+            const aptDate = new Date(apt.date + ' ' + apt.time);
+            const hoursUntil = (aptDate - now) / (1000 * 60 * 60);
+
+            // Reminder 24h before
+            if (!apt.reminded && hoursUntil > 0 && hoursUntil <= 24) {
+                apt.reminded = true;
+                saveData();
+                // Browser notification would require permission
+                console.log('Reminder: ' + apt.description);
+            }
+        });
+    }
+
+    // Einkaufsliste
+    function renderDefaultShopping() {
+        const container = document.getElementById('defaultShoppingList');
+        container.innerHTML = '';
+
+        const categories = [...new Set(DEFAULT_SHOPPING.map(i => i.category))];
+
+        categories.forEach(cat => {
+            const catDiv = document.createElement('div');
+            catDiv.style.marginTop = '12px';
+            catDiv.innerHTML = `<div style="font-weight:600;font-size:0.9em;color:#555;margin-bottom:6px;">${cat}</div>`;
+
+            DEFAULT_SHOPPING.filter(item => item.category === cat).forEach((item, idx) => {
+                const globalIdx = DEFAULT_SHOPPING.indexOf(item);
+                const div = document.createElement('div');
+                div.className = 'task-item';
+                div.innerHTML = `
+                    <input type="checkbox" class="task-checkbox"
+                           ${item.done ? 'checked' : ''}
+                           onchange="toggleDefaultShoppingItem(${globalIdx})">
+                    <div class="task-text">${item.text}</div>
+                `;
+                catDiv.appendChild(div);
+            });
+
+            container.appendChild(catDiv);
+        });
+    }
+
+    function toggleDefaultShoppingItem(index) {
+        DEFAULT_SHOPPING[index].done = !DEFAULT_SHOPPING[index].done;
+        saveData();
+        renderDefaultShopping();
+    }
+
+    function addShoppingItem() {
+        const input = document.getElementById('shoppingItem');
+        const text = input.value.trim();
+
+        if (!text) {
+            alert('Bitte Artikel eingeben.');
+            return;
+        }
+
+        customShoppingItems.push({ text: text, done: false, addedDate: new Date().toISOString() });
+        input.value = '';
+        saveData();
+        renderCustomShopping();
+    }
+
+    function renderCustomShopping() {
+        const container = document.getElementById('customShoppingList');
+
+        if (!customShoppingItems.length) {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine eigenen Artikel hinzugefügt.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        customShoppingItems.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'task-item';
+            div.innerHTML = `
+                <input type="checkbox" class="task-checkbox"
+                       ${item.done ? 'checked' : ''}
+                       onchange="toggleCustomShoppingItem(${index})">
+                <div class="task-text">${item.text}</div>
+                <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteShoppingItem(${index})">🗑️</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function toggleCustomShoppingItem(index) {
+        customShoppingItems[index].done = !customShoppingItems[index].done;
+        saveData();
+        renderCustomShopping();
+    }
+
+    function deleteShoppingItem(index) {
+        customShoppingItems.splice(index, 1);
+        saveData();
+        renderCustomShopping();
+    }
+
+    // Baby-Größenrechner
+    function calculateBabySizes() {
+        const container = document.getElementById('sizeCalculation');
+        const birth = new Date(DUE_DATE);
+
+        const sizes = [
+            { age: 'Geburt', weeks: 0, size: '50/56', weight: '2.5-4.5 kg' },
+            { age: '1-2 Monate', weeks: 8, size: '56/62', weight: '4-6 kg' },
+            { age: '3-4 Monate', weeks: 16, size: '62/68', weight: '5.5-7.5 kg' },
+            { age: '5-6 Monate', weeks: 24, size: '68/74', weight: '7-9 kg' },
+            { age: '7-9 Monate', weeks: 36, size: '74/80', weight: '8-10 kg' },
+            { age: '10-12 Monate', weeks: 48, size: '80/86', weight: '9-11 kg' }
+        ];
+
+        let html = '<div style="font-size:0.9em;">';
+        sizes.forEach(s => {
+            const targetDate = new Date(birth);
+            targetDate.setDate(targetDate.getDate() + (s.weeks * 7));
+            const dateStr = targetDate.toLocaleDateString('de-DE', { month: 'short', year: 'numeric' });
+
+            html += `
+                <div style="background:#f8f9fa;padding:12px;margin:8px 0;border-radius:8px;border-left:3px solid #4facfe;">
+                    <div style="font-weight:600;">${s.age} (ca. ${dateStr})</div>
+                    <div style="font-size:0.9em;color:#555;margin-top:4px;">
+                        Größe: <strong>${s.size}</strong> · Gewicht: ${s.weight}
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    // Baby-Namen Generator
+    function generateBoyName() {
+        const randomIndex = Math.floor(Math.random() * GERMAN_BOY_NAMES.length);
+        const selectedName = GERMAN_BOY_NAMES[randomIndex];
+
+        document.getElementById('nameResult').innerHTML = `
+            ${selectedName.name}<br>
+            <div style="font-size:0.7em;color:#666;margin-top:4px;">
+                ${selectedName.meaning} · ${selectedName.popularity}
+            </div>
+        `;
+
+        // Add to history if not already there
+        if (!generatedNames.find(n => n.name === selectedName.name)) {
+            generatedNames.unshift(selectedName);
+            if (generatedNames.length > 5) generatedNames.pop();
+
+            const historyHtml = generatedNames.map(n =>
+                `<div class="log-entry" style="padding:8px;margin:4px 0;">
+                    <strong>${n.name}</strong> - ${n.meaning}
+                </div>`
+            ).join('');
+
+            document.getElementById('nameHistory').innerHTML =
+                '<div class="subheading" style="margin-top:12px;">Letzte Vorschläge:</div>' + historyHtml;
+        }
+    }
+
+    function saveData() {
+        localStorage.setItem('papa_trimester2', JSON.stringify(TRIMESTER2_TASKS));
+        localStorage.setItem('papa_prep', JSON.stringify(PREP_TASKS));
+        localStorage.setItem('papa_behoerden', JSON.stringify(BEHOERDEN_TASKS));
+        localStorage.setItem('papa_appointments', JSON.stringify(appointments));
+        localStorage.setItem('papa_shopping_custom', JSON.stringify(customShoppingItems));
+        localStorage.setItem('papa_shopping_default', JSON.stringify(DEFAULT_SHOPPING));
+
+        // Auch in die Cloud syncen wenn aktiviert
+        if (syncEnabled && window.firebase && firebase.apps.length) {
+            const db = firebase.database();
+            const syncRef = db.ref('syncs/' + syncCode);
+            syncToCloud(syncRef);
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>

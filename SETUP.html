@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide - Unser Baby App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #667eea;
+            margin: 30px 0 15px;
+            font-size: 1.3em;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            border-left: 5px solid #4facfe;
+        }
+        .step-number {
+            background: #4facfe;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 22px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        .button:hover { transform: translateY(-2px); }
+        code {
+            background: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        .tip {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin: 8px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>👶 Unser Baby - Setup Guide</h1>
+    <p style="text-align:center;color:#666;margin-bottom:30px;">
+        In wenigen Schritten auf beiden Smartphones installiert und synchronisiert!
+    </p>
+
+    <h2>🚀 Schnellstart</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Icons generieren</strong>
+        <ul>
+            <li>Öffne <code>generate-icons.html</code> im Browser</li>
+            <li>Klicke auf "Download 192x192" und "Download 512x512"</li>
+            <li>Speichere beide Dateien im App-Ordner</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>App online stellen</strong>
+        <p style="margin-top:10px;">Die App muss über HTTPS erreichbar sein. Wähle eine Option:</p>
+
+        <h3 style="font-size:1em;margin:15px 0 10px;color:#555;">Option A: GitHub Pages (empfohlen)</h3>
+        <ul>
+            <li>Erstelle ein GitHub Repository</li>
+            <li>Lade alle Dateien aus dem Daddy_App Ordner hoch</li>
+            <li>Gehe zu <em>Settings → Pages</em></li>
+            <li>Aktiviere GitHub Pages (Branch: main, Ordner: root)</li>
+            <li>URL: <code>https://username.github.io/repo-name/Daddy_App.html</code></li>
+        </ul>
+
+        <h3 style="font-size:1em;margin:15px 0 10px;color:#555;">Option B: Netlify (noch einfacher)</h3>
+        <ul>
+            <li>Gehe zu <a href="https://app.netlify.com" target="_blank">netlify.com</a></li>
+            <li>Erstelle einen Account (kostenlos)</li>
+            <li>Ziehe den Daddy_App Ordner ins Browser-Fenster</li>
+            <li>Fertig! Du bekommst sofort eine URL</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>App auf Handy 1 installieren</strong>
+
+        <h3 style="font-size:1em;margin:15px 0 10px;color:#555;">📱 iPhone (Safari):</h3>
+        <ol style="margin-left:20px;">
+            <li>Öffne die App-URL in Safari</li>
+            <li>Tippe auf das <strong>Teilen-Symbol</strong> (Viereck mit Pfeil nach oben)</li>
+            <li>Scrolle nach unten zu <strong>"Zum Home-Bildschirm"</strong></li>
+            <li>Tippe auf <strong>"Hinzufügen"</strong></li>
+            <li>✅ App erscheint auf dem Home-Bildschirm</li>
+        </ol>
+
+        <h3 style="font-size:1em;margin:15px 0 10px;color:#555;">🤖 Android (Chrome):</h3>
+        <ol style="margin-left:20px;">
+            <li>Öffne die App-URL in Chrome</li>
+            <li>Tippe auf das <strong>Menü</strong> (⋮ oben rechts)</li>
+            <li>Wähle <strong>"App installieren"</strong> oder <strong>"Zum Startbildschirm hinzufügen"</strong></li>
+            <li>Bestätige mit <strong>"Installieren"</strong></li>
+            <li>✅ App ist installiert</li>
+        </ol>
+
+        <div class="tip">
+            💡 <strong>Tipp:</strong> Oft erscheint automatisch ein Banner "App installieren" - einfach darauf tippen!
+        </div>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Geburtstermin einstellen</strong>
+        <ul>
+            <li>Öffne die App</li>
+            <li>Scrolle nach unten zu <strong>"⚙️ Einstellungen & Sync"</strong></li>
+            <li>Klicke auf <strong>"Einstellungen öffnen"</strong></li>
+            <li>Wähle euren Geburtstermin aus</li>
+            <li>Klicke auf <strong>"Termin speichern"</strong></li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">5</span>
+        <strong>Sync aktivieren (Handy 1)</strong>
+        <ul>
+            <li>Bleibt in den Einstellungen</li>
+            <li>Scrollt zum Bereich <strong>"🔄 Cloud-Sync"</strong></li>
+            <li>Gebt einen gemeinsamen Sync-Code ein (z.B. <code>unser-baby-2026</code>)</li>
+            <li>Klickt auf <strong>"Sync aktivieren"</strong></li>
+            <li>✅ Wartet auf "Sync aktiv" Bestätigung</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">6</span>
+        <strong>App auf Handy 2 installieren</strong>
+        <ul>
+            <li>Wiederhole <strong>Schritt 3</strong> auf dem zweiten Handy</li>
+            <li>Öffne die Einstellungen</li>
+            <li>Gib <strong>exakt denselben Sync-Code</strong> ein wie auf Handy 1</li>
+            <li>Klicke auf <strong>"Sync aktivieren"</strong></li>
+            <li>✅ Beide Geräte sind jetzt verbunden!</li>
+        </ul>
+    </div>
+
+    <div class="tip">
+        🎉 <strong>Geschafft!</strong> Die App ist jetzt auf beiden Handys installiert und synchronisiert sich automatisch. Alle Änderungen (Checklisten abhaken, Einträge machen) werden sofort auf beiden Geräten angezeigt.
+    </div>
+
+    <h2>⚡ Wichtige Hinweise</h2>
+
+    <div style="background:#f8f9fa;padding:20px;border-radius:12px;margin:20px 0;">
+        <h3 style="font-size:1em;color:#555;margin-bottom:10px;">Sync-Code:</h3>
+        <ul>
+            <li>Muss auf beiden Geräten <strong>identisch</strong> sein</li>
+            <li>Mindestens 5 Zeichen lang</li>
+            <li>Sollte eindeutig sein (z.B. <code>mueller-baby-2026</code>)</li>
+            <li>Ist wie ein privater Raum - nur wer den Code kennt, kann mitlesen</li>
+        </ul>
+
+        <h3 style="font-size:1em;color:#555;margin:20px 0 10px;">Backup erstellen:</h3>
+        <ul>
+            <li>Regelmäßig in Einstellungen auf <strong>"Daten exportieren"</strong> klicken</li>
+            <li>JSON-Datei sicher aufbewahren (z.B. in Cloud-Speicher)</li>
+            <li>Bei Bedarf über <strong>"Daten importieren"</strong> wiederherstellen</li>
+        </ul>
+
+        <h3 style="font-size:1em;color:#555;margin:20px 0 10px;">Offline-Nutzung:</h3>
+        <ul>
+            <li>App funktioniert auch ohne Internet</li>
+            <li>Nur Sync benötigt Internetverbindung</li>
+            <li>Änderungen werden synchronisiert, sobald Internet wieder da ist</li>
+        </ul>
+    </div>
+
+    <h2>🐛 Probleme?</h2>
+
+    <div style="background:#fff3cd;padding:20px;border-radius:12px;margin:20px 0;">
+        <p><strong>App lässt sich nicht installieren:</strong></p>
+        <ul>
+            <li>Prüfe, ob die URL mit <code>https://</code> beginnt</li>
+            <li>Nutze Safari (iPhone) oder Chrome (Android)</li>
+            <li>Lösche Browser-Cache und versuche es erneut</li>
+        </ul>
+
+        <p style="margin-top:15px;"><strong>Sync funktioniert nicht:</strong></p>
+        <ul>
+            <li>Beide Geräte müssen denselben Code haben</li>
+            <li>Internetverbindung prüfen</li>
+            <li>App neu laden (Pull-to-Refresh)</li>
+            <li>Warte 10-20 Sekunden nach Aktivierung</li>
+        </ul>
+
+        <p style="margin-top:15px;"><strong>Daten sind weg:</strong></p>
+        <ul>
+            <li>Prüfe das andere Gerät (Sync sollte Daten haben)</li>
+            <li>Importiere dein letztes Backup</li>
+            <li>Browser-Daten nicht löschen (LocalStorage)</li>
+        </ul>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;">
+        <a href="Daddy_App.html" class="button">🚀 Zur App</a>
+        <a href="generate-icons.html" class="button">🎨 Icons generieren</a>
+    </div>
+
+    <p style="text-align:center;color:#999;margin-top:30px;font-size:0.9em;">
+        Viel Freude mit der App und alles Gute für eure gemeinsame Reise! 👶💙
+    </p>
+</div>
+</body>
+</html>
