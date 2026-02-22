@@ -340,8 +340,12 @@
         <div id="nameResult" style="margin-top:12px;font-size:1.1em;text-align:center;font-weight:bold;color:#4facfe;"></div>
         <div id="nameHistory" style="margin-top:12px;"></div>
         <div style="margin-top:16px;padding-top:16px;border-top:1px solid #eee;">
-            <div class="subheading">❤️ Favoriten (Shortlist)</div>
-            <div id="favoritesList" style="margin-top:8px;"></div>
+            <div class="subheading">⭐ Finale Runde (2x geliked)</div>
+            <div id="finalRoundList" style="margin-top:8px;"></div>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #eee;">
+            <div class="subheading">❤️ Shortlist (zur Prüfung)</div>
+            <div id="shortlistList" style="margin-top:8px;"></div>
         </div>
     </div>
 
@@ -594,7 +598,9 @@
     let appointments = [];
     let customShoppingItems = [];
     let generatedNames = [];
-    let favoriteNames = []; // NEW: Liked names shortlist
+    let favoriteNames = []; // NEW: Final round (liked twice)
+    let shortlistNames = []; // NEW: Shortlist (liked once)
+    let dislikedNames = []; // NEW: Disliked names
     let customTodos = []; // NEW: User-created to-dos
     let appIdeas = []; // NEW: Feature suggestions/ideas
     let currentNameFilter = 'all'; // NEW: 'all', 'short', 'medium', 'long'
@@ -604,7 +610,10 @@
         likedStyles: {},
         likedLengths: {},
         likedOrigins: {},
-        likedPopularity: []
+        likedPopularity: [],
+        dislikedStyles: {},
+        dislikedLengths: {},
+        dislikedOrigins: {}
     }; // Smart recommendation system
 
     async function init() {
@@ -620,7 +629,7 @@
         renderCustomShopping();
         renderAppointments();
         calculateBabySizes();
-        renderFavorites();
+        renderAllLists();
         renderCustomTodos();
         renderIdeas();
         setInterval(updateCountdown, 60000);
@@ -844,8 +853,12 @@
             const shopCustom = JSON.parse(localStorage.getItem('papa_shopping_custom') || 'null');
             const shopDefault = JSON.parse(localStorage.getItem('papa_shopping_default') || 'null');
             const favNames = JSON.parse(localStorage.getItem('papa_favorite_names') || 'null');
+            const shortlist = JSON.parse(localStorage.getItem('papa_shortlist_names') || 'null');
+            const disliked = JSON.parse(localStorage.getItem('papa_disliked_names') || 'null');
             const custTodos = JSON.parse(localStorage.getItem('papa_custom_todos') || 'null');
             const ideas = JSON.parse(localStorage.getItem('papa_app_ideas') || 'null');
+            const viewed = JSON.parse(localStorage.getItem('papa_viewed_names') || '[]');
+            const taste = JSON.parse(localStorage.getItem('papa_taste_profile') || 'null');
 
             if (t2) TRIMESTER2_TASKS.forEach((t, i) => { if (t2[i]) t.done = t2[i].done; });
             if (prep) PREP_TASKS.forEach((t, i) => { if (prep[i]) t.done = prep[i].done; });
@@ -854,12 +867,10 @@
             if (shopCustom) customShoppingItems = shopCustom;
             if (shopDefault) DEFAULT_SHOPPING.forEach((t, i) => { if (shopDefault[i]) t.done = shopDefault[i].done; });
             if (favNames) favoriteNames = favNames;
+            if (shortlist) shortlistNames = shortlist;
+            if (disliked) dislikedNames = disliked;
             if (custTodos) customTodos = custTodos;
             if (ideas) appIdeas = ideas;
-
-            // Load viewed names and taste profile
-            const viewed = JSON.parse(localStorage.getItem('papa_viewed_names') || '[]');
-            const taste = JSON.parse(localStorage.getItem('papa_taste_profile') || 'null');
             if (viewed) viewedNames = viewed;
             if (taste) tasteProfile = taste;
         } catch(e) {
@@ -1004,6 +1015,8 @@
                     });
                 }
                 if (data.favoriteNames) favoriteNames = data.favoriteNames;
+                if (data.shortlistNames) shortlistNames = data.shortlistNames;
+                if (data.dislikedNames) dislikedNames = data.dislikedNames;
                 if (data.customTodos) customTodos = data.customTodos;
                 if (data.appIdeas) appIdeas = data.appIdeas;
                 if (data.viewedNames) viewedNames = data.viewedNames;
@@ -1013,7 +1026,7 @@
                 renderAppointments();
                 renderDefaultShopping();
                 renderCustomShopping();
-                renderFavorites();
+                renderAllLists();
                 renderCustomTodos();
                 renderIdeas();
                 updateCountdown();
@@ -1111,6 +1124,8 @@
                         });
                     }
                     if (data.favoriteNames) favoriteNames = data.favoriteNames;
+                    if (data.shortlistNames) shortlistNames = data.shortlistNames;
+                    if (data.dislikedNames) dislikedNames = data.dislikedNames;
                     if (data.customTodos) customTodos = data.customTodos;
                     if (data.appIdeas) appIdeas = data.appIdeas;
                     if (data.viewedNames) viewedNames = data.viewedNames;
@@ -1119,7 +1134,7 @@
                     renderAppointments();
                     renderDefaultShopping();
                     renderCustomShopping();
-                    renderFavorites();
+                    renderAllLists();
                     renderCustomTodos();
                     renderIdeas();
                     updateCountdown();
@@ -1152,6 +1167,8 @@
             shoppingCustom: customShoppingItems,
             shoppingDefault: DEFAULT_SHOPPING,
             favoriteNames: favoriteNames,
+            shortlistNames: shortlistNames,
+            dislikedNames: dislikedNames,
             customTodos: customTodos,
             appIdeas: appIdeas,
             viewedNames: viewedNames,
@@ -1372,7 +1389,7 @@
         container.innerHTML = html;
     }
 
-    // Baby-Namen Generator with Smart Recommendations
+    // Baby-Namen Generator with Smart Recommendations and Dislike Feature
     function setNameFilter(filter) {
         currentNameFilter = filter;
         // Visual feedback for active filter
@@ -1393,11 +1410,15 @@
         // Base score from popularity
         score += name.popularity || 50;
 
-        // Bonus for matching liked styles
+        // POSITIVE: Bonus for matching liked styles
         if (name.style && Array.isArray(name.style)) {
             name.style.forEach(style => {
                 if (tasteProfile.likedStyles[style]) {
                     score += tasteProfile.likedStyles[style] * 20;
+                }
+                // NEGATIVE: Penalty for disliked styles
+                if (tasteProfile.dislikedStyles[style]) {
+                    score -= tasteProfile.dislikedStyles[style] * 30;
                 }
             });
         }
@@ -1407,9 +1428,19 @@
             score += tasteProfile.likedLengths[name.length] * 15;
         }
 
+        // NEGATIVE: Penalty for disliked length
+        if (tasteProfile.dislikedLengths[name.length]) {
+            score -= tasteProfile.dislikedLengths[name.length] * 25;
+        }
+
         // Bonus for matching liked origin
         if (tasteProfile.likedOrigins[name.origin]) {
             score += tasteProfile.likedOrigins[name.origin] * 10;
+        }
+
+        // NEGATIVE: Penalty for disliked origin
+        if (tasteProfile.dislikedOrigins[name.origin]) {
+            score -= tasteProfile.dislikedOrigins[name.origin] * 20;
         }
 
         // Bonus for similar popularity to liked names
@@ -1417,6 +1448,11 @@
             const avgLikedPopularity = tasteProfile.likedPopularity.reduce((a, b) => a + b, 0) / tasteProfile.likedPopularity.length;
             const popularityDiff = Math.abs((name.popularity || 50) - avgLikedPopularity);
             score += Math.max(0, 20 - popularityDiff / 2);
+        }
+
+        // NEGATIVE: Huge penalty for explicitly disliked names
+        if (dislikedNames.find(n => n.name === name.name)) {
+            score -= 1000;
         }
 
         return score;
@@ -1446,7 +1482,7 @@
         }
 
         // If no taste profile yet, choose randomly
-        if (favoriteNames.length === 0) {
+        if (favoriteNames.length === 0 && shortlistNames.length === 0 && dislikedNames.length === 0) {
             return namesToChooseFrom[Math.floor(Math.random() * namesToChooseFrom.length)];
         }
 
@@ -1462,6 +1498,13 @@
         // Pick from top 20% with some randomness
         const topCandidates = scoredNames.slice(0, Math.max(5, Math.floor(scoredNames.length * 0.2)));
         return topCandidates[Math.floor(Math.random() * topCandidates.length)];
+    }
+
+    function getNameStatus(name) {
+        if (favoriteNames.find(n => n.name === name)) return 'final';
+        if (shortlistNames.find(n => n.name === name)) return 'shortlist';
+        if (dislikedNames.find(n => n.name === name)) return 'disliked';
+        return 'neutral';
     }
 
     function generateBoyName() {
@@ -1483,8 +1526,7 @@
             saveData();
         }
 
-        // Check if already in favorites
-        const isFavorite = favoriteNames.find(n => n.name === selectedName.name);
+        const status = getNameStatus(selectedName.name);
 
         // Show progress indicator
         const totalInCategory = currentNameFilter === 'all'
@@ -1497,122 +1539,257 @@
                 return name && name.length === currentNameFilter;
             }).length;
 
+        const nameDataStr = encodeURIComponent(JSON.stringify({
+            name: selectedName.name,
+            meaning: selectedName.meaning,
+            origin: selectedName.origin,
+            length: selectedName.length,
+            popularity: selectedName.popularity,
+            style: selectedName.style || []
+        }));
+
         document.getElementById('nameResult').innerHTML = `
-            ${selectedName.name}<br>
+            <div style="font-size:1.4em;margin-bottom:8px;">${selectedName.name}</div>
             <div style="font-size:0.7em;color:#666;margin-top:4px;">
                 ${selectedName.meaning} · ${selectedName.origin}<br>
                 ${selectedName.style ? selectedName.style.map(s => `#${s}`).join(' ') : ''}
             </div>
-            <div style="font-size:0.75em;color:#999;margin-top:6px;">
+            <div style="font-size:0.75em;color:#999;margin-top:6px;margin-bottom:12px;">
                 ${viewedInCategory} von ${totalInCategory} Namen gesehen
             </div>
-            <button class="button small" style="margin-top:8px;" onclick="toggleFavorite('${selectedName.name}', '${selectedName.meaning}', '${selectedName.origin}', '${selectedName.length}', '${selectedName.popularity}', '${JSON.stringify(selectedName.style || []).replace(/"/g, '&quot;')}')">
-                ${isFavorite ? '❤️ Von Favoriten entfernen' : '🤍 Zu Favoriten hinzufügen'}
-            </button>
+            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+                <button class="button small" style="padding:8px 16px;background:${status === 'disliked' ? '#f44336' : '#ccc'};" onclick='handleDislike(${nameDataStr})'>
+                    ${status === 'disliked' ? '❌ Disliked' : '👎 Dislike'}
+                </button>
+                <button class="button small" style="padding:8px 16px;background:${status === 'shortlist' ? '#ff9800' : '#ccc'};" onclick='handleLike(${nameDataStr})'>
+                    ${status === 'shortlist' ? '💛 Auf Shortlist' : status === 'final' ? '⭐ In Finale' : '👍 Like'}
+                </button>
+                <button class="button small" style="padding:8px 16px;background:${status === 'final' ? 'linear-gradient(135deg, #ffd700 0%, #ffA500 100%)' : '#4facfe'};" onclick='handleDoubleLike(${nameDataStr})'>
+                    ${status === 'final' ? '⭐⭐ In Finale' : '⭐ Finale'}
+                </button>
+            </div>
         `;
 
-        // Add to history if not already there
+        // Add to history with buttons
         if (!generatedNames.find(n => n.name === selectedName.name)) {
             generatedNames.unshift(selectedName);
             if (generatedNames.length > 5) generatedNames.pop();
+        }
+        renderNameHistory();
+    }
 
-            const historyHtml = generatedNames.map(n =>
-                `<div class="log-entry" style="padding:8px;margin:4px 0;">
+    function renderNameHistory() {
+        const historyHtml = generatedNames.map(n => {
+            const status = getNameStatus(n.name);
+            const nameDataStr = encodeURIComponent(JSON.stringify(n));
+
+            return `<div class="log-entry" style="padding:8px;margin:4px 0;background:#f8f9fa;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+                <div style="flex:1;">
                     <strong>${n.name}</strong> - ${n.meaning}
-                </div>`
-            ).join('');
-            document.getElementById('nameHistory').innerHTML = historyHtml ? '<div class="subheading" style="margin-top:12px;">Letzte Vorschläge:</div>' + historyHtml : '';
-        }
+                </div>
+                <div style="display:flex;gap:4px;">
+                    <button style="padding:4px 8px;border:none;background:${status === 'disliked' ? '#f44336' : '#ddd'};border-radius:4px;cursor:pointer;" onclick='handleDislike(${nameDataStr})'>
+                        ${status === 'disliked' ? '❌' : '👎'}
+                    </button>
+                    <button style="padding:4px 8px;border:none;background:${status === 'shortlist' ? '#ff9800' : status === 'final' ? '#ffd700' : '#ddd'};border-radius:4px;cursor:pointer;" onclick='handleLike(${nameDataStr})'>
+                        ${status === 'shortlist' ? '💛' : status === 'final' ? '⭐' : '👍'}
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('nameHistory').innerHTML = historyHtml ? '<div class="subheading" style="margin-top:12px;">Letzte Vorschläge:</div>' + historyHtml : '';
     }
 
-    function toggleFavorite(name, meaning, origin, length, popularity, stylesJson) {
-        const existingIndex = favoriteNames.findIndex(n => n.name === name);
+    function handleDislike(nameData) {
+        const name = typeof nameData === 'string' ? JSON.parse(decodeURIComponent(nameData)) : nameData;
 
-        if (existingIndex >= 0) {
-            // Remove from favorites and update taste profile
-            const removed = favoriteNames.splice(existingIndex, 1)[0];
-            updateTasteProfile(removed, false);
+        // Remove from shortlist and final if present
+        shortlistNames = shortlistNames.filter(n => n.name !== name.name);
+        favoriteNames = favoriteNames.filter(n => n.name !== name.name);
+
+        // Add to disliked if not already there
+        if (!dislikedNames.find(n => n.name === name.name)) {
+            dislikedNames.push(name);
+            updateTasteProfile(name, 'dislike');
         } else {
-            // Add to favorites
-            let styles = [];
-            try {
-                styles = JSON.parse(stylesJson.replace(/&quot;/g, '"'));
-            } catch (e) {
-                styles = [];
-            }
-
-            const nameObj = { name, meaning, origin, length, popularity: parseInt(popularity), style: styles };
-            favoriteNames.push(nameObj);
-            updateTasteProfile(nameObj, true);
+            // Remove dislike (back to neutral)
+            dislikedNames = dislikedNames.filter(n => n.name !== name.name);
+            updateTasteProfile(name, 'remove-dislike');
         }
 
         saveData();
-        renderFavorites();
-        // Refresh the current name display to update button
-        const resultDiv = document.getElementById('nameResult');
-        if (resultDiv.innerHTML) {
-            generateBoyName();
-        }
+        renderAllLists();
+        renderNameHistory();
     }
 
-    function updateTasteProfile(nameObj, isAdding) {
-        const weight = isAdding ? 1 : -1;
+    function handleLike(nameData) {
+        const name = typeof nameData === 'string' ? JSON.parse(decodeURIComponent(nameData)) : nameData;
+        const status = getNameStatus(name.name);
 
-        // Update style preferences
-        if (nameObj.style && Array.isArray(nameObj.style)) {
-            nameObj.style.forEach(style => {
-                tasteProfile.likedStyles[style] = (tasteProfile.likedStyles[style] || 0) + weight;
-            });
+        if (status === 'disliked') {
+            // Remove from disliked, add to shortlist
+            dislikedNames = dislikedNames.filter(n => n.name !== name.name);
+            updateTasteProfile(name, 'remove-dislike');
+            shortlistNames.push(name);
+            updateTasteProfile(name, 'like');
+        } else if (status === 'neutral') {
+            // Add to shortlist
+            shortlistNames.push(name);
+            updateTasteProfile(name, 'like');
+        } else if (status === 'shortlist') {
+            // Remove from shortlist (back to neutral)
+            shortlistNames = shortlistNames.filter(n => n.name !== name.name);
+            updateTasteProfile(name, 'remove-like');
+        } else if (status === 'final') {
+            // Move back to shortlist
+            favoriteNames = favoriteNames.filter(n => n.name !== name.name);
+            shortlistNames.push(name);
         }
 
-        // Update length preferences
-        tasteProfile.likedLengths[nameObj.length] = (tasteProfile.likedLengths[nameObj.length] || 0) + weight;
+        saveData();
+        renderAllLists();
+        renderNameHistory();
+    }
 
-        // Update origin preferences
-        if (nameObj.origin) {
-            tasteProfile.likedOrigins[nameObj.origin] = (tasteProfile.likedOrigins[nameObj.origin] || 0) + weight;
+    function handleDoubleLike(nameData) {
+        const name = typeof nameData === 'string' ? JSON.parse(decodeURIComponent(nameData)) : nameData;
+        const status = getNameStatus(name.name);
+
+        if (status === 'final') {
+            // Remove from final (back to neutral)
+            favoriteNames = favoriteNames.filter(n => n.name !== name.name);
+            updateTasteProfile(name, 'remove-like');
+        } else {
+            // Remove from disliked/shortlist if present
+            dislikedNames = dislikedNames.filter(n => n.name !== name.name);
+            shortlistNames = shortlistNames.filter(n => n.name !== name.name);
+
+            // Add to final round
+            if (!favoriteNames.find(n => n.name === name.name)) {
+                favoriteNames.push(name);
+                updateTasteProfile(name, 'like');
+            }
         }
 
-        // Update popularity tracking
-        if (isAdding && nameObj.popularity) {
-            tasteProfile.likedPopularity.push(nameObj.popularity);
-        } else if (!isAdding && nameObj.popularity) {
-            const index = tasteProfile.likedPopularity.indexOf(nameObj.popularity);
-            if (index > -1) {
-                tasteProfile.likedPopularity.splice(index, 1);
+        saveData();
+        renderAllLists();
+        renderNameHistory();
+    }
+
+    function updateTasteProfile(nameObj, action) {
+        const weight = action === 'like' ? 1 : action === 'dislike' ? 1 : action === 'remove-like' ? -1 : action === 'remove-dislike' ? -1 : 0;
+        const isDislike = action === 'dislike';
+        const isRemove = action.startsWith('remove-');
+
+        if (isRemove) {
+            // Removing a preference
+            if (action === 'remove-like') {
+                // Remove from liked profiles
+                if (nameObj.style && Array.isArray(nameObj.style)) {
+                    nameObj.style.forEach(style => {
+                        tasteProfile.likedStyles[style] = Math.max(0, (tasteProfile.likedStyles[style] || 0) - 1);
+                    });
+                }
+                tasteProfile.likedLengths[nameObj.length] = Math.max(0, (tasteProfile.likedLengths[nameObj.length] || 0) - 1);
+                if (nameObj.origin) {
+                    tasteProfile.likedOrigins[nameObj.origin] = Math.max(0, (tasteProfile.likedOrigins[nameObj.origin] || 0) - 1);
+                }
+                const popIdx = tasteProfile.likedPopularity.indexOf(nameObj.popularity);
+                if (popIdx > -1) tasteProfile.likedPopularity.splice(popIdx, 1);
+            } else if (action === 'remove-dislike') {
+                // Remove from disliked profiles
+                if (nameObj.style && Array.isArray(nameObj.style)) {
+                    nameObj.style.forEach(style => {
+                        tasteProfile.dislikedStyles[style] = Math.max(0, (tasteProfile.dislikedStyles[style] || 0) - 1);
+                    });
+                }
+                tasteProfile.dislikedLengths[nameObj.length] = Math.max(0, (tasteProfile.dislikedLengths[nameObj.length] || 0) - 1);
+                if (nameObj.origin) {
+                    tasteProfile.dislikedOrigins[nameObj.origin] = Math.max(0, (tasteProfile.dislikedOrigins[nameObj.origin] || 0) - 1);
+                }
+            }
+        } else {
+            // Adding a preference
+            const targetStyles = isDislike ? tasteProfile.dislikedStyles : tasteProfile.likedStyles;
+            const targetLengths = isDislike ? tasteProfile.dislikedLengths : tasteProfile.likedLengths;
+            const targetOrigins = isDislike ? tasteProfile.dislikedOrigins : tasteProfile.likedOrigins;
+
+            if (nameObj.style && Array.isArray(nameObj.style)) {
+                nameObj.style.forEach(style => {
+                    targetStyles[style] = (targetStyles[style] || 0) + weight;
+                });
+            }
+
+            targetLengths[nameObj.length] = (targetLengths[nameObj.length] || 0) + weight;
+
+            if (nameObj.origin) {
+                targetOrigins[nameObj.origin] = (targetOrigins[nameObj.origin] || 0) + weight;
+            }
+
+            if (!isDislike && nameObj.popularity) {
+                tasteProfile.likedPopularity.push(nameObj.popularity);
             }
         }
 
         saveData();
     }
 
-    function renderFavorites() {
-        const container = document.getElementById('favoritesList');
+    function renderAllLists() {
+        renderShortlist();
+        renderFinalRound();
+    }
+
+    function renderFinalRound() {
+        const container = document.getElementById('finalRoundList');
 
         if (!favoriteNames.length) {
-            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine Favoriten hinzugefügt.</p>';
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine Namen in der finalen Runde.</p>';
             return;
         }
 
         container.innerHTML = '';
-        favoriteNames.forEach((name, index) => {
+        favoriteNames.forEach((name) => {
+            const nameDataStr = encodeURIComponent(JSON.stringify(name));
             const div = document.createElement('div');
             div.className = 'favorite-name';
+            div.style.background = 'linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%)';
             div.innerHTML = `
-                <div>
-                    <strong>${name.name}</strong>
-                    <div style="font-size:0.85em;color:#666;margin-top:2px;">${name.meaning}</div>
+                <div style="flex:1;">
+                    <strong style="font-size:1.1em;">⭐ ${name.name}</strong>
+                    <div style="font-size:0.85em;color:#666;margin-top:2px;">${name.meaning} · ${name.origin}</div>
                 </div>
-                <button class="button small" style="padding:4px 8px;" onclick="removeFavorite(${index})">🗑️</button>
+                <button class="button small" style="padding:4px 8px;" onclick='handleDoubleLike(${nameDataStr})'>↩️</button>
             `;
             container.appendChild(div);
         });
     }
 
-    function removeFavorite(index) {
-        favoriteNames.splice(index, 1);
-        saveData();
-        renderFavorites();
+    function renderShortlist() {
+        const container = document.getElementById('shortlistList');
+
+        if (!shortlistNames.length) {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine Namen auf der Shortlist.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        shortlistNames.forEach((name) => {
+            const nameDataStr = encodeURIComponent(JSON.stringify(name));
+            const div = document.createElement('div');
+            div.className = 'favorite-name';
+            div.innerHTML = `
+                <div style="flex:1;">
+                    <strong>${name.name}</strong>
+                    <div style="font-size:0.85em;color:#666;margin-top:2px;">${name.meaning} · ${name.origin}</div>
+                </div>
+                <div style="display:flex;gap:4px;">
+                    <button class="button small" style="padding:4px 8px;" onclick='handleDoubleLike(${nameDataStr})'>⭐</button>
+                    <button class="button small" style="padding:4px 8px;" onclick='handleLike(${nameDataStr})'>🗑️</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
     }
 
     // Custom To-dos
@@ -1797,6 +1974,8 @@
         localStorage.setItem('papa_shopping_custom', JSON.stringify(customShoppingItems));
         localStorage.setItem('papa_shopping_default', JSON.stringify(DEFAULT_SHOPPING));
         localStorage.setItem('papa_favorite_names', JSON.stringify(favoriteNames));
+        localStorage.setItem('papa_shortlist_names', JSON.stringify(shortlistNames));
+        localStorage.setItem('papa_disliked_names', JSON.stringify(dislikedNames));
         localStorage.setItem('papa_custom_todos', JSON.stringify(customTodos));
         localStorage.setItem('papa_app_ideas', JSON.stringify(appIdeas));
         localStorage.setItem('papa_viewed_names', JSON.stringify(viewedNames));
