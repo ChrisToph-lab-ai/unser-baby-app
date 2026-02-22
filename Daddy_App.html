@@ -1171,63 +1171,6 @@
     // Track collapsed state for categories
     let shoppingCollapsedCategories = [];
 
-    const GERMAN_BOY_NAMES = [
-        // Sehr kurze Namen (3-4 Buchstaben)
-        { name: 'Ben', meaning: 'Der Sohn', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Leo', meaning: 'Der Löwe', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Max', meaning: 'Der Größte', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Tim', meaning: 'Der Ehrende', popularity: 'beliebt', length: 'short' },
-        { name: 'Tom', meaning: 'Der Zwilling', popularity: 'beliebt', length: 'short' },
-        { name: 'Jan', meaning: 'Gott ist gnädig', popularity: 'beliebt', length: 'short' },
-        { name: 'Finn', meaning: 'Der Blonde', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Liam', meaning: 'Entschlossener Beschützer', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Paul', meaning: 'Der Kleine', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Noah', meaning: 'Der Ruhebringende', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Emil', meaning: 'Der Eifrige', popularity: 'sehr beliebt', length: 'short' },
-        { name: 'Karl', meaning: 'Der Freie Mann', popularity: 'klassisch', length: 'short' },
-        { name: 'Luis', meaning: 'Berühmter Kämpfer', popularity: 'sehr beliebt', length: 'short' },
-
-        // Mittellange Namen (5-7 Buchstaben)
-        { name: 'Felix', meaning: 'Der Glückliche', popularity: 'beliebt', length: 'medium' },
-        { name: 'Luca', meaning: 'Der Leuchtende', popularity: 'beliebt', length: 'medium' },
-        { name: 'Jonas', meaning: 'Die Taube', popularity: 'beliebt', length: 'medium' },
-        { name: 'Moritz', meaning: 'Der Dunkelhäutige', popularity: 'beliebt', length: 'medium' },
-        { name: 'Anton', meaning: 'Der Wertvolle', popularity: 'beliebt', length: 'medium' },
-        { name: 'Jakob', meaning: 'Gott möge schützen', popularity: 'beliebt', length: 'medium' },
-        { name: 'Henry', meaning: 'Der Herrscher', popularity: 'beliebt', length: 'medium' },
-        { name: 'Oscar', meaning: 'Der Gottesfreund', popularity: 'moderat', length: 'medium' },
-        { name: 'Theo', meaning: 'Gottesgeschenk', popularity: 'beliebt', length: 'medium' },
-        { name: 'Matteo', meaning: 'Geschenk Gottes', popularity: 'beliebt', length: 'medium' },
-        { name: 'Samuel', meaning: 'Von Gott erhört', popularity: 'beliebt', length: 'medium' },
-        { name: 'David', meaning: 'Der Geliebte', popularity: 'sehr beliebt', length: 'medium' },
-        { name: 'Johann', meaning: 'Gott ist gnädig', popularity: 'klassisch', length: 'medium' },
-        { name: 'Oskar', meaning: 'Der Gottesfreund', popularity: 'moderat', length: 'medium' },
-        { name: 'Lukas', meaning: 'Aus Lucania', popularity: 'sehr beliebt', length: 'medium' },
-        { name: 'Niklas', meaning: 'Sieg des Volkes', popularity: 'beliebt', length: 'medium' },
-        { name: 'Julian', meaning: 'Aus dem Geschlecht der Julier', popularity: 'beliebt', length: 'medium' },
-        { name: 'Henri', meaning: 'Der Herrscher', popularity: 'beliebt', length: 'medium' },
-        { name: 'Florian', meaning: 'Der Blühende', popularity: 'beliebt', length: 'medium' },
-        { name: 'Adrian', meaning: 'Mann aus Adria', popularity: 'beliebt', length: 'medium' },
-        { name: 'Fabian', meaning: 'Der Bohnenanbauer', popularity: 'beliebt', length: 'medium' },
-
-        // Lange Namen (8+ Buchstaben)
-        { name: 'Maximilian', meaning: 'Der Größte', popularity: 'sehr beliebt', length: 'long' },
-        { name: 'Alexander', meaning: 'Der Beschützer', popularity: 'sehr beliebt', length: 'long' },
-        { name: 'Sebastian', meaning: 'Der Ehrwürdige', popularity: 'sehr beliebt', length: 'long' },
-        { name: 'Leonard', meaning: 'Stark wie ein Löwe', popularity: 'beliebt', length: 'long' },
-        { name: 'Friedrich', meaning: 'Der Friedensreiche', popularity: 'klassisch', length: 'long' },
-        { name: 'Wilhelm', meaning: 'Der entschlossene Beschützer', popularity: 'klassisch', length: 'long' },
-        { name: 'Jonathan', meaning: 'Geschenk Gottes', popularity: 'beliebt', length: 'long' },
-        { name: 'Matthias', meaning: 'Geschenk Gottes', popularity: 'klassisch', length: 'long' },
-        { name: 'Benjamin', meaning: 'Sohn des Glücks', popularity: 'sehr beliebt', length: 'long' },
-        { name: 'Constantin', meaning: 'Der Standhafte', popularity: 'moderat', length: 'long' },
-        { name: 'Nathanael', meaning: 'Gott hat gegeben', popularity: 'moderat', length: 'long' },
-        { name: 'Ferdinand', meaning: 'Der kühne Beschützer', popularity: 'klassisch', length: 'long' },
-        { name: 'Christopher', meaning: 'Christusträger', popularity: 'beliebt', length: 'long' },
-        { name: 'Dominik', meaning: 'Dem Herrn gehörend', popularity: 'beliebt', length: 'long' },
-        { name: 'Johannes', meaning: 'Gott ist gnädig', popularity: 'klassisch', length: 'long' }
-    ];
-
     // Load names from JSON database
     async function loadNamesDatabase() {
         try {
@@ -3684,33 +3627,6 @@
             appIdeas.splice(index, 1);
             saveData();
             renderIdeas();
-        }
-    }
-
-    function generateBoyName() {
-        const randomIndex = Math.floor(Math.random() * GERMAN_BOY_NAMES.length);
-        const selectedName = GERMAN_BOY_NAMES[randomIndex];
-
-        document.getElementById('nameResult').innerHTML = `
-            ${selectedName.name}<br>
-            <div style="font-size:0.7em;color:#666;margin-top:4px;">
-                ${selectedName.meaning} · ${selectedName.popularity}
-            </div>
-        `;
-
-        // Add to history if not already there
-        if (!generatedNames.find(n => n.name === selectedName.name)) {
-            generatedNames.unshift(selectedName);
-            if (generatedNames.length > 5) generatedNames.pop();
-
-            const historyHtml = generatedNames.map(n =>
-                `<div class="log-entry" style="padding:8px;margin:4px 0;">
-                    <strong>${n.name}</strong> - ${n.meaning}
-                </div>`
-            ).join('');
-
-            document.getElementById('nameHistory').innerHTML =
-                '<div class="subheading" style="margin-top:12px;">Letzte Vorschläge:</div>' + historyHtml;
         }
     }
 

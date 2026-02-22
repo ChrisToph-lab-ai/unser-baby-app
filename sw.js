@@ -1,4 +1,4 @@
-const CACHE_NAME = 'unser-baby-v5';
+const CACHE_NAME = 'unser-baby-v6';
 const urlsToCache = [
   './Daddy_App.html',
   './manifest.json',
