@@ -165,6 +165,58 @@
             font-size: 0.75em;
             margin-left: 8px;
         }
+        /* Upcoming Reminders Styles */
+        .upcoming-reminder {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4caf50;
+        }
+        .upcoming-reminder.today {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            animation: pulse-reminder 2s infinite;
+        }
+        @keyframes pulse-reminder {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(255, 152, 0, 0); }
+        }
+        .reminder-countdown {
+            font-size: 0.85em;
+            color: #555;
+            margin-top: 4px;
+        }
+        .reminder-countdown.urgent {
+            color: #ff5722;
+            font-weight: bold;
+        }
+        .notification-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .notification-status.enabled {
+            background: #e8f5e9;
+        }
+        .notification-status.disabled {
+            background: #ffebee;
+        }
+        .reminder-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .reminder-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4caf50;
+        }
         .favorite-name {
             background: #e3f2fd;
             padding: 10px;
@@ -187,10 +239,238 @@
             opacity: 0.6;
             text-decoration: line-through;
         }
+        /* Task management styles */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .section-header h2 {
+            margin-bottom: 0;
+        }
+        .toggle-completed {
+            font-size: 0.75em;
+            padding: 4px 10px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #666;
+            transition: background 0.2s;
+        }
+        .toggle-completed:hover {
+            background: #e0e0e0;
+        }
+        .toggle-completed.active {
+            background: #4facfe;
+            color: white;
+        }
+        .completed-task {
+            opacity: 0.6;
+        }
+        .completed-task .task-text {
+            text-decoration: line-through;
+        }
+        .todo-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            padding: 2px 4px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        .todo-action-btn:hover {
+            opacity: 1;
+        }
+        .inline-edit-container {
+            display: flex;
+            flex: 1;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .inline-edit-input {
+            flex: 1;
+            min-width: 150px;
+            padding: 6px 10px;
+            border: 2px solid #4facfe;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+        .inline-edit-date {
+            padding: 6px 8px;
+            border: 2px solid #4facfe;
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+        .inline-edit-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .inline-edit-actions button {
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+        .inline-edit-actions .save-btn {
+            background: #4facfe;
+            color: white;
+        }
+        .inline-edit-actions .cancel-btn {
+            background: #f0f0f0;
+            color: #666;
+        }
         @media (max-width: 480px) {
             body { padding: 10px; }
             .countdown { font-size: 2em; }
             .section { padding: 18px 16px; }
+        }
+        /* Sync Status Indicator */
+        .sync-status-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        .sync-status-indicator.syncing {
+            animation: pulse-sync 1.5s ease-in-out infinite;
+        }
+        .sync-status-indicator.synced {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        .sync-status-indicator.offline {
+            background: rgba(255, 152, 0, 0.3);
+        }
+        .sync-status-indicator.local {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        @keyframes pulse-sync {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.02); }
+        }
+        .sync-icon {
+            display: inline-block;
+        }
+        .sync-icon.spinning {
+            animation: spin-icon 1s linear infinite;
+        }
+        @keyframes spin-icon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .header {
+            position: relative;
+        }
+        /* Contraction Timer Styles */
+        .contraction-history {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f0f4ff;
+            border-radius: 12px;
+        }
+        .contraction-history-title {
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            color: #4f46e5;
+        }
+        .contraction-entry {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e4f0;
+            font-size: 0.9em;
+        }
+        .contraction-entry:last-child {
+            border-bottom: none;
+        }
+        .contraction-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 4px;
+            margin-right: 10px;
+            min-width: 20px;
+        }
+        .contraction-info {
+            flex: 1;
+        }
+        .contraction-time {
+            font-weight: 600;
+            color: #333;
+        }
+        .contraction-duration {
+            color: #666;
+            font-size: 0.85em;
+        }
+        .contraction-interval {
+            color: #888;
+            font-size: 0.85em;
+            margin-left: 8px;
+        }
+        .five-one-one-alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 12px;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse-alert 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-alert {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; }
+        }
+        .five-one-one-info {
+            font-size: 0.85em;
+            font-weight: normal;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+        .wake-lock-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #4caf50;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+        .wake-lock-indicator.inactive {
+            background: #9e9e9e;
+        }
+        .contraction-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .contraction-buttons .button {
+            flex: 1;
+            min-width: 120px;
+        }
+        .export-text {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85em;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 12px;
         }
     </style>
 </head>
@@ -200,6 +480,10 @@
         <div style="font-size:1.5em;margin-bottom:10px;">👶 Unser Baby</div>
         <div class="countdown" id="countdown">…</div>
         <div class="week-info" id="weekInfo">…</div>
+        <div class="sync-status-indicator local" id="syncStatusIndicator">
+            <span class="sync-icon" id="syncIcon">✓</span>
+            <span id="syncStatusText">Gespeichert</span>
+        </div>
     </div>
 
     <div class="section">
@@ -212,7 +496,10 @@
     </div>
 
     <div class="section">
-        <h2>📅 2. Trimester (SSW 13–27)</h2>
+        <div class="section-header">
+            <h2>📅 2. Trimester (SSW 13–27)</h2>
+            <button class="toggle-completed" id="toggleTrimester2" onclick="toggleCompletedVisibility('trimester2')">Erledigte anzeigen</button>
+        </div>
         <div class="progress-bar">
             <div class="progress-fill" id="trimester2Progress"></div>
         </div>
@@ -221,7 +508,10 @@
     </div>
 
     <div class="section">
-        <h2>📋 3. Trimester (ab SSW 28)</h2>
+        <div class="section-header">
+            <h2>📋 3. Trimester (ab SSW 28)</h2>
+            <button class="toggle-completed" id="togglePrep" onclick="toggleCompletedVisibility('prep')">Erledigte anzeigen</button>
+        </div>
         <div class="progress-bar">
             <div class="progress-fill" id="prepProgress"></div>
         </div>
@@ -241,21 +531,29 @@
         </ul>
     </div>
 
-    <div class="section">
+    <div class=”section”>
         <h2>🚨 Geburtstag-Tool</h2>
-        <button class="button" onclick="startContractionTimer()">Wehen-Timer starten ⏱️</button>
-        <div id="contractionDisplay" class="hidden tracker">
-            <div style="font-size:0.95em;margin-bottom:6px;">
-                Tippe bei jeder starken Wehe auf „Wehe jetzt“.
+        <button class=”button” onclick=”startContractionTimer()”>Wehen-Timer starten ⏱️</button>
+        <div id=”contractionDisplay” class=”hidden tracker”>
+            <div style=”font-size:0.95em;margin-bottom:6px;”>
+                Tippe bei jeder starken Wehe auf „Wehe jetzt”.
+                <span id=”wakeLockStatus” class=”wake-lock-indicator inactive”>Bildschirm: normal</span>
             </div>
-            <button class="button small" onclick="markContraction()">Wehe jetzt</button>
-            <div style="margin-top:8px;font-size:0.9em;">
-                Letzte Wehe: <span id="lastContraction">--:--</span><br>
-                Abstand letzte 3 Wehen: <span id="contractionInterval">–</span>
+            <button class=”button” onclick=”markContraction()” style=”font-size:1.2em;padding:16px;”>Wehe jetzt</button>
+            <div style=”margin-top:12px;font-size:0.9em;”>
+                Letzte Wehe: <span id=”lastContraction”>--:--</span><br>
+                Abstand letzte 3 Wehen: <span id=”contractionInterval”>--</span>
             </div>
-            <p id="contractionAdvice" style="margin-top:8px;font-size:0.9em;">Timer läuft…</p>
+            <p id=”contractionAdvice” style=”margin-top:8px;font-size:0.9em;”>Timer läuft...</p>
+            <div id=”fiveOneOneAlert”></div>
+            <div id=”contractionHistoryDisplay” class=”contraction-history” style=”display:none;”></div>
+            <div class=”contraction-buttons”>
+                <button class=”button small” onclick=”clearContractionHistory()”>Verlauf loeschen</button>
+                <button class=”button small” onclick=”exportContractions()”>Fuer Klinik exportieren</button>
+            </div>
+            <div id=”exportOutput” style=”display:none;”></div>
         </div>
-        <button class="button" onclick="showHospitalBag()">Kliniktasche Checkliste 🏥</button>
+        <button class=”button” onclick=”showHospitalBag()”>Kliniktasche Checkliste 🏥</button>
     </div>
 
     <div class="section hidden" id="newbornSection">
@@ -283,6 +581,7 @@
 
     <div class="section">
         <h2>📅 Arzttermine</h2>
+        <div id="upcomingReminders" style="margin-bottom:16px;"></div>
         <button class="button" onclick="toggleSection('appointments')">Termine verwalten</button>
     </div>
 
@@ -292,7 +591,11 @@
             <input type="date" class="tracker-input" id="appointmentDate" style="margin-bottom:6px;">
             <input type="time" class="tracker-input" id="appointmentTime" style="margin-bottom:6px;">
             <input type="text" class="tracker-input" id="appointmentDesc" placeholder="z.B. Frauenarzt - Ultraschall">
-            <button class="button small" style="margin-top:8px;" onclick="addAppointment()">Termin hinzufügen</button>
+            <div class="reminder-toggle">
+                <input type="checkbox" id="appointmentReminder" checked>
+                <label for="appointmentReminder" style="font-size:0.9em;">Erinnerung aktivieren (24h & 1h vorher)</label>
+            </div>
+            <button class="button small" style="margin-top:8px;" onclick="addAppointment()">Termin hinzufuegen</button>
         </div>
         <div id="appointmentsList" style="margin-top:16px;"></div>
     </div>
@@ -386,11 +689,21 @@
         </div>
 
         <div class="tracker" style="margin-top:16px;">
-            <div class="subheading">🔄 Cloud-Sync (beide Geräte verbinden)</div>
+            <div class="subheading">🔔 Termin-Benachrichtigungen</div>
+            <div id="notificationStatus" class="notification-status disabled">
+                <span id="notificationStatusText">Benachrichtigungen: Deaktiviert</span>
+            </div>
+            <button class="button small" onclick="requestNotificationPermission()">Benachrichtigungen aktivieren</button>
+            <p style="font-size:0.85em;color:#777;margin-top:8px;">Erhalte Erinnerungen 24 Stunden und 1 Stunde vor deinen Terminen.</p>
+        </div>
+
+        <div class="tracker" style="margin-top:16px;">
+            <div class="subheading">🔄 Cloud-Sync (beide Geraete verbinden)</div>
             <p style="font-size:0.9em;margin-bottom:8px;">Gebt denselben Sync-Code auf beiden Handys ein, um die Daten automatisch zu synchronisieren.</p>
             <input type="text" class="tracker-input" id="syncCodeInput" placeholder="z.B. unser-baby-2026" maxlength="50">
             <button class="button small" style="margin-top:8px;" onclick="enableSync()">Sync aktivieren</button>
             <div id="syncStatus" style="margin-top:8px;font-size:0.9em;color:#555;"></div>
+            <div id="lastSyncDisplay" style="margin-top:8px;font-size:0.85em;color:#777;"></div>
         </div>
 
         <div class="tracker" style="margin-top:16px;">
@@ -420,6 +733,12 @@
     let syncEnabled = false;
     let syncCode = null;
     let deferredPrompt = null;
+    let notificationsEnabled = false;
+    let scheduledNotifications = {}; // Track scheduled notification timeouts
+
+    // Sync status tracking
+    let syncStatus = 'local'; // 'local', 'syncing', 'synced', 'offline'
+    let lastSyncTime = null;
 
     // 2. Trimester (SSW 13–27) – deutsche To-dos [web:54][web:59][web:62]
     const TRIMESTER2_TASKS = [
@@ -595,6 +914,9 @@
 
     let contractionTimes = [];
     let contractionTimerVisible = false;
+    let contractionHistory = []; // Full history of contractions with timestamps and durations
+    let wakeLock = null; // Wake Lock API reference
+    let currentContractionStart = null; // Track when current contraction started
     let appointments = [];
     let customShoppingItems = [];
     let generatedNames = [];
@@ -606,6 +928,9 @@
     let currentNameFilter = 'all'; // NEW: 'all', 'short', 'medium', 'long'
     let allNames = []; // Will be loaded from JSON
     let viewedNames = []; // Track which names have been shown
+    let showCompletedTrimester2 = false; // Toggle for 2. Trimester completed tasks
+    let showCompletedPrep = false; // Toggle for 3. Trimester completed tasks
+    let editingTodoIndex = null; // Track which custom todo is being edited
     let tasteProfile = {
         likedStyles: {},
         likedLengths: {},
@@ -620,6 +945,7 @@
         await loadNamesDatabase(); // Load names first
         loadData();
         loadSettings();
+        loadNotificationSettings();
         updateCountdown();
         renderChecklists();
         showRandomTip();
@@ -628,16 +954,37 @@
         renderDefaultShopping();
         renderCustomShopping();
         renderAppointments();
+        renderUpcomingReminders();
         calculateBabySizes();
         renderAllLists();
         renderCustomTodos();
         renderIdeas();
         setInterval(updateCountdown, 60000);
         setInterval(checkAppointmentReminders, 60000); // Check every minute
+        setInterval(checkUpcomingAppointments, 300000); // Check every 5 minutes
         setupPWA();
+
+        // Initialize sync status indicator
+        checkOnlineStatus();
+        updateLastSyncDisplay();
+
+        // Add online/offline event listeners
+        window.addEventListener('online', () => {
+            checkOnlineStatus();
+            if (syncEnabled && syncCode) {
+                startSync();
+            }
+        });
+        window.addEventListener('offline', () => {
+            updateSyncStatusIndicator('offline');
+        });
+
         if (syncEnabled && syncCode) {
             startSync();
         }
+        // Initial check for upcoming appointments
+        checkUpcomingAppointments();
+        scheduleAppointmentReminders();
     }
 
     function getPregnancyWeek() {
@@ -674,18 +1021,22 @@
     }
 
     function renderChecklists() {
-        renderChecklist('trimester2Checklist', TRIMESTER2_TASKS);
-        renderChecklist('prepChecklist', PREP_TASKS);
-        renderChecklist('behoerdenChecklist', BEHOERDEN_TASKS);
+        renderChecklist('trimester2Checklist', TRIMESTER2_TASKS, showCompletedTrimester2);
+        renderChecklist('prepChecklist', PREP_TASKS, showCompletedPrep);
+        renderChecklist('behoerdenChecklist', BEHOERDEN_TASKS, true); // Behoerden always shows all
         updateProgressBars();
     }
 
-    function renderChecklist(containerId, tasks) {
+    function renderChecklist(containerId, tasks, showCompleted) {
         const container = document.getElementById(containerId);
         container.innerHTML = '';
         tasks.forEach((task, index) => {
+            // Hide completed tasks if showCompleted is false
+            if (task.done && !showCompleted) {
+                return;
+            }
             const div = document.createElement('div');
-            div.className = 'task-item';
+            div.className = 'task-item' + (task.done ? ' completed-task' : '');
             div.innerHTML = `
                 <input type="checkbox" class="task-checkbox"
                        ${task.done ? 'checked' : ''}
@@ -697,6 +1048,26 @@
             `;
             container.appendChild(div);
         });
+
+        // Show message if all tasks are hidden
+        if (container.innerHTML === '') {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;padding:10px 0;">Alle Aufgaben erledigt! Klicke "Erledigte anzeigen" um sie zu sehen.</p>';
+        }
+    }
+
+    function toggleCompletedVisibility(section) {
+        if (section === 'trimester2') {
+            showCompletedTrimester2 = !showCompletedTrimester2;
+            const btn = document.getElementById('toggleTrimester2');
+            btn.classList.toggle('active', showCompletedTrimester2);
+            btn.textContent = showCompletedTrimester2 ? 'Erledigte ausblenden' : 'Erledigte anzeigen';
+        } else if (section === 'prep') {
+            showCompletedPrep = !showCompletedPrep;
+            const btn = document.getElementById('togglePrep');
+            btn.classList.toggle('active', showCompletedPrep);
+            btn.textContent = showCompletedPrep ? 'Erledigte ausblenden' : 'Erledigte anzeigen';
+        }
+        renderChecklists();
     }
 
     function toggleTask(listId, index) {
@@ -739,24 +1110,102 @@
         document.getElementById('focusToday').textContent = DAILY_FOCUS[idx];
     }
 
+    // ============= CONTRACTION TIMER FUNCTIONS =============
+
+    // Wake Lock API - prevents screen from sleeping during active timing
+    async function requestWakeLock() {
+        if ('wakeLock' in navigator) {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+                wakeLock.addEventListener('release', () => {
+                    updateWakeLockStatus(false);
+                });
+                updateWakeLockStatus(true);
+                console.log('Wake Lock aktiviert');
+            } catch (err) {
+                console.warn('Wake Lock konnte nicht aktiviert werden:', err);
+                updateWakeLockStatus(false);
+            }
+        } else {
+            console.warn('Wake Lock API nicht unterstuetzt');
+            updateWakeLockStatus(false);
+        }
+    }
+
+    async function releaseWakeLock() {
+        if (wakeLock !== null) {
+            try {
+                await wakeLock.release();
+                wakeLock = null;
+                updateWakeLockStatus(false);
+                console.log('Wake Lock freigegeben');
+            } catch (err) {
+                console.warn('Wake Lock konnte nicht freigegeben werden:', err);
+            }
+        }
+    }
+
+    function updateWakeLockStatus(active) {
+        const statusEl = document.getElementById('wakeLockStatus');
+        if (statusEl) {
+            if (active) {
+                statusEl.textContent = 'Bildschirm: AN';
+                statusEl.className = 'wake-lock-indicator';
+            } else {
+                statusEl.textContent = 'Bildschirm: normal';
+                statusEl.className = 'wake-lock-indicator inactive';
+            }
+        }
+    }
+
+    // Re-acquire wake lock when page becomes visible again
+    document.addEventListener('visibilitychange', async () => {
+        if (document.visibilityState === 'visible' && contractionTimerVisible && wakeLock === null) {
+            await requestWakeLock();
+        }
+    });
+
     function startContractionTimer() {
         contractionTimerVisible = !contractionTimerVisible;
         document.getElementById('contractionDisplay').classList.toggle('hidden', !contractionTimerVisible);
-        if (!contractionTimerVisible) {
-            contractionTimes = [];
+
+        if (contractionTimerVisible) {
+            // Timer wird gestartet
+            requestWakeLock();
+            renderContractionHistory();
+            checkFiveOneOne();
+        } else {
+            // Timer wird gestoppt - Wake Lock freigeben
+            releaseWakeLock();
             document.getElementById('lastContraction').textContent = '--:--';
-            document.getElementById('contractionInterval').textContent = '–';
-            document.getElementById('contractionAdvice').textContent = 'Timer zurückgesetzt.';
+            document.getElementById('contractionInterval').textContent = '--';
+            document.getElementById('contractionAdvice').textContent = 'Timer pausiert. Daten bleiben gespeichert.';
         }
     }
 
     function markContraction() {
         const now = new Date();
+
+        // Create contraction entry with timestamp
+        const contraction = {
+            startTime: now.toISOString(),
+            duration: 60, // Default 60 seconds, can be adjusted
+            timestamp: now.getTime()
+        };
+
+        // Add to history
+        contractionHistory.push(contraction);
         contractionTimes.push(now);
 
+        // Save immediately to localStorage (critical for reliability!)
+        saveContractionData();
+
+        // Update display
         document.getElementById('lastContraction').textContent = now.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
-        if (contractionTimes.length > 3) {
-            contractionTimes = contractionTimes.slice(-3);
+
+        // Calculate intervals
+        if (contractionTimes.length > 10) {
+            contractionTimes = contractionTimes.slice(-10);
         }
 
         if (contractionTimes.length >= 2) {
@@ -766,13 +1215,14 @@
                 minutes.push(Math.round(diffMs / 60000));
             }
             const avg = minutes.reduce((a,b)=>a+b,0) / minutes.length;
+            const lastInterval = minutes[minutes.length - 1];
             document.getElementById('contractionInterval').textContent =
-                `${avg.toFixed(1)} Min. (Ø der letzten ${minutes.length} Abstände)`;
+                `${lastInterval} Min. (Durchschnitt: ${avg.toFixed(1)} Min.)`;
 
             const adviceEl = document.getElementById('contractionAdvice');
             if (avg <= 5 && contractionTimes.length >= 3) {
-                adviceEl.innerHTML = '🚨 5‑1‑1 erreicht oder kurz davor: Bei starken, regelmäßigen Wehen Klinik oder Hebamme anrufen.';
-                adviceEl.style.color = 'red';
+                adviceEl.innerHTML = 'Wehen kommen regelmaessig! Beobachte weiter.';
+                adviceEl.style.color = '#ff5722';
                 adviceEl.style.fontWeight = 'bold';
             } else {
                 adviceEl.textContent = 'Wehen beobachten. Bei Unsicherheit immer Klinik/Hebamme anrufen.';
@@ -780,12 +1230,230 @@
                 adviceEl.style.fontWeight = 'normal';
             }
         }
+
+        // Update visual history and 5-1-1 check
+        renderContractionHistory();
+        checkFiveOneOne();
     }
 
+    function saveContractionData() {
+        localStorage.setItem('papa_contraction_history', JSON.stringify(contractionHistory));
+    }
+
+    function renderContractionHistory() {
+        const container = document.getElementById('contractionHistoryDisplay');
+        if (!container) return;
+
+        if (contractionHistory.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.style.display = 'block';
+
+        // Show last 5 contractions
+        const lastFive = contractionHistory.slice(-5).reverse();
+
+        let html = '<div class="contraction-history-title">Letzte 5 Wehen:</div>';
+
+        lastFive.forEach((contraction, index) => {
+            const time = new Date(contraction.startTime);
+            const timeStr = time.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+            const duration = contraction.duration || 60;
+
+            // Calculate interval to previous contraction
+            let intervalStr = '';
+            const currentIdx = contractionHistory.length - 1 - index;
+            if (currentIdx > 0) {
+                const prevContraction = contractionHistory[currentIdx - 1];
+                const prevTime = new Date(prevContraction.startTime);
+                const intervalMs = time - prevTime;
+                const intervalMin = Math.round(intervalMs / 60000);
+                intervalStr = `<span class="contraction-interval">(${intervalMin} Min. Abstand)</span>`;
+            }
+
+            // Bar width based on duration (max 120 seconds = 100%)
+            const barWidth = Math.min(100, (duration / 120) * 100);
+
+            html += `
+                <div class="contraction-entry">
+                    <div class="contraction-bar" style="width: ${barWidth}px;"></div>
+                    <div class="contraction-info">
+                        <span class="contraction-time">${timeStr}</span>
+                        <span class="contraction-duration">~${duration}s</span>
+                        ${intervalStr}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function checkFiveOneOne() {
+        const alertContainer = document.getElementById('fiveOneOneAlert');
+        if (!alertContainer) return;
+
+        // 5-1-1 Rule: Contractions 5 minutes apart, lasting 1 minute, for 1 hour
+        if (contractionHistory.length < 6) {
+            alertContainer.innerHTML = '';
+            return;
+        }
+
+        // Check last hour of contractions
+        const oneHourAgo = Date.now() - (60 * 60 * 1000);
+        const recentContractions = contractionHistory.filter(c => c.timestamp > oneHourAgo);
+
+        if (recentContractions.length < 6) {
+            alertContainer.innerHTML = '';
+            return;
+        }
+
+        // Calculate average interval for recent contractions
+        const intervals = [];
+        for (let i = 1; i < recentContractions.length; i++) {
+            const intervalMs = recentContractions[i].timestamp - recentContractions[i-1].timestamp;
+            intervals.push(intervalMs / 60000); // Convert to minutes
+        }
+
+        const avgInterval = intervals.reduce((a,b) => a+b, 0) / intervals.length;
+        const avgDuration = recentContractions.reduce((sum, c) => sum + (c.duration || 60), 0) / recentContractions.length;
+
+        // Check 5-1-1 criteria
+        const isFiveMinApart = avgInterval <= 5;
+        const isOneMinLong = avgDuration >= 45; // 45+ seconds counts
+        const isOneHour = recentContractions.length >= 6;
+
+        if (isFiveMinApart && isOneMinLong && isOneHour) {
+            alertContainer.innerHTML = `
+                <div class="five-one-one-alert">
+                    5-1-1 REGEL ERREICHT!
+                    <div class="five-one-one-info">
+                        Wehen alle ~${avgInterval.toFixed(0)} Min., ~${Math.round(avgDuration)}s lang, seit 1+ Stunde<br>
+                        <strong>Jetzt Klinik/Hebamme kontaktieren!</strong>
+                    </div>
+                </div>
+            `;
+        } else if (avgInterval <= 7) {
+            alertContainer.innerHTML = `
+                <div style="background:#fff3e0;padding:12px;border-radius:8px;margin-top:12px;border-left:4px solid #ff9800;">
+                    <strong>Fast da!</strong> Durchschnitt: ${avgInterval.toFixed(1)} Min. Abstand
+                    <div style="font-size:0.85em;margin-top:4px;color:#666;">
+                        5-1-1 Regel: 5 Min. Abstand, 1 Min. Dauer, 1 Stunde lang
+                    </div>
+                </div>
+            `;
+        } else {
+            alertContainer.innerHTML = '';
+        }
+    }
+
+    function clearContractionHistory() {
+        if (confirm('Wirklich alle Wehen-Daten loeschen? Diese Aktion kann nicht rueckgaengig gemacht werden.')) {
+            contractionHistory = [];
+            contractionTimes = [];
+            saveContractionData();
+            renderContractionHistory();
+            document.getElementById('fiveOneOneAlert').innerHTML = '';
+            document.getElementById('lastContraction').textContent = '--:--';
+            document.getElementById('contractionInterval').textContent = '--';
+            document.getElementById('contractionAdvice').textContent = 'Verlauf geloescht. Bereit fuer neue Aufzeichnung.';
+            document.getElementById('exportOutput').style.display = 'none';
+            alert('Wehen-Verlauf wurde geloescht.');
+        }
+    }
+
+    function exportContractions() {
+        if (contractionHistory.length === 0) {
+            alert('Keine Wehen-Daten zum Exportieren vorhanden.');
+            return;
+        }
+
+        // Generate hospital-friendly summary
+        const now = new Date();
+        let summary = `WEHEN-PROTOKOLL\n`;
+        summary += `Erstellt: ${now.toLocaleDateString('de-DE')} ${now.toLocaleTimeString('de-DE')}\n`;
+        summary += `Gesamtzahl Wehen: ${contractionHistory.length}\n`;
+        summary += `========================================\n\n`;
+
+        // Calculate statistics
+        if (contractionHistory.length >= 2) {
+            const intervals = [];
+            for (let i = 1; i < contractionHistory.length; i++) {
+                const intervalMs = contractionHistory[i].timestamp - contractionHistory[i-1].timestamp;
+                intervals.push(intervalMs / 60000);
+            }
+            const avgInterval = intervals.reduce((a,b) => a+b, 0) / intervals.length;
+            const minInterval = Math.min(...intervals);
+            const maxInterval = Math.max(...intervals);
+
+            summary += `ZUSAMMENFASSUNG:\n`;
+            summary += `- Durchschnittlicher Abstand: ${avgInterval.toFixed(1)} Min.\n`;
+            summary += `- Kuerzester Abstand: ${minInterval.toFixed(1)} Min.\n`;
+            summary += `- Laengster Abstand: ${maxInterval.toFixed(1)} Min.\n`;
+            summary += `- Zeitraum: ${new Date(contractionHistory[0].startTime).toLocaleTimeString('de-DE')} bis ${new Date(contractionHistory[contractionHistory.length-1].startTime).toLocaleTimeString('de-DE')}\n\n`;
+        }
+
+        summary += `DETAILLIERTER VERLAUF:\n`;
+        summary += `----------------------------------------\n`;
+
+        contractionHistory.forEach((contraction, index) => {
+            const time = new Date(contraction.startTime);
+            const timeStr = time.toLocaleString('de-DE');
+            let intervalStr = '';
+
+            if (index > 0) {
+                const prevTime = new Date(contractionHistory[index-1].startTime);
+                const intervalMin = Math.round((time - prevTime) / 60000);
+                intervalStr = ` (${intervalMin} Min. seit letzter)`;
+            }
+
+            summary += `${index + 1}. ${timeStr}${intervalStr}\n`;
+        });
+
+        summary += `\n========================================\n`;
+        summary += `Erstellt mit Unser Baby App\n`;
+
+        // Display and copy options
+        const exportOutput = document.getElementById('exportOutput');
+        exportOutput.style.display = 'block';
+        exportOutput.innerHTML = `
+            <div style="margin-top:12px;">
+                <button class="button small" onclick="copyToClipboard()">In Zwischenablage kopieren</button>
+                <div class="export-text" id="exportText">${summary}</div>
+            </div>
+        `;
+    }
+
+    function copyToClipboard() {
+        const exportText = document.getElementById('exportText');
+        if (exportText) {
+            navigator.clipboard.writeText(exportText.textContent).then(() => {
+                alert('Wehen-Protokoll in Zwischenablage kopiert!');
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = exportText.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Wehen-Protokoll in Zwischenablage kopiert!');
+            });
+        }
+    }
+
+    // Release wake lock when page is closed/unloaded
+    window.addEventListener('beforeunload', () => {
+        releaseWakeLock();
+    });
+
+    // ============= END CONTRACTION TIMER FUNCTIONS =============
+
     function showHospitalBag() {
-        alert('🏥 KLINIKTASCHE – Kurzcheck:\n\n' +
-            HOSPITAL_BAG.map(i => '• ' + i).join('\n') +
-            '\n\nTipp: Tasche spätestens in SSW 36 fertig packen und im Flur bereithalten.');
+        alert('KLINIKTASCHE - Kurzcheck:\n\n' +
+            HOSPITAL_BAG.map(i => '* ' + i).join('\n') +
+            '\n\nTipp: Tasche spaetestens in SSW 36 fertig packen und im Flur bereithalten.');
     }
 
     function updateDevelopment() {
@@ -859,6 +1527,8 @@
             const ideas = JSON.parse(localStorage.getItem('papa_app_ideas') || 'null');
             const viewed = JSON.parse(localStorage.getItem('papa_viewed_names') || '[]');
             const taste = JSON.parse(localStorage.getItem('papa_taste_profile') || 'null');
+            const savedLastSyncTime = localStorage.getItem('papa_last_sync_time');
+            const contractions = JSON.parse(localStorage.getItem('papa_contraction_history') || '[]');
 
             if (t2) TRIMESTER2_TASKS.forEach((t, i) => { if (t2[i]) t.done = t2[i].done; });
             if (prep) PREP_TASKS.forEach((t, i) => { if (prep[i]) t.done = prep[i].done; });
@@ -873,6 +1543,11 @@
             if (ideas) appIdeas = ideas;
             if (viewed) viewedNames = viewed;
             if (taste) tasteProfile = taste;
+            if (contractions) contractionHistory = contractions;
+            if (savedLastSyncTime) {
+                lastSyncTime = new Date(savedLastSyncTime);
+                updateLastSyncDisplay();
+            }
         } catch(e) {
             console.warn('Konnte lokale Daten nicht laden, starte frisch.', e);
         }
@@ -890,6 +1565,10 @@
         if (syncCode) {
             document.getElementById('syncCodeInput').value = syncCode;
             document.getElementById('syncStatus').innerHTML = '✅ Sync aktiv mit Code: <strong>' + syncCode + '</strong>';
+            // Update sync status indicator based on last sync time
+            if (lastSyncTime) {
+                updateSyncStatusIndicator('synced');
+            }
         }
     }
 
@@ -1154,6 +1833,9 @@
     }
 
     function syncToCloud(syncRef) {
+        // Update status to syncing
+        updateSyncStatusIndicator('syncing');
+
         if (!syncRef) {
             const db = firebase.database();
             syncRef = db.ref('syncs/' + syncCode);
@@ -1175,7 +1857,83 @@
             tasteProfile: tasteProfile,
             lastUpdate: new Date().toISOString()
         };
-        syncRef.set(data);
+        syncRef.set(data)
+            .then(() => {
+                lastSyncTime = new Date();
+                localStorage.setItem('papa_last_sync_time', lastSyncTime.toISOString());
+                updateSyncStatusIndicator('synced');
+                updateLastSyncDisplay();
+            })
+            .catch((error) => {
+                console.error('Sync error:', error);
+                updateSyncStatusIndicator('offline');
+            });
+    }
+
+    // Sync status indicator functions
+    function updateSyncStatusIndicator(status) {
+        syncStatus = status;
+        const indicator = document.getElementById('syncStatusIndicator');
+        const icon = document.getElementById('syncIcon');
+        const text = document.getElementById('syncStatusText');
+
+        if (!indicator || !icon || !text) return;
+
+        // Remove all status classes
+        indicator.classList.remove('local', 'syncing', 'synced', 'offline');
+        icon.classList.remove('spinning');
+
+        switch (status) {
+            case 'local':
+                indicator.classList.add('local');
+                icon.textContent = '✓';
+                text.textContent = 'Gespeichert';
+                break;
+            case 'syncing':
+                indicator.classList.add('syncing');
+                icon.classList.add('spinning');
+                icon.textContent = '↻';
+                text.textContent = 'Synchronisiere...';
+                break;
+            case 'synced':
+                indicator.classList.add('synced');
+                icon.textContent = '☁️';
+                text.textContent = 'Synchronisiert';
+                break;
+            case 'offline':
+                indicator.classList.add('offline');
+                icon.textContent = '⚠️';
+                text.textContent = 'Offline';
+                break;
+        }
+    }
+
+    function updateLastSyncDisplay() {
+        const display = document.getElementById('lastSyncDisplay');
+        if (!display) return;
+
+        if (lastSyncTime) {
+            const formattedTime = lastSyncTime.toLocaleString('de-DE', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            display.textContent = '🕐 Letzte Synchronisierung: ' + formattedTime;
+        } else {
+            display.textContent = '';
+        }
+    }
+
+    function checkOnlineStatus() {
+        if (!navigator.onLine) {
+            updateSyncStatusIndicator('offline');
+        } else if (syncEnabled && lastSyncTime) {
+            updateSyncStatusIndicator('synced');
+        } else {
+            updateSyncStatusIndicator('local');
+        }
     }
 
     // ============= NEUE FEATURES =============
@@ -1185,6 +1943,8 @@
         const date = document.getElementById('appointmentDate').value;
         const time = document.getElementById('appointmentTime').value;
         const desc = document.getElementById('appointmentDesc').value.trim();
+        const reminderCheckbox = document.getElementById('appointmentReminder');
+        const reminderEnabled = reminderCheckbox ? reminderCheckbox.checked : true;
 
         if (!date || !desc) {
             alert('Bitte Datum und Beschreibung eingeben.');
@@ -1196,7 +1956,9 @@
             date: date,
             time: time || '09:00',
             description: desc,
-            reminded: false
+            reminded: false,
+            reminded1h: false,
+            reminderEnabled: reminderEnabled
         };
 
         appointments.push(appointment);
@@ -1205,10 +1967,13 @@
         document.getElementById('appointmentDate').value = '';
         document.getElementById('appointmentTime').value = '';
         document.getElementById('appointmentDesc').value = '';
+        if (reminderCheckbox) reminderCheckbox.checked = true;
 
         saveData();
         renderAppointments();
-        alert('✅ Termin hinzugefügt!');
+        renderUpcomingReminders();
+        scheduleAppointmentReminders();
+        alert('Termin hinzugefuegt!');
     }
 
     function renderAppointments() {
@@ -1225,6 +1990,7 @@
             const aptDate = new Date(apt.date + ' ' + apt.time);
             const isPast = aptDate < now;
             const isToday = apt.date === now.toISOString().split('T')[0];
+            const reminderOn = apt.reminderEnabled !== false;
 
             const div = document.createElement('div');
             div.className = 'log-entry';
@@ -1233,31 +1999,47 @@
 
             const dateStr = new Date(apt.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const badge = isToday ? '<span class="pill" style="background:#ff5722;color:white;">HEUTE</span>' : '';
+            const reminderBadge = reminderOn ? '<span class="pill" style="background:#4caf50;color:white;">Erinnerung</span>' : '';
 
             div.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;">
                     <div>
-                        <strong>${apt.description}</strong> ${badge}<br>
-                        <span style="font-size:0.85em;color:#777;">📅 ${dateStr} um ${apt.time} Uhr</span>
+                        <strong>${apt.description}</strong> ${badge} ${reminderBadge}<br>
+                        <span style="font-size:0.85em;color:#777;">Datum: ${dateStr} um ${apt.time} Uhr</span>
                     </div>
-                    <button class="button small" style="padding:4px 8px;margin:0;" onclick="deleteAppointment(${index})">🗑️</button>
+                    <div style="display:flex;gap:4px;">
+                        <button class="button small" style="padding:4px 8px;margin:0;" onclick="toggleAppointmentReminder(${index})" title="Erinnerung umschalten">${reminderOn ? 'Aus' : 'An'}</button>
+                        <button class="button small" style="padding:4px 8px;margin:0;" onclick="deleteAppointment(${index})">X</button>
+                    </div>
                 </div>
             `;
             container.appendChild(div);
         });
     }
 
+    function toggleAppointmentReminder(index) {
+        appointments[index].reminderEnabled = appointments[index].reminderEnabled === false ? true : false;
+        saveData();
+        renderAppointments();
+        renderUpcomingReminders();
+        scheduleAppointmentReminders();
+    }
+
     function deleteAppointment(index) {
-        if (confirm('Termin wirklich löschen?')) {
+        if (confirm('Termin wirklich loeschen?')) {
             appointments.splice(index, 1);
             saveData();
             renderAppointments();
+            renderUpcomingReminders();
+            scheduleAppointmentReminders();
         }
     }
 
     function checkAppointmentReminders() {
         const now = new Date();
         appointments.forEach(apt => {
+            if (apt.reminderEnabled === false) return;
+
             const aptDate = new Date(apt.date + ' ' + apt.time);
             const hoursUntil = (aptDate - now) / (1000 * 60 * 60);
 
@@ -1265,10 +2047,210 @@
             if (!apt.reminded && hoursUntil > 0 && hoursUntil <= 24) {
                 apt.reminded = true;
                 saveData();
-                // Browser notification would require permission
-                console.log('Reminder: ' + apt.description);
+                sendAppointmentNotification(apt, '24h');
+            }
+
+            // Reminder 1h before
+            if (!apt.reminded1h && hoursUntil > 0 && hoursUntil <= 1) {
+                apt.reminded1h = true;
+                saveData();
+                sendAppointmentNotification(apt, '1h');
             }
         });
+    }
+
+    // ============= NOTIFICATION FUNCTIONS =============
+
+    function loadNotificationSettings() {
+        notificationsEnabled = localStorage.getItem('papa_notifications_enabled') === 'true';
+        updateNotificationStatusUI();
+
+        if ('Notification' in window) {
+            if (Notification.permission === 'granted') {
+                notificationsEnabled = true;
+                localStorage.setItem('papa_notifications_enabled', 'true');
+            } else if (Notification.permission === 'denied') {
+                notificationsEnabled = false;
+                localStorage.setItem('papa_notifications_enabled', 'false');
+            }
+            updateNotificationStatusUI();
+        }
+    }
+
+    function updateNotificationStatusUI() {
+        const statusDiv = document.getElementById('notificationStatus');
+        const statusText = document.getElementById('notificationStatusText');
+
+        if (statusDiv && statusText) {
+            if (notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
+                statusDiv.className = 'notification-status enabled';
+                statusText.textContent = 'Benachrichtigungen: Aktiviert';
+            } else {
+                statusDiv.className = 'notification-status disabled';
+                statusText.textContent = 'Benachrichtigungen: Deaktiviert';
+            }
+        }
+    }
+
+    function requestNotificationPermission() {
+        if (!('Notification' in window)) {
+            alert('Dein Browser unterstuetzt keine Benachrichtigungen.');
+            return;
+        }
+
+        if (Notification.permission === 'granted') {
+            notificationsEnabled = true;
+            localStorage.setItem('papa_notifications_enabled', 'true');
+            updateNotificationStatusUI();
+            alert('Benachrichtigungen sind bereits aktiviert!');
+            return;
+        }
+
+        if (Notification.permission === 'denied') {
+            alert('Benachrichtigungen wurden blockiert. Bitte aktiviere sie in den Browser-Einstellungen.');
+            return;
+        }
+
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                notificationsEnabled = true;
+                localStorage.setItem('papa_notifications_enabled', 'true');
+                updateNotificationStatusUI();
+                scheduleAppointmentReminders();
+
+                new Notification('Benachrichtigungen aktiviert!', {
+                    body: 'Du erhaeltst jetzt Erinnerungen fuer deine Termine.',
+                    icon: './icon-192.png'
+                });
+            } else {
+                notificationsEnabled = false;
+                localStorage.setItem('papa_notifications_enabled', 'false');
+                updateNotificationStatusUI();
+                alert('Benachrichtigungen wurden nicht aktiviert.');
+            }
+        });
+    }
+
+    function sendAppointmentNotification(apt, type) {
+        if (!notificationsEnabled) return;
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+        let title, body;
+
+        if (type === '24h') {
+            title = 'Termin-Erinnerung';
+            body = 'Morgen: ' + apt.description + ' um ' + apt.time;
+        } else if (type === '1h') {
+            title = 'Termin in 1 Stunde!';
+            body = 'In 1 Stunde: ' + apt.description;
+        }
+
+        try {
+            new Notification(title, {
+                body: body,
+                icon: './icon-192.png',
+                tag: 'appointment-' + apt.id + '-' + type,
+                requireInteraction: true
+            });
+        } catch (e) {
+            console.error('Notification error:', e);
+        }
+    }
+
+    function scheduleAppointmentReminders() {
+        Object.values(scheduledNotifications).forEach(function(tid) { clearTimeout(tid); });
+        scheduledNotifications = {};
+
+        if (!notificationsEnabled) return;
+
+        const now = new Date();
+
+        appointments.forEach(function(apt) {
+            if (apt.reminderEnabled === false) return;
+
+            const aptDate = new Date(apt.date + ' ' + apt.time);
+            const msUntil = aptDate - now;
+
+            if (msUntil <= 0) return;
+
+            const ms24h = msUntil - (24 * 60 * 60 * 1000);
+            if (ms24h > 0 && !apt.reminded) {
+                scheduledNotifications[apt.id + '-24h'] = setTimeout(function() {
+                    sendAppointmentNotification(apt, '24h');
+                    apt.reminded = true;
+                    saveData();
+                }, ms24h);
+            }
+
+            const ms1h = msUntil - (60 * 60 * 1000);
+            if (ms1h > 0 && !apt.reminded1h) {
+                scheduledNotifications[apt.id + '-1h'] = setTimeout(function() {
+                    sendAppointmentNotification(apt, '1h');
+                    apt.reminded1h = true;
+                    saveData();
+                }, ms1h);
+            }
+        });
+    }
+
+    function checkUpcomingAppointments() {
+        renderUpcomingReminders();
+    }
+
+    function renderUpcomingReminders() {
+        const container = document.getElementById('upcomingReminders');
+        if (!container) return;
+
+        const now = new Date();
+        const upcomingApts = appointments
+            .filter(function(apt) { return new Date(apt.date + ' ' + apt.time) > now; })
+            .slice(0, 3);
+
+        if (upcomingApts.length === 0) {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Keine bevorstehenden Termine.</p>';
+            return;
+        }
+
+        container.innerHTML = '<div class="subheading" style="margin-bottom:10px;">Naechste Termine:</div>';
+
+        upcomingApts.forEach(function(apt) {
+            const aptDate = new Date(apt.date + ' ' + apt.time);
+            const isToday = apt.date === now.toISOString().split('T')[0];
+            const countdown = getCountdownText(aptDate, now);
+            const reminderOn = apt.reminderEnabled !== false;
+
+            const div = document.createElement('div');
+            div.className = 'upcoming-reminder' + (isToday ? ' today' : '');
+
+            const dateStr = aptDate.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+
+            div.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+                '<div><strong>' + apt.description + '</strong>' +
+                (isToday ? '<span class="pill" style="background:#ff5722;color:white;margin-left:6px;">HEUTE</span>' : '') +
+                '<div style="font-size:0.9em;color:#555;margin-top:4px;">' + dateStr + ' um ' + apt.time + ' Uhr</div></div>' +
+                (reminderOn ? '<span style="font-size:0.9em;color:#4caf50;">Benachrichtigung</span>' : '') +
+                '</div><div class="reminder-countdown ' + (isToday ? 'urgent' : '') + '">' + countdown + '</div>';
+
+            container.appendChild(div);
+        });
+    }
+
+    function getCountdownText(targetDate, now) {
+        const diffMs = targetDate - now;
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffHours / 24);
+        const remainingHours = diffHours % 24;
+        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (diffDays > 0) {
+            return 'In ' + diffDays + ' Tag(en) und ' + remainingHours + ' Stunde(n)';
+        } else if (diffHours > 0) {
+            return 'In ' + diffHours + ' Stunde(n) und ' + diffMinutes + ' Minuten';
+        } else if (diffMinutes > 0) {
+            return 'In ' + diffMinutes + ' Minuten';
+        } else {
+            return 'Jetzt!';
+        }
     }
 
     // Einkaufsliste
@@ -1831,21 +2813,37 @@
                 const actualIndex = customTodos.indexOf(todo);
                 const div = document.createElement('div');
                 div.className = 'task-item';
+                div.id = `todo-item-${actualIndex}`;
 
                 // Check if overdue
                 const isOverdue = todo.dueDate && new Date(todo.dueDate) < new Date();
                 if (isOverdue) div.classList.add('overdue');
 
-                div.innerHTML = `
-                    <input type="checkbox" class="task-checkbox"
-                           onchange="toggleCustomTodo(${actualIndex})">
-                    <div class="task-text">
-                        ${todo.text}
-                        ${todo.dueDate ? `<div class="task-date">Fällig: ${new Date(todo.dueDate).toLocaleDateString('de-DE')}</div>` : ''}
-                        ${isOverdue ? '<span class="overdue-badge">ÜBERFÄLLIG</span>' : ''}
-                    </div>
-                    <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteCustomTodo(${actualIndex})">🗑️</button>
-                `;
+                // Check if this todo is being edited
+                if (editingTodoIndex === actualIndex) {
+                    div.innerHTML = `
+                        <div class="inline-edit-container">
+                            <input type="text" class="inline-edit-input" id="edit-text-${actualIndex}" value="${todo.text.replace(/"/g, '&quot;')}">
+                            <input type="date" class="inline-edit-date" id="edit-date-${actualIndex}" value="${todo.dueDate || ''}">
+                            <div class="inline-edit-actions">
+                                <button class="save-btn" onclick="saveEditedTodo(${actualIndex})">Speichern</button>
+                                <button class="cancel-btn" onclick="cancelEditTodo()">Abbrechen</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <input type="checkbox" class="task-checkbox"
+                               onchange="toggleCustomTodo(${actualIndex})">
+                        <div class="task-text" style="flex:1;">
+                            ${todo.text}
+                            ${todo.dueDate ? `<div class="task-date">Fällig: ${new Date(todo.dueDate).toLocaleDateString('de-DE')}</div>` : ''}
+                            ${isOverdue ? '<span class="overdue-badge">ÜBERFÄLLIG</span>' : ''}
+                        </div>
+                        <button class="todo-action-btn" onclick="editCustomTodo(${actualIndex})" title="Bearbeiten">✏️</button>
+                        <button class="todo-action-btn" onclick="deleteCustomTodo(${actualIndex})" title="Löschen">🗑️</button>
+                    `;
+                }
                 pendingContainer.appendChild(div);
             });
         }
@@ -1859,15 +2857,32 @@
                 const actualIndex = customTodos.indexOf(todo);
                 const div = document.createElement('div');
                 div.className = 'task-item done-todo';
-                div.innerHTML = `
-                    <input type="checkbox" class="task-checkbox" checked
-                           onchange="toggleCustomTodo(${actualIndex})">
-                    <div class="task-text">
-                        ${todo.text}
-                        ${todo.dueDate ? `<div class="task-date">War fällig: ${new Date(todo.dueDate).toLocaleDateString('de-DE')}</div>` : ''}
-                    </div>
-                    <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteCustomTodo(${actualIndex})">🗑️</button>
-                `;
+                div.id = `todo-item-${actualIndex}`;
+
+                // Check if this todo is being edited
+                if (editingTodoIndex === actualIndex) {
+                    div.innerHTML = `
+                        <div class="inline-edit-container">
+                            <input type="text" class="inline-edit-input" id="edit-text-${actualIndex}" value="${todo.text.replace(/"/g, '&quot;')}">
+                            <input type="date" class="inline-edit-date" id="edit-date-${actualIndex}" value="${todo.dueDate || ''}">
+                            <div class="inline-edit-actions">
+                                <button class="save-btn" onclick="saveEditedTodo(${actualIndex})">Speichern</button>
+                                <button class="cancel-btn" onclick="cancelEditTodo()">Abbrechen</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <input type="checkbox" class="task-checkbox" checked
+                               onchange="toggleCustomTodo(${actualIndex})">
+                        <div class="task-text" style="flex:1;">
+                            ${todo.text}
+                            ${todo.dueDate ? `<div class="task-date">War fällig: ${new Date(todo.dueDate).toLocaleDateString('de-DE')}</div>` : ''}
+                        </div>
+                        <button class="todo-action-btn" onclick="editCustomTodo(${actualIndex})" title="Bearbeiten">✏️</button>
+                        <button class="todo-action-btn" onclick="deleteCustomTodo(${actualIndex})" title="Löschen">🗑️</button>
+                    `;
+                }
                 doneContainer.appendChild(div);
             });
         }
@@ -1876,6 +2891,41 @@
     function toggleCustomTodo(index) {
         customTodos[index].done = !customTodos[index].done;
         saveData();
+        renderCustomTodos();
+    }
+
+    function editCustomTodo(index) {
+        editingTodoIndex = index;
+        renderCustomTodos();
+        // Focus the text input after rendering
+        setTimeout(() => {
+            const input = document.getElementById(`edit-text-${index}`);
+            if (input) {
+                input.focus();
+                input.select();
+            }
+        }, 0);
+    }
+
+    function saveEditedTodo(index) {
+        const textInput = document.getElementById(`edit-text-${index}`);
+        const dateInput = document.getElementById(`edit-date-${index}`);
+
+        if (!textInput || !textInput.value.trim()) {
+            alert('Bitte eine Aufgabe eingeben.');
+            return;
+        }
+
+        customTodos[index].text = textInput.value.trim();
+        customTodos[index].dueDate = dateInput.value || null;
+
+        editingTodoIndex = null;
+        saveData();
+        renderCustomTodos();
+    }
+
+    function cancelEditTodo() {
+        editingTodoIndex = null;
         renderCustomTodos();
     }
 
@@ -1980,6 +3030,7 @@
         localStorage.setItem('papa_app_ideas', JSON.stringify(appIdeas));
         localStorage.setItem('papa_viewed_names', JSON.stringify(viewedNames));
         localStorage.setItem('papa_taste_profile', JSON.stringify(tasteProfile));
+        localStorage.setItem('papa_contraction_history', JSON.stringify(contractionHistory));
 
         // Auch in die Cloud syncen wenn aktiviert
         if (syncEnabled && window.firebase && firebase.apps.length) {
