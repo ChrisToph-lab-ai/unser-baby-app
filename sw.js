@@ -1,7 +1,8 @@
-const CACHE_NAME = 'unser-baby-v1';
+const CACHE_NAME = 'unser-baby-v2';
 const urlsToCache = [
   './Daddy_App.html',
-  './manifest.json'
+  './manifest.json',
+  './names-database.json'
 ];
 
 // Installation - Cache anlegen
@@ -33,35 +34,52 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// Fetch - Offline-First Strategie
+// Fetch - Network First for HTML, Cache First for others
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-
-        // Clone the request
-        const fetchRequest = event.request.clone();
-
-        return fetch(fetchRequest).then((response) => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // Clone the response
+  // For HTML files, try network first to get latest version
+  if (event.request.url.includes('.html') || event.request.url.includes('.json')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Clone and cache the new response
           const responseToCache = response.clone();
-
           caches.open(CACHE_NAME)
             .then((cache) => {
               cache.put(event.request, responseToCache);
             });
-
           return response;
-        });
-      })
-  );
+        })
+        .catch(() => {
+          // If network fails, fall back to cache
+          return caches.match(event.request);
+        })
+    );
+  } else {
+    // For other files (images, CSS), use cache first
+    event.respondWith(
+      caches.match(event.request)
+        .then((response) => {
+          if (response) {
+            return response;
+          }
+
+          const fetchRequest = event.request.clone();
+
+          return fetch(fetchRequest).then((response) => {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            const responseToCache = response.clone();
+
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+
+            return response;
+          });
+        })
+    );
+  }
 });
