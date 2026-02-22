@@ -1,0 +1,1019 @@
+[
+  {
+    "name": "Ben",
+    "meaning": "Der Sohn",
+    "origin": "Hebräisch",
+    "popularity": 95,
+    "length": "short",
+    "style": ["modern", "international"],
+    "syllables": 1
+  },
+  {
+    "name": "Leo",
+    "meaning": "Der Löwe",
+    "origin": "Lateinisch",
+    "popularity": 98,
+    "length": "short",
+    "style": ["modern", "klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Max",
+    "meaning": "Der Größte",
+    "origin": "Lateinisch",
+    "popularity": 94,
+    "length": "short",
+    "style": ["modern", "klassisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Tim",
+    "meaning": "Der Ehrende",
+    "origin": "Griechisch",
+    "popularity": 82,
+    "length": "short",
+    "style": ["modern"],
+    "syllables": 1
+  },
+  {
+    "name": "Tom",
+    "meaning": "Der Zwilling",
+    "origin": "Aramäisch",
+    "popularity": 75,
+    "length": "short",
+    "style": ["modern", "international"],
+    "syllables": 1
+  },
+  {
+    "name": "Jan",
+    "meaning": "Gott ist gnädig",
+    "origin": "Hebräisch",
+    "popularity": 78,
+    "length": "short",
+    "style": ["klassisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Finn",
+    "meaning": "Der Blonde / Der Wanderer",
+    "origin": "Irisch",
+    "popularity": 91,
+    "length": "short",
+    "style": ["modern", "nordisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Liam",
+    "meaning": "Entschlossener Beschützer",
+    "origin": "Irisch",
+    "popularity": 96,
+    "length": "short",
+    "style": ["modern", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Paul",
+    "meaning": "Der Kleine",
+    "origin": "Lateinisch",
+    "popularity": 93,
+    "length": "short",
+    "style": ["klassisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Noah",
+    "meaning": "Der Ruhebringende",
+    "origin": "Hebräisch",
+    "popularity": 99,
+    "length": "short",
+    "style": ["modern", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Emil",
+    "meaning": "Der Eifrige",
+    "origin": "Lateinisch",
+    "popularity": 89,
+    "length": "short",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Karl",
+    "meaning": "Der freie Mann",
+    "origin": "Deutsch",
+    "popularity": 72,
+    "length": "short",
+    "style": ["klassisch", "vintage"],
+    "syllables": 1
+  },
+  {
+    "name": "Luis",
+    "meaning": "Berühmter Kämpfer",
+    "origin": "Deutsch",
+    "popularity": 90,
+    "length": "short",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Mats",
+    "meaning": "Geschenk Gottes",
+    "origin": "Hebräisch",
+    "popularity": 74,
+    "length": "short",
+    "style": ["modern", "nordisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Leon",
+    "meaning": "Der Löwe",
+    "origin": "Griechisch",
+    "popularity": 97,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Elias",
+    "meaning": "Mein Gott ist Jahwe",
+    "origin": "Hebräisch",
+    "popularity": 95,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Felix",
+    "meaning": "Der Glückliche",
+    "origin": "Lateinisch",
+    "popularity": 88,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Luca",
+    "meaning": "Der Leuchtende",
+    "origin": "Lateinisch",
+    "popularity": 92,
+    "length": "medium",
+    "style": ["modern", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Jonas",
+    "meaning": "Die Taube",
+    "origin": "Hebräisch",
+    "popularity": 87,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Moritz",
+    "meaning": "Der Dunkelhäutige",
+    "origin": "Lateinisch",
+    "popularity": 83,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Anton",
+    "meaning": "Der Wertvolle",
+    "origin": "Lateinisch",
+    "popularity": 86,
+    "length": "medium",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Jakob",
+    "meaning": "Gott möge schützen",
+    "origin": "Hebräisch",
+    "popularity": 81,
+    "length": "medium",
+    "style": ["klassisch", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Henry",
+    "meaning": "Der Herrscher",
+    "origin": "Deutsch",
+    "popularity": 85,
+    "length": "medium",
+    "style": ["modern", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Oscar",
+    "meaning": "Gottes Speer",
+    "origin": "Irisch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Theo",
+    "meaning": "Gottesgeschenk",
+    "origin": "Griechisch",
+    "popularity": 88,
+    "length": "short",
+    "style": ["modern", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Matteo",
+    "meaning": "Geschenk Gottes",
+    "origin": "Hebräisch",
+    "popularity": 90,
+    "length": "medium",
+    "style": ["modern", "international"],
+    "syllables": 3
+  },
+  {
+    "name": "Samuel",
+    "meaning": "Von Gott erhört",
+    "origin": "Hebräisch",
+    "popularity": 84,
+    "length": "medium",
+    "style": ["biblisch", "klassisch"],
+    "syllables": 3
+  },
+  {
+    "name": "David",
+    "meaning": "Der Geliebte",
+    "origin": "Hebräisch",
+    "popularity": 86,
+    "length": "medium",
+    "style": ["biblisch", "klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Johann",
+    "meaning": "Gott ist gnädig",
+    "origin": "Hebräisch",
+    "popularity": 71,
+    "length": "medium",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Oskar",
+    "meaning": "Gottes Speer",
+    "origin": "Irisch",
+    "popularity": 79,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Lukas",
+    "meaning": "Aus Lucania",
+    "origin": "Griechisch",
+    "popularity": 87,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Niklas",
+    "meaning": "Sieg des Volkes",
+    "origin": "Griechisch",
+    "popularity": 77,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Julian",
+    "meaning": "Aus dem Geschlecht der Julier",
+    "origin": "Lateinisch",
+    "popularity": 85,
+    "length": "medium",
+    "style": ["modern", "klassisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Henri",
+    "meaning": "Der Herrscher",
+    "origin": "Deutsch",
+    "popularity": 82,
+    "length": "medium",
+    "style": ["modern", "französisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Florian",
+    "meaning": "Der Blühende",
+    "origin": "Lateinisch",
+    "popularity": 80,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Adrian",
+    "meaning": "Mann aus Adria",
+    "origin": "Lateinisch",
+    "popularity": 78,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 3
+  },
+  {
+    "name": "Fabian",
+    "meaning": "Der Bohnenanbauer",
+    "origin": "Lateinisch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 3
+  },
+  {
+    "name": "Maximilian",
+    "meaning": "Der Größte",
+    "origin": "Lateinisch",
+    "popularity": 89,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 5
+  },
+  {
+    "name": "Alexander",
+    "meaning": "Der Beschützer",
+    "origin": "Griechisch",
+    "popularity": 87,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 4
+  },
+  {
+    "name": "Sebastian",
+    "meaning": "Der Ehrwürdige",
+    "origin": "Griechisch",
+    "popularity": 88,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 4
+  },
+  {
+    "name": "Leonard",
+    "meaning": "Stark wie ein Löwe",
+    "origin": "Deutsch",
+    "popularity": 84,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 3
+  },
+  {
+    "name": "Friedrich",
+    "meaning": "Der Friedensreiche",
+    "origin": "Deutsch",
+    "popularity": 68,
+    "length": "long",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Wilhelm",
+    "meaning": "Der entschlossene Beschützer",
+    "origin": "Deutsch",
+    "popularity": 70,
+    "length": "long",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Jonathan",
+    "meaning": "Geschenk Gottes",
+    "origin": "Hebräisch",
+    "popularity": 81,
+    "length": "long",
+    "style": ["modern", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Matthias",
+    "meaning": "Geschenk Gottes",
+    "origin": "Hebräisch",
+    "popularity": 75,
+    "length": "long",
+    "style": ["klassisch", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Benjamin",
+    "meaning": "Sohn des Glücks",
+    "origin": "Hebräisch",
+    "popularity": 86,
+    "length": "long",
+    "style": ["modern", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Constantin",
+    "meaning": "Der Standhafte",
+    "origin": "Lateinisch",
+    "popularity": 72,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 4
+  },
+  {
+    "name": "Nathanael",
+    "meaning": "Gott hat gegeben",
+    "origin": "Hebräisch",
+    "popularity": 73,
+    "length": "long",
+    "style": ["biblisch"],
+    "syllables": 4
+  },
+  {
+    "name": "Ferdinand",
+    "meaning": "Der kühne Beschützer",
+    "origin": "Deutsch",
+    "popularity": 69,
+    "length": "long",
+    "style": ["klassisch", "vintage"],
+    "syllables": 3
+  },
+  {
+    "name": "Christopher",
+    "meaning": "Christusträger",
+    "origin": "Griechisch",
+    "popularity": 77,
+    "length": "long",
+    "style": ["international", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Dominik",
+    "meaning": "Dem Herrn gehörend",
+    "origin": "Lateinisch",
+    "popularity": 78,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Johannes",
+    "meaning": "Gott ist gnädig",
+    "origin": "Hebräisch",
+    "popularity": 74,
+    "length": "long",
+    "style": ["klassisch", "biblisch"],
+    "syllables": 4
+  },
+  {
+    "name": "Aaron",
+    "meaning": "Der Erleuchtete",
+    "origin": "Hebräisch",
+    "popularity": 79,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Rafael",
+    "meaning": "Gott heilt",
+    "origin": "Hebräisch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Gabriel",
+    "meaning": "Mann Gottes",
+    "origin": "Hebräisch",
+    "popularity": 80,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Raphael",
+    "meaning": "Gott heilt",
+    "origin": "Hebräisch",
+    "popularity": 82,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Milo",
+    "meaning": "Der Gnädige",
+    "origin": "Lateinisch",
+    "popularity": 83,
+    "length": "short",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Nils",
+    "meaning": "Sieg des Volkes",
+    "origin": "Griechisch",
+    "popularity": 75,
+    "length": "short",
+    "style": ["nordisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Milan",
+    "meaning": "Der Gnädige",
+    "origin": "Slawisch",
+    "popularity": 81,
+    "length": "medium",
+    "style": ["modern", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Vincent",
+    "meaning": "Der Siegende",
+    "origin": "Lateinisch",
+    "popularity": 83,
+    "length": "medium",
+    "style": ["modern", "klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Lennard",
+    "meaning": "Stark wie ein Löwe",
+    "origin": "Deutsch",
+    "popularity": 77,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Hannes",
+    "meaning": "Gott ist gnädig",
+    "origin": "Hebräisch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Jannik",
+    "meaning": "Gott ist gnädig",
+    "origin": "Hebräisch",
+    "popularity": 74,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Lennox",
+    "meaning": "Mit vielen Ulmen",
+    "origin": "Schottisch",
+    "popularity": 78,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Valentin",
+    "meaning": "Der Gesunde",
+    "origin": "Lateinisch",
+    "popularity": 75,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Constantin",
+    "meaning": "Der Standhafte",
+    "origin": "Lateinisch",
+    "popularity": 71,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 4
+  },
+  {
+    "name": "Marlon",
+    "meaning": "Kleiner Falke",
+    "origin": "Französisch",
+    "popularity": 73,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Ludwig",
+    "meaning": "Berühmter Kämpfer",
+    "origin": "Deutsch",
+    "popularity": 72,
+    "length": "medium",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Clemens",
+    "meaning": "Der Milde",
+    "origin": "Lateinisch",
+    "popularity": 69,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Justus",
+    "meaning": "Der Gerechte",
+    "origin": "Lateinisch",
+    "popularity": 70,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Timo",
+    "meaning": "Der Ehrende",
+    "origin": "Griechisch",
+    "popularity": 76,
+    "length": "short",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Maximilian",
+    "meaning": "Der Größte",
+    "origin": "Lateinisch",
+    "popularity": 89,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 5
+  },
+  {
+    "name": "Caspar",
+    "meaning": "Schatzmeister",
+    "origin": "Persisch",
+    "popularity": 71,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Mattis",
+    "meaning": "Geschenk Gottes",
+    "origin": "Hebräisch",
+    "popularity": 77,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Nico",
+    "meaning": "Sieg des Volkes",
+    "origin": "Griechisch",
+    "popularity": 74,
+    "length": "short",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Philip",
+    "meaning": "Pferdefreund",
+    "origin": "Griechisch",
+    "popularity": 80,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Robin",
+    "meaning": "Der Strahlende",
+    "origin": "Englisch",
+    "popularity": 78,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Simon",
+    "meaning": "Der Erhörte",
+    "origin": "Hebräisch",
+    "popularity": 79,
+    "length": "medium",
+    "style": ["klassisch", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Tobias",
+    "meaning": "Gott ist gütig",
+    "origin": "Hebräisch",
+    "popularity": 77,
+    "length": "medium",
+    "style": ["klassisch", "biblisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Theo",
+    "meaning": "Gottesgeschenk",
+    "origin": "Griechisch",
+    "popularity": 88,
+    "length": "short",
+    "style": ["modern", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Kilian",
+    "meaning": "Krieger",
+    "origin": "Irisch",
+    "popularity": 73,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 3
+  },
+  {
+    "name": "Linus",
+    "meaning": "Der Klagende",
+    "origin": "Griechisch",
+    "popularity": 81,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Emir",
+    "meaning": "Der Befehlshaber",
+    "origin": "Arabisch",
+    "popularity": 75,
+    "length": "short",
+    "style": ["modern", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Jona",
+    "meaning": "Die Taube",
+    "origin": "Hebräisch",
+    "popularity": 79,
+    "length": "short",
+    "style": ["modern", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Malik",
+    "meaning": "Der König",
+    "origin": "Arabisch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["modern", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Maxim",
+    "meaning": "Der Größte",
+    "origin": "Lateinisch",
+    "popularity": 73,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Ole",
+    "meaning": "Vorfahre",
+    "origin": "Nordisch",
+    "popularity": 72,
+    "length": "short",
+    "style": ["nordisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Philipp",
+    "meaning": "Pferdefreund",
+    "origin": "Griechisch",
+    "popularity": 80,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Bastian",
+    "meaning": "Der Ehrwürdige",
+    "origin": "Griechisch",
+    "popularity": 77,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 3
+  },
+  {
+    "name": "Maximus",
+    "meaning": "Der Größte",
+    "origin": "Lateinisch",
+    "popularity": 70,
+    "length": "long",
+    "style": ["klassisch"],
+    "syllables": 3
+  },
+  {
+    "name": "Theodor",
+    "meaning": "Gottesgeschenk",
+    "origin": "Griechisch",
+    "popularity": 78,
+    "length": "medium",
+    "style": ["klassisch", "vintage"],
+    "syllables": 3
+  },
+  {
+    "name": "Arthur",
+    "meaning": "Der Bärenstarke",
+    "origin": "Keltisch",
+    "popularity": 75,
+    "length": "medium",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Bruno",
+    "meaning": "Der Braune",
+    "origin": "Deutsch",
+    "popularity": 74,
+    "length": "medium",
+    "style": ["vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Franz",
+    "meaning": "Der Franzose",
+    "origin": "Deutsch",
+    "popularity": 68,
+    "length": "short",
+    "style": ["klassisch", "vintage"],
+    "syllables": 1
+  },
+  {
+    "name": "Gustav",
+    "meaning": "Stab Gottes",
+    "origin": "Schwedisch",
+    "popularity": 67,
+    "length": "medium",
+    "style": ["vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Hendrik",
+    "meaning": "Der Herrscher",
+    "origin": "Deutsch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Jasper",
+    "meaning": "Schatzmeister",
+    "origin": "Persisch",
+    "popularity": 74,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Konrad",
+    "meaning": "Kühner Ratgeber",
+    "origin": "Deutsch",
+    "popularity": 66,
+    "length": "medium",
+    "style": ["klassisch", "vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Lennart",
+    "meaning": "Stark wie ein Löwe",
+    "origin": "Deutsch",
+    "popularity": 79,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Matti",
+    "meaning": "Geschenk Gottes",
+    "origin": "Hebräisch",
+    "popularity": 75,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Ole",
+    "meaning": "Vorfahre",
+    "origin": "Nordisch",
+    "popularity": 72,
+    "length": "short",
+    "style": ["nordisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Otto",
+    "meaning": "Der Reiche",
+    "origin": "Deutsch",
+    "popularity": 73,
+    "length": "short",
+    "style": ["vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Pepe",
+    "meaning": "Gott möge hinzufügen",
+    "origin": "Spanisch",
+    "popularity": 69,
+    "length": "short",
+    "style": ["international"],
+    "syllables": 2
+  },
+  {
+    "name": "Quentin",
+    "meaning": "Der Fünfte",
+    "origin": "Lateinisch",
+    "popularity": 65,
+    "length": "medium",
+    "style": ["international"],
+    "syllables": 2
+  },
+  {
+    "name": "Ruben",
+    "meaning": "Seht, ein Sohn",
+    "origin": "Hebräisch",
+    "popularity": 77,
+    "length": "medium",
+    "style": ["modern", "biblisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Sven",
+    "meaning": "Der junge Krieger",
+    "origin": "Nordisch",
+    "popularity": 71,
+    "length": "short",
+    "style": ["nordisch"],
+    "syllables": 1
+  },
+  {
+    "name": "Till",
+    "meaning": "Herrscher des Volkes",
+    "origin": "Deutsch",
+    "popularity": 70,
+    "length": "short",
+    "style": ["modern"],
+    "syllables": 1
+  },
+  {
+    "name": "Umut",
+    "meaning": "Die Hoffnung",
+    "origin": "Türkisch",
+    "popularity": 64,
+    "length": "medium",
+    "style": ["international"],
+    "syllables": 2
+  },
+  {
+    "name": "Victor",
+    "meaning": "Der Sieger",
+    "origin": "Lateinisch",
+    "popularity": 76,
+    "length": "medium",
+    "style": ["klassisch", "international"],
+    "syllables": 2
+  },
+  {
+    "name": "Willi",
+    "meaning": "Entschlossener Beschützer",
+    "origin": "Deutsch",
+    "popularity": 68,
+    "length": "medium",
+    "style": ["vintage"],
+    "syllables": 2
+  },
+  {
+    "name": "Xaver",
+    "meaning": "Neues Haus",
+    "origin": "Arabisch",
+    "popularity": 66,
+    "length": "medium",
+    "style": ["klassisch"],
+    "syllables": 2
+  },
+  {
+    "name": "Yannick",
+    "meaning": "Gott ist gnädig",
+    "origin": "Hebräisch",
+    "popularity": 72,
+    "length": "medium",
+    "style": ["modern"],
+    "syllables": 2
+  },
+  {
+    "name": "Zacharias",
+    "meaning": "Gott hat sich erinnert",
+    "origin": "Hebräisch",
+    "popularity": 65,
+    "length": "long",
+    "style": ["biblisch"],
+    "syllables": 4
+  }
+]

@@ -152,6 +152,41 @@
             font-size: 0.78em;
             margin-left: 4px;
         }
+        .overdue {
+            background: #fee;
+            border-left: 4px solid #f44336;
+            padding-left: 8px;
+        }
+        .overdue-badge {
+            background: #f44336;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            margin-left: 8px;
+        }
+        .favorite-name {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .idea-item {
+            background: #fff3e0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .done-todo {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
         @media (max-width: 480px) {
             body { padding: 10px; }
             .countdown { font-size: 2em; }
@@ -294,9 +329,44 @@
 
     <div class="section">
         <h2>🎵 Baby-Namen Generator</h2>
+        <p style="font-size:0.9em;margin-bottom:12px;color:#555;">Filter nach Länge:</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+            <button class="button small" style="flex:1;min-width:80px;" onclick="setNameFilter('all')">Alle</button>
+            <button class="button small" style="flex:1;min-width:80px;" onclick="setNameFilter('short')">Kurz (≤4)</button>
+            <button class="button small" style="flex:1;min-width:80px;" onclick="setNameFilter('medium')">Mittel (5-7)</button>
+            <button class="button small" style="flex:1;min-width:80px;" onclick="setNameFilter('long')">Lang (≥8)</button>
+        </div>
         <button class="button" onclick="generateBoyName()">Deutschen Jungennamen vorschlagen</button>
         <div id="nameResult" style="margin-top:12px;font-size:1.1em;text-align:center;font-weight:bold;color:#4facfe;"></div>
         <div id="nameHistory" style="margin-top:12px;"></div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #eee;">
+            <div class="subheading">❤️ Favoriten (Shortlist)</div>
+            <div id="favoritesList" style="margin-top:8px;"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>✅ Eigene Aufgaben</h2>
+        <div class="tracker">
+            <input type="text" class="tracker-input" id="customTodoText" placeholder="Aufgabe eingeben">
+            <input type="date" class="tracker-input" id="customTodoDate" placeholder="Fälligkeitsdatum (optional)" style="margin-top:8px;">
+            <button class="button small" style="margin-top:8px;" onclick="addCustomTodo()">Aufgabe hinzufügen</button>
+        </div>
+        <div id="customTodosList" style="margin-top:16px;"></div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #eee;">
+            <div class="subheading">✓ Erledigte Aufgaben</div>
+            <div id="doneTodosList" style="margin-top:8px;"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>💡 App-Ideen & Verbesserungen</h2>
+        <p style="font-size:0.9em;margin-bottom:12px;color:#555;">Notiere deine Ideen für neue Features oder Verbesserungen der App.</p>
+        <div class="tracker">
+            <input type="text" class="tracker-input" id="ideaText" placeholder="Deine Idee eingeben">
+            <button class="button small" style="margin-top:8px;" onclick="addIdea()">Idee speichern</button>
+        </div>
+        <div id="ideasList" style="margin-top:16px;"></div>
     </div>
 
     <div class="section">
@@ -446,45 +516,99 @@
     ];
 
     const GERMAN_BOY_NAMES = [
-        { name: 'Leon', meaning: 'Der Löwe', popularity: 'sehr beliebt' },
-        { name: 'Noah', meaning: 'Der Ruhebringende', popularity: 'sehr beliebt' },
-        { name: 'Elias', meaning: 'Mein Gott ist Jahwe', popularity: 'sehr beliebt' },
-        { name: 'Paul', meaning: 'Der Kleine', popularity: 'sehr beliebt' },
-        { name: 'Ben', meaning: 'Der Sohn', popularity: 'sehr beliebt' },
-        { name: 'Felix', meaning: 'Der Glückliche', popularity: 'beliebt' },
-        { name: 'Finn', meaning: 'Der Blonde', popularity: 'beliebt' },
-        { name: 'Luca', meaning: 'Der Leuchtende', popularity: 'beliebt' },
-        { name: 'Emil', meaning: 'Der Eifrige', popularity: 'beliebt' },
-        { name: 'Jonas', meaning: 'Die Taube', popularity: 'beliebt' },
-        { name: 'Moritz', meaning: 'Der Dunkelhäutige', popularity: 'beliebt' },
-        { name: 'Anton', meaning: 'Der Wertvolle', popularity: 'beliebt' },
-        { name: 'Max', meaning: 'Der Größte', popularity: 'sehr beliebt' },
-        { name: 'Jakob', meaning: 'Gott möge schützen', popularity: 'beliebt' },
-        { name: 'Henry', meaning: 'Der Herrscher', popularity: 'beliebt' },
-        { name: 'Oscar', meaning: 'Der Gottesfreund', popularity: 'moderat' },
-        { name: 'Theo', meaning: 'Gottesgeschenk', popularity: 'beliebt' },
-        { name: 'Matteo', meaning: 'Geschenk Gottes', popularity: 'beliebt' },
-        { name: 'Luis', meaning: 'Der berühmte Kämpfer', popularity: 'sehr beliebt' },
-        { name: 'Samuel', meaning: 'Von Gott erhört', popularity: 'beliebt' },
-        { name: 'David', meaning: 'Der Geliebte', popularity: 'sehr beliebt' },
-        { name: 'Johann', meaning: 'Gott ist gnädig', popularity: 'klassisch' },
-        { name: 'Maximilian', meaning: 'Der Größte', popularity: 'sehr beliebt' },
-        { name: 'Alexander', meaning: 'Der Beschützer', popularity: 'sehr beliebt' },
-        { name: 'Sebastian', meaning: 'Der Ehrwürdige', popularity: 'sehr beliebt' },
-        { name: 'Leonard', meaning: 'Stark wie ein Löwe', popularity: 'beliebt' },
-        { name: 'Oskar', meaning: 'Der Gottesfreund', popularity: 'moderat' },
-        { name: 'Karl', meaning: 'Der Freie', popularity: 'klassisch' },
-        { name: 'Friedrich', meaning: 'Der Friedensreiche', popularity: 'klassisch' },
-        { name: 'Wilhelm', meaning: 'Der entschlossene Beschützer', popularity: 'klassisch' }
+        // Sehr kurze Namen (3-4 Buchstaben)
+        { name: 'Ben', meaning: 'Der Sohn', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Leo', meaning: 'Der Löwe', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Max', meaning: 'Der Größte', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Tim', meaning: 'Der Ehrende', popularity: 'beliebt', length: 'short' },
+        { name: 'Tom', meaning: 'Der Zwilling', popularity: 'beliebt', length: 'short' },
+        { name: 'Jan', meaning: 'Gott ist gnädig', popularity: 'beliebt', length: 'short' },
+        { name: 'Finn', meaning: 'Der Blonde', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Liam', meaning: 'Entschlossener Beschützer', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Paul', meaning: 'Der Kleine', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Noah', meaning: 'Der Ruhebringende', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Emil', meaning: 'Der Eifrige', popularity: 'sehr beliebt', length: 'short' },
+        { name: 'Karl', meaning: 'Der Freie Mann', popularity: 'klassisch', length: 'short' },
+        { name: 'Luis', meaning: 'Berühmter Kämpfer', popularity: 'sehr beliebt', length: 'short' },
+
+        // Mittellange Namen (5-7 Buchstaben)
+        { name: 'Felix', meaning: 'Der Glückliche', popularity: 'beliebt', length: 'medium' },
+        { name: 'Luca', meaning: 'Der Leuchtende', popularity: 'beliebt', length: 'medium' },
+        { name: 'Jonas', meaning: 'Die Taube', popularity: 'beliebt', length: 'medium' },
+        { name: 'Moritz', meaning: 'Der Dunkelhäutige', popularity: 'beliebt', length: 'medium' },
+        { name: 'Anton', meaning: 'Der Wertvolle', popularity: 'beliebt', length: 'medium' },
+        { name: 'Jakob', meaning: 'Gott möge schützen', popularity: 'beliebt', length: 'medium' },
+        { name: 'Henry', meaning: 'Der Herrscher', popularity: 'beliebt', length: 'medium' },
+        { name: 'Oscar', meaning: 'Der Gottesfreund', popularity: 'moderat', length: 'medium' },
+        { name: 'Theo', meaning: 'Gottesgeschenk', popularity: 'beliebt', length: 'medium' },
+        { name: 'Matteo', meaning: 'Geschenk Gottes', popularity: 'beliebt', length: 'medium' },
+        { name: 'Samuel', meaning: 'Von Gott erhört', popularity: 'beliebt', length: 'medium' },
+        { name: 'David', meaning: 'Der Geliebte', popularity: 'sehr beliebt', length: 'medium' },
+        { name: 'Johann', meaning: 'Gott ist gnädig', popularity: 'klassisch', length: 'medium' },
+        { name: 'Oskar', meaning: 'Der Gottesfreund', popularity: 'moderat', length: 'medium' },
+        { name: 'Lukas', meaning: 'Aus Lucania', popularity: 'sehr beliebt', length: 'medium' },
+        { name: 'Niklas', meaning: 'Sieg des Volkes', popularity: 'beliebt', length: 'medium' },
+        { name: 'Julian', meaning: 'Aus dem Geschlecht der Julier', popularity: 'beliebt', length: 'medium' },
+        { name: 'Henri', meaning: 'Der Herrscher', popularity: 'beliebt', length: 'medium' },
+        { name: 'Florian', meaning: 'Der Blühende', popularity: 'beliebt', length: 'medium' },
+        { name: 'Adrian', meaning: 'Mann aus Adria', popularity: 'beliebt', length: 'medium' },
+        { name: 'Fabian', meaning: 'Der Bohnenanbauer', popularity: 'beliebt', length: 'medium' },
+
+        // Lange Namen (8+ Buchstaben)
+        { name: 'Maximilian', meaning: 'Der Größte', popularity: 'sehr beliebt', length: 'long' },
+        { name: 'Alexander', meaning: 'Der Beschützer', popularity: 'sehr beliebt', length: 'long' },
+        { name: 'Sebastian', meaning: 'Der Ehrwürdige', popularity: 'sehr beliebt', length: 'long' },
+        { name: 'Leonard', meaning: 'Stark wie ein Löwe', popularity: 'beliebt', length: 'long' },
+        { name: 'Friedrich', meaning: 'Der Friedensreiche', popularity: 'klassisch', length: 'long' },
+        { name: 'Wilhelm', meaning: 'Der entschlossene Beschützer', popularity: 'klassisch', length: 'long' },
+        { name: 'Jonathan', meaning: 'Geschenk Gottes', popularity: 'beliebt', length: 'long' },
+        { name: 'Matthias', meaning: 'Geschenk Gottes', popularity: 'klassisch', length: 'long' },
+        { name: 'Benjamin', meaning: 'Sohn des Glücks', popularity: 'sehr beliebt', length: 'long' },
+        { name: 'Constantin', meaning: 'Der Standhafte', popularity: 'moderat', length: 'long' },
+        { name: 'Nathanael', meaning: 'Gott hat gegeben', popularity: 'moderat', length: 'long' },
+        { name: 'Ferdinand', meaning: 'Der kühne Beschützer', popularity: 'klassisch', length: 'long' },
+        { name: 'Christopher', meaning: 'Christusträger', popularity: 'beliebt', length: 'long' },
+        { name: 'Dominik', meaning: 'Dem Herrn gehörend', popularity: 'beliebt', length: 'long' },
+        { name: 'Johannes', meaning: 'Gott ist gnädig', popularity: 'klassisch', length: 'long' }
     ];
+
+    // Load names from JSON database
+    async function loadNamesDatabase() {
+        try {
+            const response = await fetch('./names-database.json');
+            allNames = await response.json();
+            console.log(`Loaded ${allNames.length} names from database`);
+        } catch (error) {
+            console.error('Could not load names database:', error);
+            // Fallback to a few names if JSON fails
+            allNames = [
+                { name: 'Leon', meaning: 'Der Löwe', origin: 'Griechisch', popularity: 97, length: 'medium', style: ['modern'], syllables: 2 },
+                { name: 'Noah', meaning: 'Der Ruhebringende', origin: 'Hebräisch', popularity: 99, length: 'short', style: ['modern', 'biblisch'], syllables: 2 },
+                { name: 'Ben', meaning: 'Der Sohn', origin: 'Hebräisch', popularity: 95, length: 'short', style: ['modern', 'international'], syllables: 1 }
+            ];
+        }
+    }
 
     let contractionTimes = [];
     let contractionTimerVisible = false;
     let appointments = [];
     let customShoppingItems = [];
     let generatedNames = [];
+    let favoriteNames = []; // NEW: Liked names shortlist
+    let customTodos = []; // NEW: User-created to-dos
+    let appIdeas = []; // NEW: Feature suggestions/ideas
+    let currentNameFilter = 'all'; // NEW: 'all', 'short', 'medium', 'long'
+    let allNames = []; // Will be loaded from JSON
+    let viewedNames = []; // Track which names have been shown
+    let tasteProfile = {
+        likedStyles: {},
+        likedLengths: {},
+        likedOrigins: {},
+        likedPopularity: []
+    }; // Smart recommendation system
 
-    function init() {
+    async function init() {
+        await loadNamesDatabase(); // Load names first
         loadData();
         loadSettings();
         updateCountdown();
@@ -496,6 +620,9 @@
         renderCustomShopping();
         renderAppointments();
         calculateBabySizes();
+        renderFavorites();
+        renderCustomTodos();
+        renderIdeas();
         setInterval(updateCountdown, 60000);
         setInterval(checkAppointmentReminders, 60000); // Check every minute
         setupPWA();
@@ -716,6 +843,9 @@
             const apts = JSON.parse(localStorage.getItem('papa_appointments') || 'null');
             const shopCustom = JSON.parse(localStorage.getItem('papa_shopping_custom') || 'null');
             const shopDefault = JSON.parse(localStorage.getItem('papa_shopping_default') || 'null');
+            const favNames = JSON.parse(localStorage.getItem('papa_favorite_names') || 'null');
+            const custTodos = JSON.parse(localStorage.getItem('papa_custom_todos') || 'null');
+            const ideas = JSON.parse(localStorage.getItem('papa_app_ideas') || 'null');
 
             if (t2) TRIMESTER2_TASKS.forEach((t, i) => { if (t2[i]) t.done = t2[i].done; });
             if (prep) PREP_TASKS.forEach((t, i) => { if (prep[i]) t.done = prep[i].done; });
@@ -723,6 +853,15 @@
             if (apts) appointments = apts;
             if (shopCustom) customShoppingItems = shopCustom;
             if (shopDefault) DEFAULT_SHOPPING.forEach((t, i) => { if (shopDefault[i]) t.done = shopDefault[i].done; });
+            if (favNames) favoriteNames = favNames;
+            if (custTodos) customTodos = custTodos;
+            if (ideas) appIdeas = ideas;
+
+            // Load viewed names and taste profile
+            const viewed = JSON.parse(localStorage.getItem('papa_viewed_names') || '[]');
+            const taste = JSON.parse(localStorage.getItem('papa_taste_profile') || 'null');
+            if (viewed) viewedNames = viewed;
+            if (taste) tasteProfile = taste;
         } catch(e) {
             console.warn('Konnte lokale Daten nicht laden, starte frisch.', e);
         }
@@ -814,6 +953,9 @@
             appointments: appointments,
             shoppingCustom: customShoppingItems,
             shoppingDefault: DEFAULT_SHOPPING,
+            favoriteNames: favoriteNames,
+            customTodos: customTodos,
+            appIdeas: appIdeas,
             exportDate: new Date().toISOString()
         };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -861,11 +1003,19 @@
                         if (data.shoppingDefault[i]) t.done = data.shoppingDefault[i].done;
                     });
                 }
+                if (data.favoriteNames) favoriteNames = data.favoriteNames;
+                if (data.customTodos) customTodos = data.customTodos;
+                if (data.appIdeas) appIdeas = data.appIdeas;
+                if (data.viewedNames) viewedNames = data.viewedNames;
+                if (data.tasteProfile) tasteProfile = data.tasteProfile;
                 saveData();
                 renderChecklists();
                 renderAppointments();
                 renderDefaultShopping();
                 renderCustomShopping();
+                renderFavorites();
+                renderCustomTodos();
+                renderIdeas();
                 updateCountdown();
                 updateDevelopment();
                 calculateBabySizes();
@@ -960,10 +1110,18 @@
                             if (data.shoppingDefault[i]) t.done = data.shoppingDefault[i].done;
                         });
                     }
+                    if (data.favoriteNames) favoriteNames = data.favoriteNames;
+                    if (data.customTodos) customTodos = data.customTodos;
+                    if (data.appIdeas) appIdeas = data.appIdeas;
+                    if (data.viewedNames) viewedNames = data.viewedNames;
+                    if (data.tasteProfile) tasteProfile = data.tasteProfile;
                     renderChecklists();
                     renderAppointments();
                     renderDefaultShopping();
                     renderCustomShopping();
+                    renderFavorites();
+                    renderCustomTodos();
+                    renderIdeas();
                     updateCountdown();
                     updateDevelopment();
                     calculateBabySizes();
@@ -993,6 +1151,11 @@
             appointments: appointments,
             shoppingCustom: customShoppingItems,
             shoppingDefault: DEFAULT_SHOPPING,
+            favoriteNames: favoriteNames,
+            customTodos: customTodos,
+            appIdeas: appIdeas,
+            viewedNames: viewedNames,
+            tasteProfile: tasteProfile,
             lastUpdate: new Date().toISOString()
         };
         syncRef.set(data);
@@ -1209,7 +1372,396 @@
         container.innerHTML = html;
     }
 
-    // Baby-Namen Generator
+    // Baby-Namen Generator with Smart Recommendations
+    function setNameFilter(filter) {
+        currentNameFilter = filter;
+        // Visual feedback for active filter
+        document.querySelectorAll('.section button').forEach(btn => {
+            if (btn.textContent.includes('Alle') && filter === 'all') btn.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+            else if (btn.textContent.includes('Kurz') && filter === 'short') btn.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+            else if (btn.textContent.includes('Mittel') && filter === 'medium') btn.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+            else if (btn.textContent.includes('Lang') && filter === 'long') btn.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+            else if (btn.textContent.includes('≤4') || btn.textContent.includes('5-7') || btn.textContent.includes('≥8') || btn.textContent.includes('Alle')) {
+                btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }
+        });
+    }
+
+    function calculateNameScore(name) {
+        let score = 0;
+
+        // Base score from popularity
+        score += name.popularity || 50;
+
+        // Bonus for matching liked styles
+        if (name.style && Array.isArray(name.style)) {
+            name.style.forEach(style => {
+                if (tasteProfile.likedStyles[style]) {
+                    score += tasteProfile.likedStyles[style] * 20;
+                }
+            });
+        }
+
+        // Bonus for matching liked length
+        if (tasteProfile.likedLengths[name.length]) {
+            score += tasteProfile.likedLengths[name.length] * 15;
+        }
+
+        // Bonus for matching liked origin
+        if (tasteProfile.likedOrigins[name.origin]) {
+            score += tasteProfile.likedOrigins[name.origin] * 10;
+        }
+
+        // Bonus for similar popularity to liked names
+        if (tasteProfile.likedPopularity.length > 0) {
+            const avgLikedPopularity = tasteProfile.likedPopularity.reduce((a, b) => a + b, 0) / tasteProfile.likedPopularity.length;
+            const popularityDiff = Math.abs((name.popularity || 50) - avgLikedPopularity);
+            score += Math.max(0, 20 - popularityDiff / 2);
+        }
+
+        return score;
+    }
+
+    function getSmartNameRecommendation() {
+        // Filter names based on current filter
+        let availableNames = currentNameFilter === 'all'
+            ? allNames
+            : allNames.filter(n => n.length === currentNameFilter);
+
+        // Remove already viewed names (unless all have been viewed)
+        const unviewedNames = availableNames.filter(n => !viewedNames.includes(n.name));
+
+        if (unviewedNames.length === 0) {
+            // All names viewed, reset and notify user
+            viewedNames = [];
+            saveData();
+            alert('🎉 Du hast alle Namen in dieser Kategorie gesehen! Die Liste wird zurückgesetzt.');
+        }
+
+        // Use unviewed names or all names if reset
+        const namesToChooseFrom = unviewedNames.length > 0 ? unviewedNames : availableNames;
+
+        if (namesToChooseFrom.length === 0) {
+            return null;
+        }
+
+        // If no taste profile yet, choose randomly
+        if (favoriteNames.length === 0) {
+            return namesToChooseFrom[Math.floor(Math.random() * namesToChooseFrom.length)];
+        }
+
+        // Calculate scores for all available names
+        const scoredNames = namesToChooseFrom.map(name => ({
+            ...name,
+            score: calculateNameScore(name)
+        }));
+
+        // Sort by score (highest first)
+        scoredNames.sort((a, b) => b.score - a.score);
+
+        // Pick from top 20% with some randomness
+        const topCandidates = scoredNames.slice(0, Math.max(5, Math.floor(scoredNames.length * 0.2)));
+        return topCandidates[Math.floor(Math.random() * topCandidates.length)];
+    }
+
+    function generateBoyName() {
+        if (allNames.length === 0) {
+            alert('Namen-Datenbank wird geladen...');
+            return;
+        }
+
+        const selectedName = getSmartNameRecommendation();
+
+        if (!selectedName) {
+            alert('Keine Namen in dieser Kategorie verfügbar.');
+            return;
+        }
+
+        // Mark as viewed
+        if (!viewedNames.includes(selectedName.name)) {
+            viewedNames.push(selectedName.name);
+            saveData();
+        }
+
+        // Check if already in favorites
+        const isFavorite = favoriteNames.find(n => n.name === selectedName.name);
+
+        // Show progress indicator
+        const totalInCategory = currentNameFilter === 'all'
+            ? allNames.length
+            : allNames.filter(n => n.length === currentNameFilter).length;
+        const viewedInCategory = currentNameFilter === 'all'
+            ? viewedNames.length
+            : viewedNames.filter(vn => {
+                const name = allNames.find(n => n.name === vn);
+                return name && name.length === currentNameFilter;
+            }).length;
+
+        document.getElementById('nameResult').innerHTML = `
+            ${selectedName.name}<br>
+            <div style="font-size:0.7em;color:#666;margin-top:4px;">
+                ${selectedName.meaning} · ${selectedName.origin}<br>
+                ${selectedName.style ? selectedName.style.map(s => `#${s}`).join(' ') : ''}
+            </div>
+            <div style="font-size:0.75em;color:#999;margin-top:6px;">
+                ${viewedInCategory} von ${totalInCategory} Namen gesehen
+            </div>
+            <button class="button small" style="margin-top:8px;" onclick="toggleFavorite('${selectedName.name}', '${selectedName.meaning}', '${selectedName.origin}', '${selectedName.length}', '${selectedName.popularity}', '${JSON.stringify(selectedName.style || []).replace(/"/g, '&quot;')}')">
+                ${isFavorite ? '❤️ Von Favoriten entfernen' : '🤍 Zu Favoriten hinzufügen'}
+            </button>
+        `;
+
+        // Add to history if not already there
+        if (!generatedNames.find(n => n.name === selectedName.name)) {
+            generatedNames.unshift(selectedName);
+            if (generatedNames.length > 5) generatedNames.pop();
+
+            const historyHtml = generatedNames.map(n =>
+                `<div class="log-entry" style="padding:8px;margin:4px 0;">
+                    <strong>${n.name}</strong> - ${n.meaning}
+                </div>`
+            ).join('');
+            document.getElementById('nameHistory').innerHTML = historyHtml ? '<div class="subheading" style="margin-top:12px;">Letzte Vorschläge:</div>' + historyHtml : '';
+        }
+    }
+
+    function toggleFavorite(name, meaning, origin, length, popularity, stylesJson) {
+        const existingIndex = favoriteNames.findIndex(n => n.name === name);
+
+        if (existingIndex >= 0) {
+            // Remove from favorites and update taste profile
+            const removed = favoriteNames.splice(existingIndex, 1)[0];
+            updateTasteProfile(removed, false);
+        } else {
+            // Add to favorites
+            let styles = [];
+            try {
+                styles = JSON.parse(stylesJson.replace(/&quot;/g, '"'));
+            } catch (e) {
+                styles = [];
+            }
+
+            const nameObj = { name, meaning, origin, length, popularity: parseInt(popularity), style: styles };
+            favoriteNames.push(nameObj);
+            updateTasteProfile(nameObj, true);
+        }
+
+        saveData();
+        renderFavorites();
+        // Refresh the current name display to update button
+        const resultDiv = document.getElementById('nameResult');
+        if (resultDiv.innerHTML) {
+            generateBoyName();
+        }
+    }
+
+    function updateTasteProfile(nameObj, isAdding) {
+        const weight = isAdding ? 1 : -1;
+
+        // Update style preferences
+        if (nameObj.style && Array.isArray(nameObj.style)) {
+            nameObj.style.forEach(style => {
+                tasteProfile.likedStyles[style] = (tasteProfile.likedStyles[style] || 0) + weight;
+            });
+        }
+
+        // Update length preferences
+        tasteProfile.likedLengths[nameObj.length] = (tasteProfile.likedLengths[nameObj.length] || 0) + weight;
+
+        // Update origin preferences
+        if (nameObj.origin) {
+            tasteProfile.likedOrigins[nameObj.origin] = (tasteProfile.likedOrigins[nameObj.origin] || 0) + weight;
+        }
+
+        // Update popularity tracking
+        if (isAdding && nameObj.popularity) {
+            tasteProfile.likedPopularity.push(nameObj.popularity);
+        } else if (!isAdding && nameObj.popularity) {
+            const index = tasteProfile.likedPopularity.indexOf(nameObj.popularity);
+            if (index > -1) {
+                tasteProfile.likedPopularity.splice(index, 1);
+            }
+        }
+
+        saveData();
+    }
+
+    function renderFavorites() {
+        const container = document.getElementById('favoritesList');
+
+        if (!favoriteNames.length) {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine Favoriten hinzugefügt.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        favoriteNames.forEach((name, index) => {
+            const div = document.createElement('div');
+            div.className = 'favorite-name';
+            div.innerHTML = `
+                <div>
+                    <strong>${name.name}</strong>
+                    <div style="font-size:0.85em;color:#666;margin-top:2px;">${name.meaning}</div>
+                </div>
+                <button class="button small" style="padding:4px 8px;" onclick="removeFavorite(${index})">🗑️</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function removeFavorite(index) {
+        favoriteNames.splice(index, 1);
+        saveData();
+        renderFavorites();
+    }
+
+    // Custom To-dos
+    function addCustomTodo() {
+        const text = document.getElementById('customTodoText').value.trim();
+        const date = document.getElementById('customTodoDate').value;
+
+        if (!text) {
+            alert('Bitte eine Aufgabe eingeben.');
+            return;
+        }
+
+        customTodos.push({
+            text: text,
+            dueDate: date || null,
+            done: false,
+            createdDate: new Date().toISOString()
+        });
+
+        document.getElementById('customTodoText').value = '';
+        document.getElementById('customTodoDate').value = '';
+        saveData();
+        renderCustomTodos();
+    }
+
+    function renderCustomTodos() {
+        const pendingContainer = document.getElementById('customTodosList');
+        const doneContainer = document.getElementById('doneTodosList');
+
+        const pendingTodos = customTodos.filter(t => !t.done);
+        const doneTodos = customTodos.filter(t => t.done);
+
+        // Render pending todos
+        if (!pendingTodos.length) {
+            pendingContainer.innerHTML = '<p style="color:#999;font-size:0.9em;">Keine offenen Aufgaben.</p>';
+        } else {
+            pendingContainer.innerHTML = '';
+            pendingTodos.forEach((todo, index) => {
+                const actualIndex = customTodos.indexOf(todo);
+                const div = document.createElement('div');
+                div.className = 'task-item';
+
+                // Check if overdue
+                const isOverdue = todo.dueDate && new Date(todo.dueDate) < new Date();
+                if (isOverdue) div.classList.add('overdue');
+
+                div.innerHTML = `
+                    <input type="checkbox" class="task-checkbox"
+                           onchange="toggleCustomTodo(${actualIndex})">
+                    <div class="task-text">
+                        ${todo.text}
+                        ${todo.dueDate ? `<div class="task-date">Fällig: ${new Date(todo.dueDate).toLocaleDateString('de-DE')}</div>` : ''}
+                        ${isOverdue ? '<span class="overdue-badge">ÜBERFÄLLIG</span>' : ''}
+                    </div>
+                    <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteCustomTodo(${actualIndex})">🗑️</button>
+                `;
+                pendingContainer.appendChild(div);
+            });
+        }
+
+        // Render done todos
+        if (!doneTodos.length) {
+            doneContainer.innerHTML = '<p style="color:#999;font-size:0.9em;">Keine erledigten Aufgaben.</p>';
+        } else {
+            doneContainer.innerHTML = '';
+            doneTodos.forEach((todo, index) => {
+                const actualIndex = customTodos.indexOf(todo);
+                const div = document.createElement('div');
+                div.className = 'task-item done-todo';
+                div.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" checked
+                           onchange="toggleCustomTodo(${actualIndex})">
+                    <div class="task-text">
+                        ${todo.text}
+                        ${todo.dueDate ? `<div class="task-date">War fällig: ${new Date(todo.dueDate).toLocaleDateString('de-DE')}</div>` : ''}
+                    </div>
+                    <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteCustomTodo(${actualIndex})">🗑️</button>
+                `;
+                doneContainer.appendChild(div);
+            });
+        }
+    }
+
+    function toggleCustomTodo(index) {
+        customTodos[index].done = !customTodos[index].done;
+        saveData();
+        renderCustomTodos();
+    }
+
+    function deleteCustomTodo(index) {
+        if (confirm('Aufgabe wirklich löschen?')) {
+            customTodos.splice(index, 1);
+            saveData();
+            renderCustomTodos();
+        }
+    }
+
+    // App Ideas
+    function addIdea() {
+        const text = document.getElementById('ideaText').value.trim();
+
+        if (!text) {
+            alert('Bitte eine Idee eingeben.');
+            return;
+        }
+
+        appIdeas.push({
+            text: text,
+            addedDate: new Date().toISOString()
+        });
+
+        document.getElementById('ideaText').value = '';
+        saveData();
+        renderIdeas();
+    }
+
+    function renderIdeas() {
+        const container = document.getElementById('ideasList');
+
+        if (!appIdeas.length) {
+            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine Ideen gespeichert.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        appIdeas.forEach((idea, index) => {
+            const div = document.createElement('div');
+            div.className = 'idea-item';
+            div.innerHTML = `
+                <div style="flex:1;">
+                    ${idea.text}
+                    <div style="font-size:0.8em;color:#999;margin-top:4px;">
+                        ${new Date(idea.addedDate).toLocaleDateString('de-DE')}
+                    </div>
+                </div>
+                <button class="button small" style="padding:4px 8px;" onclick="deleteIdea(${index})">🗑️</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function deleteIdea(index) {
+        if (confirm('Idee wirklich löschen?')) {
+            appIdeas.splice(index, 1);
+            saveData();
+            renderIdeas();
+        }
+    }
+
     function generateBoyName() {
         const randomIndex = Math.floor(Math.random() * GERMAN_BOY_NAMES.length);
         const selectedName = GERMAN_BOY_NAMES[randomIndex];
@@ -1244,6 +1796,11 @@
         localStorage.setItem('papa_appointments', JSON.stringify(appointments));
         localStorage.setItem('papa_shopping_custom', JSON.stringify(customShoppingItems));
         localStorage.setItem('papa_shopping_default', JSON.stringify(DEFAULT_SHOPPING));
+        localStorage.setItem('papa_favorite_names', JSON.stringify(favoriteNames));
+        localStorage.setItem('papa_custom_todos', JSON.stringify(customTodos));
+        localStorage.setItem('papa_app_ideas', JSON.stringify(appIdeas));
+        localStorage.setItem('papa_viewed_names', JSON.stringify(viewedNames));
+        localStorage.setItem('papa_taste_profile', JSON.stringify(tasteProfile));
 
         // Auch in die Cloud syncen wenn aktiviert
         if (syncEnabled && window.firebase && firebase.apps.length) {
