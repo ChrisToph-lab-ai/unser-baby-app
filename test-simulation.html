@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Test Simulation</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #00ff00;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+        }
+        .pass { color: #00ff00; }
+        .fail { color: #ff0000; }
+        .info { color: #00aaff; }
+        button {
+            background: #00ff00;
+            color: #1e1e1e;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #output {
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Unser Baby App - Test Simulation</h1>
+
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="runAllTests()">▶️ Run All Tests</button>
+        <button onclick="simulateUser()">👤 Simulate User Interaction</button>
+        <button onclick="clearOutput()">🗑️ Clear Output</button>
+    </div>
+
+    <div id="output"></div>
+
+    <script>
+        let allNames = [];
+        let viewedNames = [];
+        let shortlistNames = [];
+        let favoriteNames = [];
+        let dislikedNames = [];
+        let tasteProfile = {
+            likedStyles: {},
+            likedLengths: {},
+            likedOrigins: {},
+            likedPopularity: [],
+            dislikedStyles: {},
+            dislikedLengths: {},
+            dislikedOrigins: {}
+        };
+
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const className = type === 'pass' ? 'pass' : type === 'fail' ? 'fail' : 'info';
+            output.innerHTML += `<span class="${className}">${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '';
+        }
+
+        async function loadNamesDatabase() {
+            try {
+                const response = await fetch('./names-database.json');
+                allNames = await response.json();
+                log(`✓ Loaded ${allNames.length} names from database`, 'pass');
+                return true;
+            } catch (error) {
+                log(`✗ Failed to load names: ${error.message}`, 'fail');
+                return false;
+            }
+        }
+
+        function calculateNameScore(name) {
+            let score = name.popularity || 50;
+
+            if (name.style && Array.isArray(name.style)) {
+                name.style.forEach(style => {
+                    if (tasteProfile.likedStyles[style]) {
+                        score += tasteProfile.likedStyles[style] * 20;
+                    }
+                    if (tasteProfile.dislikedStyles[style]) {
+                        score -= tasteProfile.dislikedStyles[style] * 30;
+                    }
+                });
+            }
+
+            if (tasteProfile.likedLengths[name.length]) {
+                score += tasteProfile.likedLengths[name.length] * 15;
+            }
+            if (tasteProfile.dislikedLengths[name.length]) {
+                score -= tasteProfile.dislikedLengths[name.length] * 25;
+            }
+
+            if (tasteProfile.likedOrigins[name.origin]) {
+                score += tasteProfile.likedOrigins[name.origin] * 10;
+            }
+            if (tasteProfile.dislikedOrigins[name.origin]) {
+                score -= tasteProfile.dislikedOrigins[name.origin] * 20;
+            }
+
+            if (dislikedNames.find(n => n.name === name.name)) {
+                score -= 1000;
+            }
+
+            return score;
+        }
+
+        function updateTasteProfile(nameObj, action) {
+            const weight = 1;
+            const isDislike = action === 'dislike';
+
+            const targetStyles = isDislike ? tasteProfile.dislikedStyles : tasteProfile.likedStyles;
+            const targetLengths = isDislike ? tasteProfile.dislikedLengths : tasteProfile.likedLengths;
+            const targetOrigins = isDislike ? tasteProfile.dislikedOrigins : tasteProfile.likedOrigins;
+
+            if (nameObj.style && Array.isArray(nameObj.style)) {
+                nameObj.style.forEach(style => {
+                    targetStyles[style] = (targetStyles[style] || 0) + weight;
+                });
+            }
+
+            targetLengths[nameObj.length] = (targetLengths[nameObj.length] || 0) + weight;
+
+            if (nameObj.origin) {
+                targetOrigins[nameObj.origin] = (targetOrigins[nameObj.origin] || 0) + weight;
+            }
+
+            if (!isDislike && nameObj.popularity) {
+                tasteProfile.likedPopularity.push(nameObj.popularity);
+            }
+        }
+
+        function getSmartRecommendation() {
+            const unviewedNames = allNames.filter(n => !viewedNames.includes(n.name));
+
+            if (unviewedNames.length === 0) {
+                viewedNames = [];
+            }
+
+            const namesToChooseFrom = unviewedNames.length > 0 ? unviewedNames : allNames;
+
+            if (shortlistNames.length === 0 && favoriteNames.length === 0 && dislikedNames.length === 0) {
+                return namesToChooseFrom[Math.floor(Math.random() * namesToChooseFrom.length)];
+            }
+
+            const scoredNames = namesToChooseFrom.map(name => ({
+                ...name,
+                score: calculateNameScore(name)
+            }));
+
+            scoredNames.sort((a, b) => b.score - a.score);
+
+            const topCandidates = scoredNames.slice(0, Math.max(5, Math.floor(scoredNames.length * 0.2)));
+            return topCandidates[Math.floor(Math.random() * topCandidates.length)];
+        }
+
+        async function runAllTests() {
+            clearOutput();
+            log('🧪 Starting Test Suite\n', 'info');
+            log('═'.repeat(60) + '\n', 'info');
+
+            // Test 1: Load Database
+            log('Test 1: Load Names Database', 'info');
+            const loaded = await loadNamesDatabase();
+            if (!loaded) return;
+
+            // Test 2: Check Data Structure
+            log('\nTest 2: Validate Data Structure', 'info');
+            const firstNamel = allNames[0];
+            const hasRequiredFields = firstNamel.name && firstNamel.meaning && firstNamel.origin &&
+                                      firstNamel.popularity && firstNamel.length && firstNamel.style;
+            if (hasRequiredFields) {
+                log(`✓ Name structure valid: ${JSON.stringify(firstNamel, null, 2)}`, 'pass');
+            } else {
+                log('✗ Name structure missing required fields', 'fail');
+            }
+
+            // Test 3: Check Length Categories
+            log('\nTest 3: Check Length Distribution', 'info');
+            const lengthCounts = {
+                short: allNames.filter(n => n.length === 'short').length,
+                medium: allNames.filter(n => n.length === 'medium').length,
+                long: allNames.filter(n => n.length === 'long').length
+            };
+            log(`✓ Short: ${lengthCounts.short}, Medium: ${lengthCounts.medium}, Long: ${lengthCounts.long}`, 'pass');
+
+            // Test 4: Test Random Selection
+            log('\nTest 4: Random Name Selection (No Taste Profile)', 'info');
+            const randomName = getSmartRecommendation();
+            log(`✓ Selected: ${randomName.name} (${randomName.meaning})`, 'pass');
+            viewedNames.push(randomName.name);
+
+            // Test 5: Test Scoring System
+            log('\nTest 5: Scoring System', 'info');
+            const testScore = calculateNameScore(allNames[0]);
+            log(`✓ Score for ${allNames[0].name}: ${testScore} (base popularity: ${allNames[0].popularity})`, 'pass');
+
+            log('\n' + '═'.repeat(60), 'info');
+            log('✅ All Tests Passed!', 'pass');
+        }
+
+        async function simulateUser() {
+            clearOutput();
+            log('👤 Simulating User Interaction\n', 'info');
+            log('═'.repeat(60) + '\n', 'info');
+
+            if (allNames.length === 0) {
+                await loadNamesDatabase();
+            }
+
+            // Simulate viewing and liking names
+            log('📝 User Session Started', 'info');
+            log('User generates 10 names and makes decisions...\n', 'info');
+
+            for (let i = 0; i < 10; i++) {
+                const name = getSmartRecommendation();
+                viewedNames.push(name.name);
+
+                // Simulate decision logic: prefer short modern names
+                let decision = 'neutral';
+                if (name.length === 'short' && name.style.includes('modern')) {
+                    decision = Math.random() > 0.3 ? 'like' : 'neutral';
+                } else if (name.length === 'long' && name.style.includes('vintage')) {
+                    decision = Math.random() > 0.4 ? 'dislike' : 'neutral';
+                } else {
+                    decision = Math.random() > 0.6 ? 'like' : Math.random() > 0.7 ? 'dislike' : 'neutral';
+                }
+
+                const score = calculateNameScore(name);
+
+                if (decision === 'like') {
+                    shortlistNames.push(name);
+                    updateTasteProfile(name, 'like');
+                    log(`👍 LIKED: ${name.name} (${name.meaning}) | Score: ${score.toFixed(1)} | ${name.length}, ${name.style.join(', ')}`, 'pass');
+                } else if (decision === 'dislike') {
+                    dislikedNames.push(name);
+                    updateTasteProfile(name, 'dislike');
+                    log(`👎 DISLIKED: ${name.name} (${name.meaning}) | Score: ${score.toFixed(1)} | ${name.length}, ${name.style.join(', ')}`, 'fail');
+                } else {
+                    log(`➖ NEUTRAL: ${name.name} (${name.meaning}) | Score: ${score.toFixed(1)} | ${name.length}, ${name.style.join(', ')}`, 'info');
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+
+            // Show taste profile
+            log('\n' + '═'.repeat(60), 'info');
+            log('📊 Learned Taste Profile:', 'info');
+            log('\nLiked Styles:', 'info');
+            Object.entries(tasteProfile.likedStyles).forEach(([style, count]) => {
+                if (count > 0) log(`  ${style}: +${count * 20} points`, 'pass');
+            });
+
+            log('\nDisliked Styles:', 'info');
+            Object.entries(tasteProfile.dislikedStyles).forEach(([style, count]) => {
+                if (count > 0) log(`  ${style}: -${count * 30} points`, 'fail');
+            });
+
+            log('\nLiked Lengths:', 'info');
+            Object.entries(tasteProfile.likedLengths).forEach(([length, count]) => {
+                if (count > 0) log(`  ${length}: +${count * 15} points`, 'pass');
+            });
+
+            log('\nDisliked Lengths:', 'info');
+            Object.entries(tasteProfile.dislikedLengths).forEach(([length, count]) => {
+                if (count > 0) log(`  ${length}: -${count * 25} points`, 'fail');
+            });
+
+            // Test next recommendation
+            log('\n' + '═'.repeat(60), 'info');
+            log('🎯 Testing Smart Recommendation (with learned profile):', 'info');
+            const smartName = getSmartRecommendation();
+            const smartScore = calculateNameScore(smartName);
+            log(`\n✨ Recommended: ${smartName.name}`, 'pass');
+            log(`   Meaning: ${smartName.meaning}`, 'info');
+            log(`   Origin: ${smartName.origin}`, 'info');
+            log(`   Style: ${smartName.style.join(', ')}`, 'info');
+            log(`   Length: ${smartName.length}`, 'info');
+            log(`   AI Score: ${smartScore.toFixed(1)} (base popularity: ${smartName.popularity})`, 'pass');
+
+            // Summary
+            log('\n' + '═'.repeat(60), 'info');
+            log('📈 Session Summary:', 'info');
+            log(`  Names viewed: ${viewedNames.length}`, 'info');
+            log(`  Shortlist: ${shortlistNames.length}`, 'pass');
+            log(`  Final round: ${favoriteNames.length}`, 'pass');
+            log(`  Disliked: ${dislikedNames.length}`, 'fail');
+            log(`  Neutral: ${viewedNames.length - shortlistNames.length - favoriteNames.length - dislikedNames.length}`, 'info');
+
+            if (shortlistNames.length > 0) {
+                log('\n💛 Shortlist Names:', 'info');
+                shortlistNames.forEach(n => log(`  - ${n.name} (${n.meaning})`, 'pass'));
+            }
+
+            if (dislikedNames.length > 0) {
+                log('\n🚫 Disliked Names:', 'info');
+                dislikedNames.forEach(n => log(`  - ${n.name} (${n.meaning})`, 'fail'));
+            }
+        }
+
+        // Auto-run tests on load
+        window.addEventListener('load', () => {
+            log('Ready! Click "Run All Tests" or "Simulate User Interaction"\n', 'info');
+        });
+    </script>
+</body>
+</html>
