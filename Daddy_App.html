@@ -61,6 +61,44 @@
             border-left: 5px solid #2196f3;
             font-size: 0.98em;
         }
+        .tip-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .ssw-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .tip-content {
+            line-height: 1.5;
+            transition: opacity 0.15s ease-in-out;
+        }
+        .tip-actions {
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .next-tip-btn {
+            background: transparent;
+            border: 2px solid #2196f3;
+            color: #2196f3;
+            padding: 6px 14px;
+            border-radius: 18px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .next-tip-btn:hover {
+            background: #2196f3;
+            color: white;
+        }
         .subheading {
             font-weight: 600;
             margin: 10px 0 5px;
@@ -472,6 +510,151 @@
             overflow-y: auto;
             margin-top: 12px;
         }
+        /* Shopping Categories Styles */
+        .shopping-category {
+            margin-bottom: 16px;
+        }
+        .shopping-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .shopping-category-header:hover {
+            background: #e3e8ff;
+        }
+        .shopping-category-name {
+            font-weight: 600;
+            font-size: 0.95em;
+            color: #333;
+        }
+        .shopping-category-progress {
+            font-size: 0.85em;
+            color: #666;
+        }
+        .shopping-category-items {
+            padding-left: 12px;
+            padding-top: 8px;
+        }
+        .shopping-category-items.collapsed {
+            display: none;
+        }
+        .shopping-collapse-icon {
+            font-size: 0.8em;
+            margin-left: 8px;
+            transition: transform 0.2s;
+        }
+        .shopping-category-header.collapsed .shopping-collapse-icon {
+            transform: rotate(-90deg);
+        }
+        /* Progress Dashboard Styles */
+        .progress-dashboard {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+        }
+        .progress-overview {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .progress-ring-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        .progress-ring-bg {
+            fill: none;
+            stroke: #e0e0e0;
+            stroke-width: 8;
+        }
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#progressGradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .progress-percent {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+        .progress-label {
+            font-size: 0.75em;
+            color: #666;
+            display: block;
+        }
+        .progress-categories {
+            flex: 1;
+            min-width: 200px;
+        }
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        .progress-name {
+            width: 100px;
+            flex-shrink: 0;
+            color: #555;
+        }
+        .progress-bar-mini {
+            flex: 1;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill-mini {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            transition: width 0.3s ease;
+        }
+        .progress-value {
+            width: 40px;
+            text-align: right;
+            font-weight: 600;
+            color: #4facfe;
+        }
+        .progress-motivation {
+            margin-top: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.95em;
+        }
+        @media (max-width: 480px) {
+            .progress-overview {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .progress-ring-container {
+                margin: 0 auto;
+            }
+            .progress-name {
+                width: 80px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -486,12 +669,79 @@
         </div>
     </div>
 
+    <!-- SVG Gradient Definition for Progress Ring -->
+    <svg style="position:absolute;width:0;height:0;">
+        <defs>
+            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#4facfe"/>
+                <stop offset="100%" style="stop-color:#00f2fe"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="section progress-dashboard">
+        <h2>Dein Fortschritt</h2>
+        <div class="progress-overview">
+            <!-- Overall progress ring -->
+            <div class="progress-ring-container">
+                <svg class="progress-ring" viewBox="0 0 100 100">
+                    <circle class="progress-ring-bg" cx="50" cy="50" r="45"/>
+                    <circle class="progress-ring-fill" id="progressRingFill" cx="50" cy="50" r="45"
+                        stroke-dasharray="283" stroke-dashoffset="283"/>
+                </svg>
+                <div class="progress-ring-text">
+                    <span class="progress-percent" id="overallProgressPercent">0%</span>
+                    <span class="progress-label">Gesamt</span>
+                </div>
+            </div>
+            <!-- Category breakdown -->
+            <div class="progress-categories">
+                <div class="progress-item">
+                    <span class="progress-name">2. Trimester</span>
+                    <div class="progress-bar-mini"><div class="progress-fill-mini" id="trimester2ProgressMini" style="width:0%"></div></div>
+                    <span class="progress-value" id="trimester2ProgressValue">0%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-name">3. Trimester</span>
+                    <div class="progress-bar-mini"><div class="progress-fill-mini" id="prepProgressMini" style="width:0%"></div></div>
+                    <span class="progress-value" id="prepProgressValue">0%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-name">Behoerden</span>
+                    <div class="progress-bar-mini"><div class="progress-fill-mini" id="behoerdenProgressMini" style="width:0%"></div></div>
+                    <span class="progress-value" id="behoerdenProgressValue">0%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-name">Einkaufsliste</span>
+                    <div class="progress-bar-mini"><div class="progress-fill-mini" id="shoppingProgressMini" style="width:0%"></div></div>
+                    <span class="progress-value" id="shoppingProgressValue">0%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-name">Eigene Aufg.</span>
+                    <div class="progress-bar-mini"><div class="progress-fill-mini" id="customProgressMini" style="width:0%"></div></div>
+                    <span class="progress-value" id="customProgressValue">0%</span>
+                </div>
+            </div>
+        </div>
+        <div class="progress-motivation" id="progressMotivation">
+            <!-- Motivational message based on progress -->
+        </div>
+    </div>
+
     <div class="section">
         <div class="tip-of-day" id="tipOfDay">
-            💡 Tipp des Tages wird geladen…
+            <div class="tip-header">
+                <span class="ssw-badge" id="tipSSWBadge">SSW --</span>
+            </div>
+            <div class="tip-content" id="tipContent">
+                Tipp des Tages wird geladen...
+            </div>
+            <div class="tip-actions">
+                <button class="next-tip-btn" onclick="showNextTip()">Naechster Tipp</button>
+            </div>
         </div>
         <div style="font-size:0.9em;color:#555;">
-            Fokus heute: <span id="focusToday">–</span>
+            Fokus heute: <span id="focusToday">-</span>
         </div>
     </div>
 
@@ -611,9 +861,8 @@
             <input type="text" class="tracker-input" id="shoppingItem" placeholder="z.B. 5x Bodys Größe 56/62">
             <button class="button small" style="margin-top:8px;" onclick="addShoppingItem()">Hinzufügen</button>
         </div>
-        <div class="subheading" style="margin-top:16px;">Standard-Erstausstattung</div>
+        <div class="subheading" style="margin-top:16px;">Baby-Erstausstattung</div>
         <div id="defaultShoppingList"></div>
-        <div class="subheading" style="margin-top:16px;">Meine Einkaufsliste</div>
         <div id="customShoppingList"></div>
     </div>
 
@@ -702,15 +951,23 @@
             <p style="font-size:0.9em;margin-bottom:8px;">Gebt denselben Sync-Code auf beiden Handys ein, um die Daten automatisch zu synchronisieren.</p>
             <input type="text" class="tracker-input" id="syncCodeInput" placeholder="z.B. unser-baby-2026" maxlength="50">
             <button class="button small" style="margin-top:8px;" onclick="enableSync()">Sync aktivieren</button>
+            <button class="button small" id="showQrCodeBtn" style="margin-top:8px;display:none;" onclick="showQRCode()">QR Code anzeigen</button>
             <div id="syncStatus" style="margin-top:8px;font-size:0.9em;color:#555;"></div>
             <div id="lastSyncDisplay" style="margin-top:8px;font-size:0.85em;color:#777;"></div>
+            <div id="qrCodeContainer" style="margin-top:12px;text-align:center;display:none;">
+                <img id="qrCodeImg" alt="Sync QR Code" style="max-width:200px;border-radius:8px;border:2px solid #e0e0e0;">
+                <p style="font-size:0.85em;color:#777;margin-top:8px;">Scannt diesen Code mit dem anderen Handy</p>
+                <button class="button small" style="margin-top:8px;" onclick="hideQRCode()">QR Code ausblenden</button>
+            </div>
         </div>
 
         <div class="tracker" style="margin-top:16px;">
             <div class="subheading">💾 Daten sichern/laden</div>
             <button class="button small" onclick="exportData()">Daten exportieren (Download)</button>
+            <button class="button small" onclick="exportAllData()">Alle Daten exportieren</button>
             <button class="button small" onclick="document.getElementById('importFile').click()">Daten importieren</button>
             <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+            <p style="font-size:0.8em;color:#777;margin-top:8px;">"Alle Daten exportieren" sichert alle lokalen Einstellungen und Daten.</p>
         </div>
 
         <div class="tracker" style="margin-top:16px;">
@@ -838,6 +1095,82 @@
         { text: 'Fläschchen & Sauger (falls nicht voll gestillt)', category: 'Füttern', done: false }
     ];
 
+    // Shopping Categories with categorized items
+    const SHOPPING_CATEGORIES = {
+        clothing: {
+            name: "Kleidung",
+            icon: "👕",
+            items: [
+                "Bodies (6-8 Stück)",
+                "Strampler (4-6 Stück)",
+                "Schlafanzüge",
+                "Mützchen",
+                "Söckchen",
+                "Jacke/Overall für draußen"
+            ]
+        },
+        feeding: {
+            name: "Stillen & Füttern",
+            icon: "🍼",
+            items: [
+                "Stillkissen",
+                "Still-BHs",
+                "Fläschchen (falls benötigt)",
+                "Milchpumpe",
+                "Spucktücher"
+            ]
+        },
+        sleeping: {
+            name: "Schlafen",
+            icon: "😴",
+            items: [
+                "Babybett/Beistellbett",
+                "Matratze",
+                "Schlafsäcke",
+                "Babyphone"
+            ]
+        },
+        care: {
+            name: "Pflege & Hygiene",
+            icon: "🛁",
+            items: [
+                "Windeln Newborn",
+                "Feuchttücher",
+                "Wickelauflage",
+                "Badewanne",
+                "Pflegeprodukte",
+                "Nagelschere",
+                "Fieberthermometer"
+            ]
+        },
+        travel: {
+            name: "Unterwegs",
+            icon: "🚗",
+            items: [
+                "Kinderwagen",
+                "Babyschale (Auto)",
+                "Tragetuch/Babytrage",
+                "Wickeltasche"
+            ]
+        },
+        nursery: {
+            name: "Kinderzimmer",
+            icon: "🏠",
+            items: [
+                "Wickelkommode",
+                "Kleiderschrank/Kommode",
+                "Nachtlicht",
+                "Mobile",
+                "Spieluhr"
+            ]
+        }
+    };
+
+    // Track checked state for categorized shopping items
+    let shoppingCheckedItems = [];
+    // Track collapsed state for categories
+    let shoppingCollapsedCategories = [];
+
     const GERMAN_BOY_NAMES = [
         // Sehr kurze Namen (3-4 Buchstaben)
         { name: 'Ben', meaning: 'Der Sohn', popularity: 'sehr beliebt', length: 'short' },
@@ -959,6 +1292,7 @@
         renderAllLists();
         renderCustomTodos();
         renderIdeas();
+        renderProgressDashboard();
         setInterval(updateCountdown, 60000);
         setInterval(checkAppointmentReminders, 60000); // Check every minute
         setInterval(checkUpcomingAppointments, 300000); // Check every 5 minutes
@@ -1081,6 +1415,7 @@
         saveData();
         updateProgressBars();
         renderChecklists();
+        renderProgressDashboard();
     }
 
     function updateProgressBars() {
@@ -1093,16 +1428,240 @@
         document.getElementById('prepProgress').style.width = prepProgress + '%';
     }
 
+    // ============= WEEKLY TIPS DATABASE =============
+    const WEEKLY_TIPS = {
+        13: [
+            "Das 2. Trimester beginnt! Die Uebelkeit sollte bald nachlassen.",
+            "Dein Baby ist jetzt etwa so gross wie eine Zitrone (7-8 cm).",
+            "Zeit fuer die Erstausstattung zu planen - mach eine Liste!",
+            "Die Plazenta uebernimmt jetzt vollstaendig die Versorgung des Babys."
+        ],
+        14: [
+            "Dein Baby kann jetzt Fruchtwasser schlucken und schmecken.",
+            "Viele Frauen spueren jetzt einen Energieschub - nutze ihn!",
+            "Denke an die Anmeldung fuer einen Geburtsvorbereitungskurs.",
+            "Das Baby entwickelt jetzt feine Haare (Lanugo) am ganzen Koerper."
+        ],
+        15: [
+            "Dein Baby ist jetzt etwa so gross wie eine Orange.",
+            "Die Knochen werden haerter - achte auf ausreichend Kalzium.",
+            "Guter Zeitpunkt fuer einen Zahnarztbesuch (Prophylaxe).",
+            "Das Baby kann jetzt Licht von aussen wahrnehmen."
+        ],
+        16: [
+            "Manche Frauen spueren jetzt die ersten Kindsbewegungen!",
+            "Dein Baby ist etwa so gross wie eine Avocado (11-12 cm).",
+            "Die Gehoerknoechelchen entwickeln sich - bald hoert das Baby dich!",
+            "Zeit fuer bequeme Umstandsmode - dein Bauch waechst."
+        ],
+        17: [
+            "Das Baby legt jetzt Fettreserven an fuer die Waermeregulation.",
+            "Die Fingerabdruecke deines Babys bilden sich jetzt.",
+            "Guter Zeitpunkt fuer eine Hebammensuche, falls noch nicht geschehen.",
+            "Dein Baby uriniert regelmaessig ins Fruchtwasser - ganz normal!"
+        ],
+        18: [
+            "Dein Baby ist jetzt etwa so gross wie eine Paprika.",
+            "Die Ohren sind jetzt an der richtigen Position - sprich mit deinem Baby!",
+            "Zeit fuer den grossen Ultraschall (Feindiagnostik) um SSW 19-22.",
+            "Das Baby gaehnt jetzt regelmaessig und hat Schluckauf."
+        ],
+        19: [
+            "Das Baby entwickelt eine schuetzende Fettschicht (Vernix caseosa).",
+            "Dein Bauch wird sichtbarer - Zeit fuer Bauchpflege gegen Dehnungsstreifen.",
+            "Das Baby reagiert auf Beruehrungen von aussen.",
+            "Ueberlege dir, ob ihr das Geschlecht beim Ultraschall erfahren wollt."
+        ],
+        20: [
+            "Halbzeit! Du bist in der Mitte der Schwangerschaft.",
+            "Dein Baby ist jetzt etwa so gross wie eine Banane (16 cm).",
+            "Die Bewegungen werden staerker - dein Partner kann sie bald fuehlen.",
+            "Der Gebaermutterhals wird regelmaessig kontrolliert."
+        ],
+        21: [
+            "Das Baby schluckt taeglich bis zu 500 ml Fruchtwasser.",
+            "Die Augenbrauen und Wimpern wachsen jetzt.",
+            "Denke an eine Klinikanmeldung - beliebte Haeuser sind schnell voll.",
+            "Dein Koerper produziert mehr Blut - trinke ausreichend!"
+        ],
+        22: [
+            "Dein Baby ist jetzt etwa so gross wie eine Kokosnuss.",
+            "Das Hoervermogen ist gut entwickelt - Musik und Stimmen werden wahrgenommen.",
+            "Die Lungenentwicklung schreitet voran.",
+            "Guter Zeitpunkt fuer einen Babymoon (Paerchen-Urlaub vor der Geburt)."
+        ],
+        23: [
+            "Das Baby hat jetzt einen regelmaessigen Schlaf-Wach-Rhythmus.",
+            "Die Haut wird dicker und weniger durchsichtig.",
+            "Pruefe deinen Versicherungsschutz fuer Geburt und Wochenbett.",
+            "Das Baby wiegt jetzt etwa 500 Gramm."
+        ],
+        24: [
+            "Ab jetzt ist das Baby theoretisch ueberlebensfaehig (Fruehchen).",
+            "Dein Baby ist jetzt etwa so gross wie ein Maiskolben.",
+            "Die Lungen produzieren Surfactant fuer die Atmung.",
+            "Denke an die Anmeldung beim Standesamt nach der Geburt."
+        ],
+        25: [
+            "Das Baby reagiert auf Gerausche von aussen - es erschrickt bei lauten Toenen.",
+            "Die Wirbelsaeule hat jetzt 33 Wirbel.",
+            "Beginn des Glukose-Toleranz-Tests (Schwangerschaftsdiabetes-Screening).",
+            "Das Gehirn entwickelt sich rasant - Omega-3-Fettsaeuren sind wichtig!"
+        ],
+        26: [
+            "Das Baby oeffnet jetzt die Augen und kann blinzeln.",
+            "Dein Baby ist jetzt etwa so gross wie eine Zucchini.",
+            "Die Bewegungen sind jetzt deutlich zu spueren - zaehle die Kicks!",
+            "Informiere dich ueber Elternzeit und Elterngeld."
+        ],
+        27: [
+            "Das 2. Trimester endet! Bald beginnt die letzte Phase.",
+            "Das Baby hat jetzt einen Schlaf-Wach-Rhythmus aehnlich einem Neugeborenen.",
+            "Die Lunge reift weiter - das Baby 'atmet' Fruchtwasser.",
+            "Zeit fuer den Klinikkoffer - packe eine Grundausstattung."
+        ],
+        28: [
+            "Willkommen im 3. Trimester! Die Zielgerade beginnt.",
+            "Dein Baby ist jetzt etwa so gross wie ein Kuerbis.",
+            "Das Baby traeumt! REM-Schlafphasen sind messbar.",
+            "Informiere dich ueber Geburtsanzeichen und wann du in die Klinik sollst."
+        ],
+        29: [
+            "Das Baby legt jetzt kraeftig an Gewicht zu - etwa 200g pro Woche.",
+            "Die Knochen haerten weiter aus, sind aber noch flexibel fuer die Geburt.",
+            "Uebungswehen (Braxton-Hicks) koennen haeufiger auftreten.",
+            "Guter Zeitpunkt fuer einen Geburtsvorbereitungskurs (falls noch nicht besucht)."
+        ],
+        30: [
+            "Dein Baby ist jetzt etwa 40 cm lang und wiegt etwa 1.3 kg.",
+            "Das Baby dreht sich langsam in die Geburtsposition (Kopf nach unten).",
+            "Die Gehirnwindungen entwickeln sich - das Gehirn waechst schnell.",
+            "Pruefe ob alle Dokumente fuer die Geburt bereit sind."
+        ],
+        31: [
+            "Das Baby kann jetzt seinen Kopf von einer Seite zur anderen drehen.",
+            "Die Iris reagiert auf Licht - die Pupillen verengen und weiten sich.",
+            "Dein Koerper bereitet sich vor - die Gelenke werden lockerer.",
+            "Denke an Stillzubehoer, falls du stillen moechtest."
+        ],
+        32: [
+            "Dein Baby ist jetzt etwa so gross wie ein Chinakohl.",
+            "Die Lungen sind fast ausgereift - nur noch das Surfactant fehlt.",
+            "Das Baby hat weniger Platz - die Tritte fuehlen sich anders an.",
+            "Zeit fuer die Kliniktasche mit allen wichtigen Dokumenten."
+        ],
+        33: [
+            "Das Immunsystem des Babys entwickelt sich - Antikoerper werden uebertragen.",
+            "Die Schaedelknochen sind noch weich fuer die Geburt.",
+            "Mutterschutz beginnt 6 Wochen vor ET - nutze die Zeit!",
+            "Uebe Entspannungstechniken fuer die Geburt."
+        ],
+        34: [
+            "Das Baby wiegt jetzt etwa 2.2 kg und misst ca. 45 cm.",
+            "Die Lanugohaare fallen langsam aus.",
+            "Bei Steisslage: aeussere Wendung kann versucht werden.",
+            "Bereite das Babyzimmer vor - Nestbautrieb ist normal!"
+        ],
+        35: [
+            "Dein Baby ist jetzt etwa so gross wie eine Honigmelone.",
+            "Das Baby 'uebt' Atmen, Saugen und Schlucken.",
+            "Die meisten Babys liegen jetzt mit dem Kopf nach unten.",
+            "Besprich den Geburtsplan mit deiner Hebamme/Arzt."
+        ],
+        36: [
+            "Das Baby 'senkt' sich ins Becken - Atmen wird leichter.",
+            "Die Kaeseschmiere (Vernix) wird dicker zum Schutz bei der Geburt.",
+            "Wochencheck bei der Hebamme/Arzt - CTG-Kontrollen beginnen.",
+            "Klinikkoffer sollte gepackt und griffbereit sein!"
+        ],
+        37: [
+            "Ab jetzt gilt das Baby als 'reif' - kein Fruehchen mehr!",
+            "Dein Baby wiegt etwa 2.8-3 kg und ist ca. 48 cm lang.",
+            "Der Schleimpfropf kann sich loesen - ein Geburtszeichen.",
+            "Ruhe dich aus - du brauchst Energie fuer die Geburt."
+        ],
+        38: [
+            "Das Baby nimmt weiter zu - etwa 30 Gramm pro Tag.",
+            "Die Lungen sind voll ausgereift und bereit fuer den ersten Atemzug.",
+            "Unregelmaessige Wehen (Senkwehen) bereiten den Koerper vor.",
+            "Halte dein Handy geladen - es kann jederzeit losgehen!"
+        ],
+        39: [
+            "Dein Baby ist 'geburtsbereit' - der Kopf ist tief im Becken.",
+            "Die Plazenta beginnt zu altern - regelmaessige CTG-Kontrollen.",
+            "Achte auf Geburtsanzeichen: Wehen, Blasensprung, Zeichnungsblutung.",
+            "Letzte Vorbereitungen: Kindersitz fuers Auto, Babykleidung bereit?"
+        ],
+        40: [
+            "Der errechnete Geburtstermin ist da! Nur 4% der Babys kommen puenktlich.",
+            "Das Baby ist voll entwickelt und bereit fuer die Welt.",
+            "Bei Uebertragung: Gespraeche ueber Einleitung ab SSW 41.",
+            "Bleib entspannt - dein Baby kommt, wenn es bereit ist!"
+        ]
+    };
+
+    // General fallback tips if current week has no specific tips
+    const GENERAL_TIPS = [
+        "Hebamme frueh sichern: in vielen Regionen schnell ausgebucht.",
+        "Schau dir gemeinsam mit deiner Partnerin moegliche Kliniken oder Geburtshaeuser an.",
+        "Nimm dir bewusst kleine Aufgaben im Haushalt ab - das spart ihr Energie.",
+        "Stell offene Fragen fuer den naechsten Arzttermin zusammen (Mutterpass durchgehen).",
+        "Leg dir eine Notfallliste ins Handy: Kliniknummer, Hebamme, Taxi, Nachbarn.",
+        "Geniesse die gemeinsame Zeit zu zweit - sie ist kostbar!",
+        "Informiere dich ueber Elternzeit und Elterngeld - die Antraege brauchen Zeit.",
+        "Sprich mit deinem Baby - es kann deine Stimme hoeren und erkennen.",
+        "Mach regelmaessig Fotos vom Babybauch - schoene Erinnerungen!",
+        "Bereite ein kleines Geschenk fuer deine Partnerin vor fuer nach der Geburt."
+    ];
+
+    // Current tip state
+    let currentTipIndex = parseInt(localStorage.getItem('papa_last_tip_index')) || 0;
+
     function showRandomTip() {
-        const tips = [
-            '💡 Hebamme früh sichern: in vielen Regionen schnell ausgebucht.',
-            '💡 Schau dir gemeinsam mit deiner Partnerin mögliche Kliniken oder Geburtshäuser an.',
-            '💡 Nimm dir bewusst kleine Aufgaben im Haushalt ab – das spart ihr Energie.',
-            '💡 Stell offene Fragen für den nächsten Arzttermin zusammen (Mutterpass durchgehen).',
-            '💡 Leg dir eine Notfallliste ins Handy: Kliniknummer, Hebamme, Taxi, Nachbarn.'
-        ];
-        const idx = Math.floor(Math.random() * tips.length);
-        document.getElementById('tipOfDay').textContent = tips[idx];
+        const week = getPregnancyWeek();
+        const weekTips = WEEKLY_TIPS[week] || GENERAL_TIPS;
+
+        // Get stored date to check if we need a new tip
+        const today = new Date().toDateString();
+        const lastTipDate = localStorage.getItem('papa_last_tip_date');
+
+        // If it's a new day, advance to next tip
+        if (lastTipDate !== today) {
+            currentTipIndex = (currentTipIndex + 1) % weekTips.length;
+            localStorage.setItem('papa_last_tip_date', today);
+            localStorage.setItem('papa_last_tip_index', currentTipIndex);
+        }
+
+        // Ensure index is valid for current week's tips
+        if (currentTipIndex >= weekTips.length) {
+            currentTipIndex = 0;
+            localStorage.setItem('papa_last_tip_index', currentTipIndex);
+        }
+
+        const tip = weekTips[currentTipIndex];
+
+        // Update display
+        document.getElementById('tipSSWBadge').textContent = 'SSW ' + week;
+        document.getElementById('tipContent').textContent = tip;
+    }
+
+    function showNextTip() {
+        const week = getPregnancyWeek();
+        const weekTips = WEEKLY_TIPS[week] || GENERAL_TIPS;
+
+        // Advance to next tip (different from current)
+        currentTipIndex = (currentTipIndex + 1) % weekTips.length;
+        localStorage.setItem('papa_last_tip_index', currentTipIndex);
+
+        const tip = weekTips[currentTipIndex];
+
+        // Update display with animation
+        const contentEl = document.getElementById('tipContent');
+        contentEl.style.opacity = '0';
+        setTimeout(function() {
+            contentEl.textContent = tip;
+            contentEl.style.opacity = '1';
+        }, 150);
     }
 
     function setFocusToday() {
@@ -1520,6 +2079,8 @@
             const apts = JSON.parse(localStorage.getItem('papa_appointments') || 'null');
             const shopCustom = JSON.parse(localStorage.getItem('papa_shopping_custom') || 'null');
             const shopDefault = JSON.parse(localStorage.getItem('papa_shopping_default') || 'null');
+            const shopChecked = JSON.parse(localStorage.getItem('papa_shopping_checked') || '[]');
+            const shopCollapsed = JSON.parse(localStorage.getItem('papa_shopping_collapsed') || '[]');
             const favNames = JSON.parse(localStorage.getItem('papa_favorite_names') || 'null');
             const shortlist = JSON.parse(localStorage.getItem('papa_shortlist_names') || 'null');
             const disliked = JSON.parse(localStorage.getItem('papa_disliked_names') || 'null');
@@ -1536,6 +2097,8 @@
             if (apts) appointments = apts;
             if (shopCustom) customShoppingItems = shopCustom;
             if (shopDefault) DEFAULT_SHOPPING.forEach((t, i) => { if (shopDefault[i]) t.done = shopDefault[i].done; });
+            if (shopChecked) shoppingCheckedItems = shopChecked;
+            if (shopCollapsed) shoppingCollapsedCategories = shopCollapsed;
             if (favNames) favoriteNames = favNames;
             if (shortlist) shortlistNames = shortlist;
             if (disliked) dislikedNames = disliked;
@@ -1570,6 +2133,8 @@
                 updateSyncStatusIndicator('synced');
             }
         }
+        // Show QR Code button if sync is enabled
+        updateQRCodeButtonVisibility();
     }
 
     function saveDueDate() {
@@ -1731,6 +2296,8 @@
         localStorage.setItem('papa_synccode', syncCode);
         localStorage.setItem('papa_syncenabled', 'true');
         document.getElementById('syncStatus').innerHTML = '🔄 Verbinde mit Cloud...';
+        // Show QR Code button
+        updateQRCodeButtonVisibility();
 
         // Firebase einbinden
         if (!window.firebase) {
@@ -1868,6 +2435,62 @@
                 console.error('Sync error:', error);
                 updateSyncStatusIndicator('offline');
             });
+    }
+
+    // Full Data Export - exports ALL localStorage data with papa_ prefix
+    function exportAllData() {
+        const data = {};
+        for (let key in localStorage) {
+            if (localStorage.hasOwnProperty(key) && key.startsWith('papa_')) {
+                try {
+                    data[key] = JSON.parse(localStorage.getItem(key));
+                } catch(e) {
+                    data[key] = localStorage.getItem(key);
+                }
+            }
+        }
+        data._exportInfo = {
+            exportDate: new Date().toISOString(),
+            exportType: 'full_localStorage',
+            appVersion: '1.0'
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `unser-baby-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        alert('✅ Alle Daten wurden vollstaendig exportiert!');
+    }
+
+    // QR Code functions for Sync
+    function showQRCode() {
+        if (!syncCode) {
+            alert('Bitte zuerst einen Sync-Code eingeben und aktivieren.');
+            return;
+        }
+        const qrCodeImg = document.getElementById('qrCodeImg');
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+        // Use QR Code API to generate QR code
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(syncCode)}`;
+        qrCodeImg.src = qrUrl;
+        qrCodeContainer.style.display = 'block';
+        document.getElementById('showQrCodeBtn').style.display = 'none';
+    }
+
+    function hideQRCode() {
+        document.getElementById('qrCodeContainer').style.display = 'none';
+        document.getElementById('showQrCodeBtn').style.display = 'inline-block';
+    }
+
+    function updateQRCodeButtonVisibility() {
+        const showQrCodeBtn = document.getElementById('showQrCodeBtn');
+        if (syncEnabled && syncCode) {
+            showQrCodeBtn.style.display = 'inline-block';
+        } else {
+            showQrCodeBtn.style.display = 'none';
+        }
     }
 
     // Sync status indicator functions
@@ -2258,34 +2881,122 @@
         const container = document.getElementById('defaultShoppingList');
         container.innerHTML = '';
 
-        const categories = [...new Set(DEFAULT_SHOPPING.map(i => i.category))];
+        // Render categorized shopping list
+        Object.keys(SHOPPING_CATEGORIES).forEach(categoryKey => {
+            const category = SHOPPING_CATEGORIES[categoryKey];
+            const isCollapsed = shoppingCollapsedCategories.includes(categoryKey);
 
-        categories.forEach(cat => {
+            // Calculate progress for this category
+            const checkedCount = category.items.filter(item => shoppingCheckedItems.includes(item)).length;
+            const totalCount = category.items.length;
+
             const catDiv = document.createElement('div');
-            catDiv.style.marginTop = '12px';
-            catDiv.innerHTML = `<div style="font-weight:600;font-size:0.9em;color:#555;margin-bottom:6px;">${cat}</div>`;
+            catDiv.className = 'shopping-category';
 
-            DEFAULT_SHOPPING.filter(item => item.category === cat).forEach((item, idx) => {
-                const globalIdx = DEFAULT_SHOPPING.indexOf(item);
+            // Category header with collapsible functionality
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'shopping-category-header' + (isCollapsed ? ' collapsed' : '');
+            headerDiv.onclick = () => toggleShoppingCategory(categoryKey);
+            headerDiv.innerHTML = `
+                <span class="shopping-category-name">
+                    ${category.icon} ${category.name}
+                    <span class="shopping-collapse-icon">▼</span>
+                </span>
+                <span class="shopping-category-progress">${checkedCount}/${totalCount} erledigt</span>
+            `;
+            catDiv.appendChild(headerDiv);
+
+            // Items container
+            const itemsDiv = document.createElement('div');
+            itemsDiv.className = 'shopping-category-items' + (isCollapsed ? ' collapsed' : '');
+
+            category.items.forEach(itemText => {
+                const isChecked = shoppingCheckedItems.includes(itemText);
+                const div = document.createElement('div');
+                div.className = 'task-item';
+                div.innerHTML = `
+                    <input type="checkbox" class="task-checkbox"
+                           ${isChecked ? 'checked' : ''}
+                           onchange="toggleCategorizedShoppingItem('${itemText.replace(/'/g, "\\'")}')">
+                    <div class="task-text" style="${isChecked ? 'text-decoration:line-through;opacity:0.6;' : ''}">${itemText}</div>
+                `;
+                itemsDiv.appendChild(div);
+            });
+
+            catDiv.appendChild(itemsDiv);
+            container.appendChild(catDiv);
+        });
+
+        // Also render custom items in "Sonstiges" category if there are any
+        if (customShoppingItems.length > 0) {
+            const customCatDiv = document.createElement('div');
+            customCatDiv.className = 'shopping-category';
+
+            const customChecked = customShoppingItems.filter(i => i.done).length;
+            const isCollapsed = shoppingCollapsedCategories.includes('custom');
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'shopping-category-header' + (isCollapsed ? ' collapsed' : '');
+            headerDiv.onclick = () => toggleShoppingCategory('custom');
+            headerDiv.innerHTML = `
+                <span class="shopping-category-name">
+                    📝 Sonstiges
+                    <span class="shopping-collapse-icon">▼</span>
+                </span>
+                <span class="shopping-category-progress">${customChecked}/${customShoppingItems.length} erledigt</span>
+            `;
+            customCatDiv.appendChild(headerDiv);
+
+            const itemsDiv = document.createElement('div');
+            itemsDiv.className = 'shopping-category-items' + (isCollapsed ? ' collapsed' : '');
+
+            customShoppingItems.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'task-item';
                 div.innerHTML = `
                     <input type="checkbox" class="task-checkbox"
                            ${item.done ? 'checked' : ''}
-                           onchange="toggleDefaultShoppingItem(${globalIdx})">
-                    <div class="task-text">${item.text}</div>
+                           onchange="toggleCustomShoppingItem(${index})">
+                    <div class="task-text" style="${item.done ? 'text-decoration:line-through;opacity:0.6;' : ''}">${item.text}</div>
+                    <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteShoppingItem(${index})">🗑️</button>
                 `;
-                catDiv.appendChild(div);
+                itemsDiv.appendChild(div);
             });
 
-            container.appendChild(catDiv);
-        });
+            customCatDiv.appendChild(itemsDiv);
+            container.appendChild(customCatDiv);
+        }
+    }
+
+    function toggleShoppingCategory(categoryKey) {
+        const index = shoppingCollapsedCategories.indexOf(categoryKey);
+        if (index > -1) {
+            shoppingCollapsedCategories.splice(index, 1);
+        } else {
+            shoppingCollapsedCategories.push(categoryKey);
+        }
+        localStorage.setItem('papa_shopping_collapsed', JSON.stringify(shoppingCollapsedCategories));
+        renderDefaultShopping();
+    }
+
+    function toggleCategorizedShoppingItem(itemText) {
+        const index = shoppingCheckedItems.indexOf(itemText);
+        if (index > -1) {
+            shoppingCheckedItems.splice(index, 1);
+        } else {
+            shoppingCheckedItems.push(itemText);
+        }
+        localStorage.setItem('papa_shopping_checked', JSON.stringify(shoppingCheckedItems));
+        saveData();
+        renderDefaultShopping();
+        renderProgressDashboard();
     }
 
     function toggleDefaultShoppingItem(index) {
         DEFAULT_SHOPPING[index].done = !DEFAULT_SHOPPING[index].done;
         saveData();
         renderDefaultShopping();
+        renderProgressDashboard();
     }
 
     function addShoppingItem() {
@@ -2300,42 +3011,26 @@
         customShoppingItems.push({ text: text, done: false, addedDate: new Date().toISOString() });
         input.value = '';
         saveData();
-        renderCustomShopping();
+        renderDefaultShopping();
+        renderProgressDashboard();
     }
 
     function renderCustomShopping() {
-        const container = document.getElementById('customShoppingList');
-
-        if (!customShoppingItems.length) {
-            container.innerHTML = '<p style="color:#999;font-size:0.9em;">Noch keine eigenen Artikel hinzugefügt.</p>';
-            return;
-        }
-
-        container.innerHTML = '';
-        customShoppingItems.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'task-item';
-            div.innerHTML = `
-                <input type="checkbox" class="task-checkbox"
-                       ${item.done ? 'checked' : ''}
-                       onchange="toggleCustomShoppingItem(${index})">
-                <div class="task-text">${item.text}</div>
-                <button class="button small" style="padding:4px 8px;margin-left:8px;" onclick="deleteShoppingItem(${index})">🗑️</button>
-            `;
-            container.appendChild(div);
-        });
+        // Now integrated into renderDefaultShopping
+        renderDefaultShopping();
     }
 
     function toggleCustomShoppingItem(index) {
         customShoppingItems[index].done = !customShoppingItems[index].done;
         saveData();
-        renderCustomShopping();
+        renderDefaultShopping();
+        renderProgressDashboard();
     }
 
     function deleteShoppingItem(index) {
         customShoppingItems.splice(index, 1);
         saveData();
-        renderCustomShopping();
+        renderDefaultShopping();
     }
 
     // Baby-Größenrechner
@@ -2795,6 +3490,7 @@
         document.getElementById('customTodoDate').value = '';
         saveData();
         renderCustomTodos();
+        renderProgressDashboard();
     }
 
     function renderCustomTodos() {
@@ -2892,6 +3588,7 @@
         customTodos[index].done = !customTodos[index].done;
         saveData();
         renderCustomTodos();
+        renderProgressDashboard();
     }
 
     function editCustomTodo(index) {
@@ -2934,6 +3631,7 @@
             customTodos.splice(index, 1);
             saveData();
             renderCustomTodos();
+            renderProgressDashboard();
         }
     }
 
@@ -3016,6 +3714,125 @@
         }
     }
 
+    // ============= PROGRESS DASHBOARD FUNCTIONS =============
+
+    function calculateProgress() {
+        // 2. Trimester tasks
+        const trimester2Total = TRIMESTER2_TASKS.length;
+        const trimester2Done = TRIMESTER2_TASKS.filter(t => t.done).length;
+        const trimester2Percent = trimester2Total > 0 ? Math.round((trimester2Done / trimester2Total) * 100) : 0;
+
+        // 3. Trimester / Prep tasks
+        const prepTotal = PREP_TASKS.length;
+        const prepDone = PREP_TASKS.filter(t => t.done).length;
+        const prepPercent = prepTotal > 0 ? Math.round((prepDone / prepTotal) * 100) : 0;
+
+        // Behoerden tasks
+        const behoerdenTotal = BEHOERDEN_TASKS.length;
+        const behoerdenDone = BEHOERDEN_TASKS.filter(t => t.done).length;
+        const behoerdenPercent = behoerdenTotal > 0 ? Math.round((behoerdenDone / behoerdenTotal) * 100) : 0;
+
+        // Custom todos
+        const customTotal = customTodos.length;
+        const customDone = customTodos.filter(t => t.done).length;
+        const customPercent = customTotal > 0 ? Math.round((customDone / customTotal) * 100) : 0;
+
+        // Shopping (count from DEFAULT_SHOPPING + customShoppingItems)
+        const shoppingTotal = DEFAULT_SHOPPING.length + customShoppingItems.length;
+        const defaultShoppingDone = DEFAULT_SHOPPING.filter(item => item.done).length;
+        const customShoppingDone = customShoppingItems.filter(item => item.done).length;
+        const shoppingDone = defaultShoppingDone + customShoppingDone;
+        const shoppingPercent = shoppingTotal > 0 ? Math.round((shoppingDone / shoppingTotal) * 100) : 0;
+
+        // Overall weighted average (give equal weight to each category that has items)
+        let totalWeight = 0;
+        let weightedSum = 0;
+
+        if (trimester2Total > 0) {
+            weightedSum += trimester2Percent;
+            totalWeight += 1;
+        }
+        if (prepTotal > 0) {
+            weightedSum += prepPercent;
+            totalWeight += 1;
+        }
+        if (behoerdenTotal > 0) {
+            weightedSum += behoerdenPercent;
+            totalWeight += 1;
+        }
+        if (shoppingTotal > 0) {
+            weightedSum += shoppingPercent;
+            totalWeight += 1;
+        }
+        if (customTotal > 0) {
+            weightedSum += customPercent;
+            totalWeight += 1;
+        }
+
+        const overallPercent = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
+
+        return {
+            trimester2: { done: trimester2Done, total: trimester2Total, percent: trimester2Percent },
+            prep: { done: prepDone, total: prepTotal, percent: prepPercent },
+            behoerden: { done: behoerdenDone, total: behoerdenTotal, percent: behoerdenPercent },
+            custom: { done: customDone, total: customTotal, percent: customPercent },
+            shopping: { done: shoppingDone, total: shoppingTotal, percent: shoppingPercent },
+            overall: overallPercent
+        };
+    }
+
+    function getMotivationalMessage(percent) {
+        if (percent === 100) {
+            return 'Alles erledigt! Ihr seid bereit fuer euer Baby!';
+        } else if (percent >= 75) {
+            return 'Fast fertig! Ihr seid grossartig vorbereitet!';
+        } else if (percent >= 50) {
+            return 'Super Fortschritt! Weiter so!';
+        } else if (percent >= 25) {
+            return 'Toll! Fast die Haelfte geschafft!';
+        } else {
+            return 'Ihr seid gut gestartet! Schritt fuer Schritt...';
+        }
+    }
+
+    function renderProgressDashboard() {
+        const progress = calculateProgress();
+
+        // Update progress ring
+        const ringCircumference = 2 * Math.PI * 45; // 283
+        const offset = ringCircumference - (progress.overall / 100) * ringCircumference;
+        const ringFill = document.getElementById('progressRingFill');
+        if (ringFill) {
+            ringFill.style.strokeDashoffset = offset;
+        }
+
+        // Update overall percentage
+        const overallPercent = document.getElementById('overallProgressPercent');
+        if (overallPercent) {
+            overallPercent.textContent = progress.overall + '%';
+        }
+
+        // Update category progress bars
+        const updateCategoryProgress = (id, percent) => {
+            const bar = document.getElementById(id + 'Mini');
+            const value = document.getElementById(id + 'Value');
+            if (bar) bar.style.width = percent + '%';
+            if (value) value.textContent = percent + '%';
+        };
+
+        updateCategoryProgress('trimester2Progress', progress.trimester2.percent);
+        updateCategoryProgress('prepProgress', progress.prep.percent);
+        updateCategoryProgress('behoerdenProgress', progress.behoerden.percent);
+        updateCategoryProgress('shoppingProgress', progress.shopping.percent);
+        updateCategoryProgress('customProgress', progress.custom.percent);
+
+        // Update motivational message
+        const motivationEl = document.getElementById('progressMotivation');
+        if (motivationEl) {
+            motivationEl.textContent = getMotivationalMessage(progress.overall);
+        }
+    }
+
     function saveData() {
         localStorage.setItem('papa_trimester2', JSON.stringify(TRIMESTER2_TASKS));
         localStorage.setItem('papa_prep', JSON.stringify(PREP_TASKS));
@@ -3023,6 +3840,8 @@
         localStorage.setItem('papa_appointments', JSON.stringify(appointments));
         localStorage.setItem('papa_shopping_custom', JSON.stringify(customShoppingItems));
         localStorage.setItem('papa_shopping_default', JSON.stringify(DEFAULT_SHOPPING));
+        localStorage.setItem('papa_shopping_checked', JSON.stringify(shoppingCheckedItems));
+        localStorage.setItem('papa_shopping_collapsed', JSON.stringify(shoppingCollapsedCategories));
         localStorage.setItem('papa_favorite_names', JSON.stringify(favoriteNames));
         localStorage.setItem('papa_shortlist_names', JSON.stringify(shortlistNames));
         localStorage.setItem('papa_disliked_names', JSON.stringify(dislikedNames));
